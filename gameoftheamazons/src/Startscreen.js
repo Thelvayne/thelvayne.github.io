@@ -92,11 +92,11 @@ export default function Startscreen() {
       }
 
       function register(){
-        if (playernameregister != null && passwordregister !=null){
-            
-          
+          if (playernameregister != null && passwordregister != null) {
            document.getElementById("playeruno").style.display = "block"
-           document.getElementById("register").style.display = "none"
+              document.getElementById("register").style.display = "none"
+
+
         }else{
             alert("Bitte füllen sie die Textfelder aus")
         }
