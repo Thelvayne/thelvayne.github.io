@@ -1,20 +1,6 @@
 const urlPlayer = "https://gruppe17.toni-barth.com/players/"
 const urlGame = "https://gruppe17.toni-barth.com/games/"
 
-
-async function getPlayers()
-{
-    try
-    {
-        let response = await fetch(urlPlayer);
-        return await response.json();
-    }
-    catch(ex)
-    {
-        console.error(ex)
-    }
-}
-
 const FETCH = async(requestOptions, url) =>
 {
     console.log("FETCH: " + url);
@@ -108,8 +94,7 @@ export const POST = async (value, url) => {
 }
 
 
-export async function createPlayer(name)
-{
+export const createPlayer = async (name) =>{
     try
     {
         const user = {
@@ -124,96 +109,202 @@ export async function createPlayer(name)
             console.log("POST error. Message is: " + error.message);
             return {message: error.message}
         });    
-        return res;   
+        return res;
+    }
+    catch(error)
+    {
+        console.error(error)
+    }
+}
 
-        // const options = {
-        //     method: 'POST',
-        //     body: JSON.stringify(user),
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // }
+export const createAI = async (name) =>{
+    try
+    {
+        const user = {
+            "name": name,
+            "controllable":false,
+        }
+
+        const res = await POST(user, urlPlayer)
+        .then((response)=>{
+            return response;
+        }).catch((error)=>{
+            console.log("POST error. Message is: " + error.message);
+            return {message: error.message}
+        });    
+        return res;
+    }
+    catch(error)
+    {
+        console.error(error)
+    }
+}
+
+export const getPlayers = async () => {
+    try{
+        const res = await GET(urlPlayer)
+        .then((response) =>{
+            return response
+        }).catch((error)=>{
+            console.log("GET error. Message is: " + error.message)
+            return {message: error.message}
+        })
+        return res
+    }catch(error) {
+        console.error(error)
+    }
+}
+
+export const deletePlayer = async (id) => {
+    try{
+        const res = await DELETE(urlPlayer+id)
+        .then((response) => {
+            return response
+        }).catch((error) => {
+            console.log("DELETE error. Message is: " + error.message)
+            return {message: error.message}
+        })
+        return res
+    }catch(error){
+        console.error(error)
+    }
+}
+
+export const newGame = async () => {
+    try{
+        const game = {
+            "maxTurnTime": 60000, // eine Minute
+            "players": [
+                0,
+                1
+            ],
+            "board": {
+                "gameSizeRows": 10, // Zeilen des Spielbrettes
+                "gameSizeColumns": 10, // Spalten des Spielbrettes
+                "squares": [ // Liste von Zeilen des Spielbrettes (von 0 bis gameSizeRows - 1)
+                // folgende Integer-Werte sind in diesen Arrays erlaubt:
+                // 0: Amazone des Spielers mit Index 0 in players
+                // 1: Amazone des Spielers mit Index 1 in players
+                // -1: leeres Feld
+                // -2: Giftpfeil
+                [0, -1, 0, -1, 0, -1, 0, -1, 0, -1],
+                [0, -1, -1, -1, -1, -1, -1, -1, -1, 0],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
+                [1, -1, 1, -1, 1, -1, 1, -1, 1, -1]
+            ]
+            }
+        }
+
+        const res = await POST(game, urlGame)
+        .then((response) => {
+            return response
+        }).catch((error) => {
+            console.log("POST error. Message is: " + error.message)
+            return {message: error.message}
+        })
+        return res
+    } catch (error){
+        console.log(error)
+    }
+}
+
+export const getGames = async () => {
+    try {
+        const res = await GET(urlGame)
+        .then((response) => {
+            return response
+        })
+        .catch((error) => {
+            console.log("GET error. Message is: " + error.message)
+            return {message: error.message}
+        })
+        return res
+    } catch (error){
+        console.log(error)
+    }
+}
+
+export const getGameID = async (id) => {
+    try {
+        const res = await GET(urlGame + id)
+        .then((response) => {
+            return response
+        }).catch((error) => {
+            console.log("GET error. Message is: " + error.message)
+            return {message: error.message}
+        })
+        return res
+    } catch(error) {
+        console.log(error)
+    }
+}
+
+export const deleteGame = async (id) => {
+    try{
+        const res = await DELETE(urlGame + id)
+        .then((response) => {
+            return response
+        }).catch((error) => {
+            console.log("DELETE error. Message is: " + error.message)
+            return {message: error.message}
+        })
+        return res
+    }catch(error){
+        console.error(error)
+    }
+}
+
+// FIXME: fix this stuff
+export const move = async (playerID, gameID) => {
+    try{
+        const move = {
+            "move": {
+                "start": {
+                    "row": 3, // Startzeile der Bewegung
+                    "column": 2, // Startspalte der Bewegung
+                },
+                "end": {
+                    "row": 6, // Zielzeile der Bewegung
+                    "column": 2, // Zielspalte der Bewegung
+                }
+            },
+            "shot": {
+                "row": 5, // Zeile des Pfeilschusses
+                "column": 2, // Spalte des Pfeilschusses
+            }
+        }
         
-        // // send POST request
-        // fetch(urlPlayer, options)
-        //     .then(res => res.json())
-        //     .then(res => console.log(res));
-
-        
-        // // let response = await fetch(urlPlayer, {method: 'POST', 'Content-Type':'application/json'});
-        // return await response.json();
-    }
-    catch(ex)
-    {
-        console.error(ex)
+        const res = await POST(move, urlGame + playerID + "/" + gameID)
+        .then((response) => {
+            return response
+        }).catch((error) => {
+            console.log("POST error. Message is: " + error.message)
+            return {message: error.message}
+        })
+        return res
+    } catch (error){
+        console.log(error)
     }
 }
 
-async function deletePlayer(player)
-{
-    try
-    {
-        let response = await fetch(urlPlayer+player.getAttribute("id"), {method: 'DELETE', headers: {'Content-Type':'application/json'}});
-        return await response.json();
-    }
-    catch(ex)
-    {
-        console.error(ex)
+
+export const reset = async () => {
+    try{
+        const res = await DELETE("https://gruppe17.toni-barth.com/reset/")
+        .then((response) => {
+            return response
+        }).catch((error) => {
+            console.log("DELETE error. Message is: " + error.message)
+            return {message: error.message}
+        })
+        return res
+    }catch(error){
+        console.error(error)
     }
 }
-
-async function getGames()
-{
-    try
-    {
-        let response = await fetch(urlGame);
-        return await response.json();
-    }
-    catch(ex)
-    {
-        console.error(ex)
-    }
-}
-
-async function getGame(number)
-{
-    try
-    {
-        let response = await fetch(urlGame + number);
-        return await response.json();
-    }
-    catch(ex)
-    {
-        console.error(ex)
-    }
-}
-
-async function deleteGame(game)
-{
-    try
-    {
-        let response = await fetch(urlGame+game.getAttribute("id"), {method: 'DELETE', headers: {'Content-Type':'application/json'}});
-        return await response.json();
-    }
-    catch(ex)
-    {
-        console.error(ex)
-    }
-}
-
-async function move(player, game)
-{
-    try
-    {
-        let response = await fetch(
-            "gruppe17.toni-barth.com/move/" + player.getAttribute("id") + "/" + game.getAttribute("id"),
-            {method: 'POST', 'Content-Type':'application/json'}
-         );
-         return await response.json();
-    }
-    catch(ex)
-    {
-        console.error(ex)
-    }
-}
-

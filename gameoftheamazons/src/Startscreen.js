@@ -47,12 +47,12 @@ export default function Startscreen() {
                   document.getElementById("playeruno").style.display = "none"
                   document.getElementById("playerdos").style.display = "block"
                   let p1 = await createPlayer(playername).then(res => {
-                    console.log (res)
+                    console.log (res) 
                     return res
-                  }).catch(error)
-                  {
-                    console.log(error)
-                  }
+                  }).catch((error) => {
+                    console.log("CREATEPLAYER error. Message is: " + error)
+                    return {message: error.message}
+                  })
                   
                   console.log("Return from url: ")
                   console.log(p1)
