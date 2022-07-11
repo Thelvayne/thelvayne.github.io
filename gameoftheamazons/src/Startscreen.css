@@ -2,8 +2,9 @@ body{
     margin: 0;
     padding: 0;
     background:url(amazonessvillage-tf05-jp-vg.png);
-    background-size:cover;
-    background-position: center;
+    background-size: cover;
+    background-position-y:-500px;
+    background-repeat: no-repeat;
     font-family: sans-serif;
 }
 
@@ -92,5 +93,15 @@ h1{
 
 .playertwo {
     display: none;
+}
+.register {
+    display: none
+}
+.submitregister {
+    background-color: #ffc107;
+}
+.registerbutton {
+    color: blue;
+    background-color: #000;
 }
 

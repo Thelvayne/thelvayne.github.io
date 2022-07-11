@@ -1,16 +1,23 @@
 import React from 'react'
 
 export default function Game() {
+  
+//   var activePlayer = 0;
+// function choose(){}
+// if (activePlayer === 0){
+//  if (document.getElementsByClassName
+//  }
   return (
     <div className = "board">
-         
+        
+       
         <div id="a10" className="box white"></div>
         <div id="b10" className="box black"></div>
         <div id="c10" className="box white"></div>
-        <div id="d10, black_amazoness1" className="box black">&#9819;</div>
+        <div id="d10" className="box black, pieceblack"></div>
         <div id="e10" className="box white"></div>
         <div id="f10" className="box black"></div>
-        <div id="g10" className="box white">&#9819;</div>
+        <div id="g10" className="box white, pieceblack"></div>
         <div id="h10" className="box black"></div>
         <div id="i10" className="box white"></div>
         <div id="j10" className="box black"></div>
@@ -37,7 +44,7 @@ export default function Game() {
         <div id="i8" className="box white"></div>
         <div id="j8" className="box black"></div>
         
-        <div id="a7" className="box black">&#9819;</div>
+        <div id="a7" className="box black, pieceblack"></div>
         <div id="b7" className="box white"></div>
         <div id="c7" className="box black"></div>
         <div id="d7" className="box white"></div>
@@ -46,7 +53,7 @@ export default function Game() {
         <div id="g7" className="box black"></div>
         <div id="h7" className="box white"></div>
         <div id="i7" className="box black"></div>
-        <div id="j7" className="box white">&#9819;</div>
+        <div id="j7" className="box white, pieceblack">;</div>
         
         <div id="a6" className="box white"></div>
         <div id="b6" className="box black"></div>
@@ -70,7 +77,7 @@ export default function Game() {
         <div id="i5" className="box black"></div>
         <div id="j5" className="box white"></div>
      
-        <div id="a4" className="box white">&#9813;</div>
+        <div id="a4" className="box white, piecewhite"></div>
         <div id="b4" className="box black"></div>
         <div id="c4" className="box white"></div>
         <div id="d4" className="box black"></div>
@@ -79,7 +86,7 @@ export default function Game() {
         <div id="g4" className="box white"></div>
         <div id="h4" className="box black"></div>
         <div id="i4" className="box white"></div>
-        <div id="j4" className="box black">&#9813;</div>
+        <div id="j4" className="box black, piecewhite"></div>
      
         <div id="a3" className="box black"></div>
         <div id="b3" className="box white"></div>
@@ -106,13 +113,14 @@ export default function Game() {
         <div id="a1" className="box black"></div>
         <div id="b1" className="box white"></div>
         <div id="c1" className="box black"></div>
-        <div id="d1" className="box white">&#9813;</div>
+        <div id="d1" className="box white, piecewhite"></div>
         <div id="e1" className="box black"></div>
         <div id="f1" className="box white"></div>
-        <div id="g1" className="box black">&#9813;</div>
+        <div id="g1" className="box black, piecewhite"></div>
         <div id="h1" className="box white"></div>
         <div id="i1" className="box black"></div>
         <div id="j1" className="box white"></div>
    </div>
   )
 }
+
