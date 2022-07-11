@@ -3,12 +3,11 @@ import React from 'react'
 export default function Game() {
   return (
     <div className = "board">
-        
-       
+         
         <div id="a10" className="box white"></div>
         <div id="b10" className="box black"></div>
         <div id="c10" className="box white"></div>
-        <div id="d10, black_amazoness1" className="box black"></div>
+        <div id="d10, black_amazoness1" className="box black">&#9819;</div>
         <div id="e10" className="box white"></div>
         <div id="f10" className="box black"></div>
         <div id="g10" className="box white">&#9819;</div>
