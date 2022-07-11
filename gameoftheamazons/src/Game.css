@@ -1,0 +1,70 @@
+
+
+.board {
+    width: 1000px;
+    height: 1000px;
+    margin: 20px;
+    border: 25px solid #333;
+    left: 25%;
+    position: absolute;
+}
+.box {
+    width: 100px;
+    height: 100px;
+    float: left;
+    font-size: 80px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+    
+/** ####################################################### */
+
+.black {
+    background-color: #999;    
+}
+.white {   
+    background-color: #fff;
+}
+.box.selected {
+    background-color: yellow;
+    cursor: pointer;
+}
+.box.ready {
+    background-color: green;
+}
+.box.potential {
+    background-color: lightskyblue;
+    border: 0.1px solid rgb(24, 155, 236);
+}
+.box.not-allowed {
+    background: coral;
+}
+.box.pointer {
+    cursor: pointer;
+}
+
+/** ####################################################### */
+
+.message {
+    position: absolute;
+    width: 200px;
+    left: calc(-142px + 50vw);
+    top: calc(-10px + 50vh);
+    text-align: center;
+    padding: 10px 50px;
+}
+.message.white-wins {
+    display: none;
+    background: white;
+    color: black;
+    box-shadow: 0 0 150px 75px black;
+
+}
+.message.black-wins {
+    display: none;
+    background: black;
+    color: white;
+    box-shadow: 0 0 150px 75px white;
+}
