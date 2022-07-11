@@ -68,3 +68,15 @@
     color: white;
     box-shadow: 0 0 150px 75px white;
 }
+.pieceblack {
+    background:url(Amazoness1.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.piecewhite {
+    background:url(Amazoness2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

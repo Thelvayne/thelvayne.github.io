@@ -8,7 +8,20 @@ import Startscreen from "./Startscreen.js";
 import Game from "./Game.js";
 
 
+
 function App() {
+  // constructor(props){
+  //   super(props);
+  //   this.state ={
+  //     items: [],
+  //     isLoaded:false,
+  //   }
+  // }
+  // componentDidMount(){
+
+  //   fetch('https://gitlab.hs-anhalt.de/barth_to/game-of-the-amazons.git')
+  // }
+ 
   return (
     <Router>
       <Routes>

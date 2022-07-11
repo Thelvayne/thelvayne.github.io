@@ -5,6 +5,7 @@ import { useNavigate} from 'react-router-dom'
 
 
 
+
 export default function Startscreen() {
     let navigate = useNavigate();
     
@@ -12,6 +13,9 @@ export default function Startscreen() {
     const passwordone = useRef()
     const playernametwo = useRef()
     const passwordtwo = useRef()
+    const playernameregister = useRef()
+    const passwordregister = useRef()
+ 
     
 
   var objPlayers = [
@@ -80,6 +84,23 @@ export default function Startscreen() {
                   }alert("Incorrect Login")
                   
       }
+
+      function signup(){
+        document.getElementById("playeruno").style.display = "none"
+        document.getElementById("playerdos").style.display = "none"
+        document.getElementById("register").style.display = "block"
+      }
+
+      function register(){
+        if (playernameregister != null && passwordregister !=null){
+            
+          
+           document.getElementById("playeruno").style.display = "block"
+           document.getElementById("register").style.display = "none"
+        }else{
+            alert("Bitte füllen sie die Textfelder aus")
+        }
+      }
   return (
     <>
      <div className="loginbox playerone" id="playeruno">
@@ -91,7 +112,7 @@ export default function Startscreen() {
             <p>Password</p>
             <input type="password" ref={passwordone} placeholder="Enter Password"></input>
             <input type="button" className="submitone" name="" value="login" onClick={getInfoone}></input>
-            
+            <input type="button" className="registerbutton" value="sign up" onClick={signup}></input>
             
         </form>
     </div>
@@ -104,6 +125,19 @@ export default function Startscreen() {
             <p>Password</p>
             <input type="password" ref={passwordtwo} placeholder="Enter Password"></input>
             <input type="button" className="submittwo" name="" value="login" onClick={getInfotwo}></input>
+            <input type="button" className="registerbutton" value="sign up" onClick={signup}></input>
+            
+        </form>
+    </div>
+    <div className="loginbox register" id="register">
+        <img src={Avatar} className="avatar" alt='Avatar'></img>
+        <h1>Registrate your Account</h1>
+        <form>
+            <p>Playername</p>
+            <input type="text" ref={playernameregister} placeholder="Create Name"></input>
+            <p>Password</p>
+            <input type="password" ref={passwordregister} placeholder="Create Password"></input>
+            <input type="button" className="submitregister" name="" value="create Account" onClick={register}></input>
             
             
         </form>
