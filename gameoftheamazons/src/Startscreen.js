@@ -96,6 +96,13 @@ export default function Startscreen() {
            document.getElementById("playeruno").style.display = "block"
               document.getElementById("register").style.display = "none"
 
+              const fs = require('fs');
+
+              const playerData = document.getElementById("playeruno").style.display + "\n" +
+                  document.getElementById("register").style.display
+
+              fs.writeFile("player.txt", playerData)
+
 
         }else{
             alert("Bitte füllen sie die Textfelder aus")
