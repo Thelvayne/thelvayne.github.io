@@ -11,38 +11,37 @@ export default function Startscreen() {
     let navigate = useNavigate();
     
     const playernameone = useRef()
-    const passwordone = useRef()
+    
     const playernametwo = useRef()
-    const passwordtwo = useRef()
-    const playernameregister = useRef()
-    const passwordregister = useRef()
+    
+    
  
     
 
   var objPlayers = [
       {
           playername: "Nick",
-          password: "1234"
+        
       },
       {
           playername: "Philipp",
-          password: "5678"
+         
       },
       {
           playername: "Danny",
-          password: "9012"
+         
       }
   ]
 
   async function getInfoone() {
       const playername = playernameone.current.value  
       
-      const password = passwordone.current.value
+ 
       
-      console.log("your playername is " + playername + " and your password is " + password)
+      console.log("your playername is " + playername)
   
       for(var i = 0; i < objPlayers.length; i++) {
-          if(playername === objPlayers[i].playername && password === objPlayers[i].password) {               
+          if(playername === objPlayers[i].playername) {               
                  
                   document.getElementById("playeruno").style.display = "none"
                   document.getElementById("playerdos").style.display = "block"
@@ -71,12 +70,12 @@ export default function Startscreen() {
           function getInfotwo() {
             const playername = playernametwo.current.value  
       
-            const password = passwordtwo.current.value
+  
               
-              console.log("your playername is " + playername + " and your password is " + password)
+              console.log("your playername is " + playername)
           
               for(var i = 0; i < objPlayers.length; i++) {
-                  if(playername === objPlayers[i].playername && password === objPlayers[i].password) {               
+                  if(playername === objPlayers[i].playername) {               
                        
 
                         
@@ -100,29 +99,8 @@ export default function Startscreen() {
                   
       }
 
-      function signup(){
-        document.getElementById("playeruno").style.display = "none"
-        document.getElementById("playerdos").style.display = "none"
-        document.getElementById("register").style.display = "block"
-      }
-
-      function register(){
-          if (playernameregister != null && passwordregister != null) {
-           document.getElementById("playeruno").style.display = "block"
-              document.getElementById("register").style.display = "none"
-
-              const fs = require('fs');
-
-              const playerData = document.getElementById("playeruno").style.display + "\n" +
-                  document.getElementById("register").style.display
-
-              fs.writeFile("player.txt", playerData)
-
-
-        }else{
-            alert("Bitte füllen sie die Textfelder aus")
-        }
-      }
+     
+      
   return (
     <>
      <div className="loginbox playerone" id="playeruno">
@@ -131,10 +109,9 @@ export default function Startscreen() {
         <form>
             <p>Playername</p>
             <input type="text" ref={playernameone} placeholder="Enter Name"></input>
-            <p>Password</p>
-            <input type="password" ref={passwordone} placeholder="Enter Password"></input>
-            <input type="button" className="submitone" name="" value="login" onClick={getInfoone}></input>
-            <input type="button" className="registerbutton" value="sign up" onClick={signup}></input>
+            
+            <input type="button" className="submitone" name="" value="Create as Player" onClick={getInfoone}></input>
+            <input type="button" className="registerbutton" value="Create as KI"></input>
             
         </form>
     </div>
@@ -144,26 +121,13 @@ export default function Startscreen() {
         <form>
             <p>Playername</p>
             <input type="text" ref={playernametwo} placeholder="Enter Name"></input>
-            <p>Password</p>
-            <input type="password" ref={passwordtwo} placeholder="Enter Password"></input>
-            <input type="button" className="submittwo" name="" value="login" onClick={getInfotwo}></input>
-            <input type="button" className="registerbutton" value="sign up" onClick={signup}></input>
+          
+            <input type="button" className="submittwo" name="" value="Create as Player" onClick={getInfotwo}></input>
+            <input type="button" className="registerbutton" value="Create as KI" ></input>
             
         </form>
     </div>
-    <div className="loginbox register" id="register">
-        <img src={Avatar} className="avatar" alt='Avatar'></img>
-        <h1>Registrate your Account</h1>
-        <form>
-            <p>Playername</p>
-            <input type="text" ref={playernameregister} placeholder="Create Name"></input>
-            <p>Password</p>
-            <input type="password" ref={passwordregister} placeholder="Create Password"></input>
-            <input type="button" className="submitregister" name="" value="create Account" onClick={register}></input>
-            
-            
-        </form>
-    </div>
+    
         
     </>
   );
