@@ -2,6 +2,7 @@ import React, {useRef} from 'react'
 import Avatar from './Avatar.jpg'
 import Avatar2 from './Avatar2.jpg'
 import { useNavigate} from 'react-router-dom'
+import { createPlayer } from './communication'
 
 
 
@@ -33,7 +34,7 @@ export default function Startscreen() {
       }
   ]
 
-  function getInfoone() {
+  async function getInfoone() {
       const playername = playernameone.current.value  
       
       const password = passwordone.current.value
@@ -45,7 +46,16 @@ export default function Startscreen() {
                  
                   document.getElementById("playeruno").style.display = "none"
                   document.getElementById("playerdos").style.display = "block"
+                  let p1 = await createPlayer(playername).then(res => {
+                    console.log (res) 
+                    return res
+                  }).catch((error) => {
+                    console.log("CREATEPLAYER error. Message is: " + error)
+                    return {message: error.message}
+                  })
                   
+                  console.log("Return from url: ")
+                  console.log(p1)
                   console.log(playername + " is Player one!")  
                   
               
@@ -71,10 +81,15 @@ export default function Startscreen() {
 
                         
                           
-                          console.log(playername + " is Player two!")  
-                          localStorage.setItem('playerNameOne', playernametwo);
                           
-                           navigate("/Game")
+                          localStorage.setItem('playerNameOne', playernametwo);
+                          const p2 = createPlayer(playername);
+                          console.log("Return from url: ")
+                          console.log(p2.name)
+                          console.log(p2.id)
+                          console.log(playername + " is Player two!")  
+
+                          navigate("/Game")
 
                           return;
                   
