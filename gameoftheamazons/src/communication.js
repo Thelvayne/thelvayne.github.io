@@ -117,7 +117,7 @@ export const createPlayer = async (name) =>{
     }
 }
 
-export const createAI = async (name) =>{
+export const generateAI = async (name) =>{
     try
     {
         const user = {
@@ -261,7 +261,7 @@ export const deleteGame = async (id) => {
 }
 
 // FIXME: fix this stuff
-export const move = async (playerID, gameID) => {
+export const move = async (playerID, gameID, infos) => {
     try{
         const move = {
             "move": {
