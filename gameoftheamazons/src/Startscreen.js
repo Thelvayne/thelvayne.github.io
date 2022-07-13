@@ -1,134 +1,210 @@
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
 import Avatar from './Avatar.jpg'
 import Avatar2 from './Avatar2.jpg'
-import { useNavigate} from 'react-router-dom'
-import { createPlayer } from './communication'
+import { useNavigate } from 'react-router-dom'
+import { createPlayer, deletePlayer, getPlayers, reset, generateAI, getGames, newGame } from './communication'
+
 
 
 
 
 export default function Startscreen() {
     let navigate = useNavigate();
-    
+
     const playernameone = useRef()
-    
     const playernametwo = useRef()
-    
-    
- 
-    
 
-  var objPlayers = [
-      {
-          playername: "Nick",
-        
-      },
-      {
-          playername: "Philipp",
-         
-      },
-      {
-          playername: "Danny",
-         
-      }
-  ]
+    let checkRequirements = async () => {
+        let g = await getGames()
+        .then((res) => {
+            return res
+        }).catch((error) => {
+            console.log('ISGAMEONGOING error. Message is: ' + error.message)
+            return { message: error.message }
+        })
 
-  async function getInfoone() {
-      const playername = playernameone.current.value  
-      
- 
-      
-      console.log("your playername is " + playername)
-  
-      for(var i = 0; i < objPlayers.length; i++) {
-          if(playername === objPlayers[i].playername) {               
-                 
-                  document.getElementById("playeruno").style.display = "none"
-                  document.getElementById("playerdos").style.display = "block"
-                  let p1 = await createPlayer(playername).then(res => {
-                    console.log (res) 
+        console.log(g.games.length)
+        if (g.games.length > 0) {
+            console.log("Es geht hier rein")
+            navigate('./Game')
+            return
+        }
+
+        let ps = await getPlayers()
+            .then((res) => {
+                return res
+            }).catch((error) => {
+                console.log('if(GETplayer.players > 1) error. Message is: ' + error.message)
+                return { message: error.message }
+            })
+
+        console.log(ps.players.length)
+
+        if (ps.players.length > 1) {
+            let g = await newGame()
+                .then((res) => {
                     return res
-                  }).catch((error) => {
-                    console.log("CREATEPLAYER error. Message is: " + error)
-                    return {message: error.message}
-                  })
-                  
-                  console.log("Return from url: ")
-                  console.log(p1)
-                  console.log(playername + " is Player one!")  
-                  
-              
-              return;
-            
-          
-              }  
-                  
-              } alert("Incorrect Login")
-          }
-      
+                }).catch((error) => {
+                    console.log('STARTGAME error. Message is: ' + error.message)
+                    return { message: error.message }
+                })
+            navigate('./Game')
+            return
+        } else if (ps.players.length === 1) {
+            document.getElementById("playeruno").style.display = "none"
+            document.getElementById("playerdos").style.display = "block"
+            getInfotwo()
+            return
 
-          function getInfotwo() {
-            const playername = playernametwo.current.value  
-      
-  
-              
-              console.log("your playername is " + playername)
-          
-              for(var i = 0; i < objPlayers.length; i++) {
-                  if(playername === objPlayers[i].playername) {               
-                       
+        } else {
+            getInfoone()
+            return
+        }
+    }
 
-                        
-                          
-                          
-                          localStorage.setItem('playerNameOne', playernametwo);
-                          const p2 = createPlayer(playername);
-                          console.log("Return from url: ")
-                          console.log(p2.name)
-                          console.log(p2.id)
-                          console.log(playername + " is Player two!")  
+    async function getInfoone() {
 
-                          navigate("/Game")
+        const playername = playernameone.current.value
 
-                          return;
-                  
-                      } 
-                          
-                      
-                  }alert("Incorrect Login")
-                  
-      }
+        let p = await createPlayer(playername)
+            .then((res) => {
+                return res
+            }).catch((error) => {
+                console.log('GET error. Message is: ' + error.message)
+                return { message: error.message }
+            })
+        console.log('Your Playername is: ' + p.name + " and your ID is: " + p.id)
+        document.getElementById("playeruno").style.display = "none"
+        document.getElementById("playerdos").style.display = "block"
 
-     
-      
-  return (
-    <>
-     <div className="loginbox playerone" id="playeruno">
-        <img src={Avatar2} className="avatar" alt='Avatar2'/>
-        <h1>Player 1 Login</h1>
-        <form>
-            <p>Playername</p>
-            <input type="text" ref={playernameone} placeholder="Enter Name"></input>
-            
-            <input type="button" className="submitone" name="" value="Create as Player" onClick={getInfoone}></input>
-            <input type="button" className="registerbutton" value="Create as KI"></input>
-            
-        </form>
-    </div>
-    <div className="loginbox playertwo" id="playerdos">
-        <img src={Avatar} className="avatar" alt='Avatar'></img>
-        <h1>Player 2 Login</h1>
-        <form>
-            <p>Playername</p>
-            <input type="text" ref={playernametwo} placeholder="Enter Name"></input>
-          
-            <input type="button" className="submittwo" name="" value="Create as Player" onClick={getInfotwo}></input>
-            <input type="button" className="registerbutton" value="Create as KI" ></input>
-            
-        </form>
-    </div>
-    
-        
-    </>
-  );
+    }
+
+    async function getInfotwo() {
+        const playername = playernametwo.current.value
+
+        let p = await createPlayer(playername)
+            .then((res) => {
+                return res
+            }).catch((error) => {
+                console.log('GET error. Message is: ' + error.message)
+                return { message: error.message }
+            })
+        console.log('Your Playername is: ' + p.name + " and your ID is: " + p.id)
+
+        let g = await newGame()
+            .then((res) => {
+                return res
+            }).catch((error) => {
+                console.log('STARTGAME error. Message is: ' + error.message)
+                return { message: error.message }
+            })
+        console.log("Your game has the id: " + g.id)
+        navigate("/Game")
+
+    }
+
+    const createAI = async () => {
+
+        let playername
+        if (playernameone.current.value !== "") {
+            playername = playernameone.current.value
+            document.getElementById("playeruno").style.display = "none"
+            document.getElementById("playerdos").style.display = "block"
+        } else if (playernametwo.current.value !== "") {
+            playername = playernametwo.current.value
+        }
+
+        let p = await generateAI(playername)
+            .then((res) => {
+                return res
+            }).catch((error) => {
+                console.log('GET error. Message is: ' + error.message)
+                return { message: error.message }
+            })
+        console.log(p)
+
+
+
+        if (playernametwo.current.value !== "") {
+            navigate('./game')
+        }
+
+    }
+
+    const resetAll = async () => {
+
+        const r = await reset()
+            .then((res) => {
+                return res
+            }).catch((error) => {
+                console.log('GET error. Message is: ' + error.message)
+                return { message: error.message }
+            })
+        console.log(r)
+
+
+
+    }
+
+    const deletePlayerWithID = async () => {
+
+        let ps = await getPlayers()
+            .then((res) => {
+                return res
+            }).catch((error) => {
+                console.log('GET error. Message is: ' + error.message)
+                return { message: error.message }
+            })
+
+        if (ps.players.length > 0) {
+            console.log(ps)
+            let lastPlayerID = ps.players[ps.players.length - 1].id
+            console.log(lastPlayerID)
+
+            let del = await deletePlayer(lastPlayerID)
+                .then((res) => {
+                    return res
+                }).catch((error) => {
+                    console.log('GET error. Message is: ' + error.message)
+                    return { message: error.message }
+                })
+
+        }
+
+    }
+
+    return (
+        <>
+            <div className="loginbox playerone" id="playeruno" onLoad={checkRequirements}>
+                <img src={Avatar2} className="avatar" alt='Avatar2' />
+                <h1>Player 1 Login</h1>
+                <form>
+                    <p>Playername</p>
+                    <input type="text" ref={playernameone} placeholder="Enter Name"></input>
+
+                    <input type="button" className="submitone" name="" value="Create as Player" onClick={getInfoone}></input>
+                    <input type="button" className="ai" value="Create as KI" onClick={createAI}></input>
+                    <input type="button" className="deletePlayer" value="deletePlayer" onClick={deletePlayerWithID}></input>
+                    <input type="button" className="reset" value="reset" onClick={resetAll}></input>
+
+                </form>
+            </div>
+            <div className="loginbox playertwo" id="playerdos">
+                <img src={Avatar} className="avatar" alt='Avatar'></img>
+                <h1>Player 2 Login</h1>
+                <form>
+                    <p>Playername</p>
+                    <input type="text" ref={playernametwo} placeholder="Enter Name"></input>
+
+                    <input type="button" className="submittwo" name="" value="Create as Player" onClick={getInfotwo}></input>
+                    <input type="button" className="ai" value="Create as KI" onClick={createAI}></input>
+                    <input type="button" className="deletePlayer" value="deletePlayer" onClick={deletePlayerWithID}></input>
+                    <input type="button" className="reset" value="reset" onClick={resetAll}></input>
+
+                </form>
+            </div>
+
+
+        </>
+    );
 }
