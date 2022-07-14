@@ -1,5 +1,7 @@
 
-
+body{
+    font-family: sans-serif;
+}
 .board {
     width: 1000px;
     height: 1000px;
@@ -89,4 +91,49 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+.Ui {
+    width: 320px;
+    height: 800px;
+    background: #999;
+    color: #fff;
+    border: 3px solid red;
+    left: 10%;
+    top: 420px;
+    position: fixed;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+}
+.currentPlayerone{
+    color: red;
+    font-size: 20px;
+}
+.currentPlayerone{
+    color: blue;
+    font-size: 20px;
+}
+.CurrentPlayer{
+    color: black;
+    font-size: 30px;
+}
+.resetGame{
+    top: 80%;
+    position: relative;
+    border:none;
+    width: 100%;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+}
+.resetGame:hover{
+    cursor: pointer;
+    background: #ffc107;
+    color: #000;
 }

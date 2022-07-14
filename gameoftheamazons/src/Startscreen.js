@@ -56,9 +56,9 @@ export default function Startscreen() {
             getInfotwo()
             return
 
-        } else {
-            getInfoone()
-            return
+        // } else {
+        //     getInfoone()
+        //     return
         }
     }
 
@@ -133,20 +133,7 @@ export default function Startscreen() {
 
     }
 
-    const resetAll = async () => {
-
-        const r = await reset()
-            .then((res) => {
-                return res
-            }).catch((error) => {
-                console.log('GET error. Message is: ' + error.message)
-                return { message: error.message }
-            })
-        console.log(r)
-
-
-
-    }
+  
 
     const deletePlayerWithID = async () => {
 
@@ -187,8 +174,7 @@ export default function Startscreen() {
                     <input type="button" className="submitone" name="" value="Create as Player" onClick={getInfoone}></input>
                     <input type="button" className="ai" value="Create as KI" onClick={createAI}></input>
                     <input type="button" className="deletePlayer" value="deletePlayer" onClick={deletePlayerWithID}></input>
-                    <input type="button" className="reset" value="reset" onClick={resetAll}></input>
-
+                    
                 </form>
             </div>
             <div className="loginbox playertwo" id="playerdos">
@@ -201,7 +187,7 @@ export default function Startscreen() {
                     <input type="button" className="submittwo" name="" value="Create as Player" onClick={getInfotwo}></input>
                     <input type="button" className="ai" value="Create as KI" onClick={createAI}></input>
                     <input type="button" className="deletePlayer" value="deletePlayer" onClick={deletePlayerWithID}></input>
-                    <input type="button" className="reset" value="reset" onClick={resetAll}></input>
+                   
 
                 </form>
             </div>

@@ -1,11 +1,13 @@
 import React from 'react'
-import { getGameID, move } from './communication'
+import { getGameID, move, reset } from './communication'
+import { useNavigate } from 'react-router-dom'
+
 
 export default function Game() {
 
   // Spieler 1: blau, turnPlayer = 0, pieceblack
   // Spieler 2: rot, turnPlayer = 1, piecewhite
-
+let navigate = useNavigate();
   // Variablen
   let currentSelectedRow
   let currentSelectedColumn
@@ -16,7 +18,7 @@ export default function Game() {
   // Funktion, die das Spielfeld setzt
   // holt und ließt aus Array, wie das Spielfeld auszusehen hat
   const setBoard = async () => {
-
+    
     // Methodeninterne Variable(n)
     let idToGet = ""
 
@@ -28,7 +30,11 @@ export default function Game() {
         console.log('GetGameID error. Message is: ' + error.message)
         return { message: error.message }
       })
-
+      if (b.turnPlayer=== 1){
+        var cplayer = b.players[1].name;
+        console.log(cplayer)
+      document.getElementById("currentPlayer").textContent=cplayer}
+      
     // geschachtelte for-Schleifen, um über das Spielfeld zu gehen und die Felder korrekt zu belegen (Amazonen und Giftpfeile, sowie freie Felder)
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
@@ -85,6 +91,7 @@ export default function Game() {
       // schaut, ob Spieler1 auch seine Figur auswählt
       let isPlayer1 = () => {
         if (b.turnPlayer === 0 && b.board.squares[row][column] === 0) {
+          
           return true
         }
         else {
@@ -180,16 +187,25 @@ export default function Game() {
 
       let str = document.getElementById(letter(startcolumn)+startrow).className
       if (document.getElementById(letter(startcolumn)+startrow).classList.contains("pieceblack")){
-        str.replace(", pieceblack", "")
+        str=str.replace(", pieceblack", "")
         document.getElementById(letter(startcolumn)+startrow).className = str
         document.getElementById(letter(endcolumn)+endrow).className += ", pieceblack"
       }
       else{
-        str.replace(", piecewhite", "")
+        str=str.replace(", piecewhite", "")
         document.getElementById(letter(startcolumn)+startrow).className = str
         document.getElementById(letter(endcolumn)+endrow).className += ", piecewhite"
       }
-      document.getElementById(letter(shotcolumn)+shotrow).className += " arrow"
+      document.getElementById(letter(shotcolumn)+shotrow).className += " arrow"}
+      document.getElementById("currentPlayer").textContent=b.turnPlayer
+      if (b.turnPlayer=== 0){
+        var cplayerone = b.players[0].name;
+        console.log(cplayerone)
+      document.getElementById("currentPlayer").textContent=cplayerone
+    } else {
+        var cplayertwo = b.players[1].name;
+        console.log(cplayertwo)
+      document.getElementById("currentPlayer").textContent=cplayertwo
     }
   }
 
@@ -496,8 +512,35 @@ export default function Game() {
       }
     } while (b.board.squares[rowForShoot + i][columnForShot - i++] === -1)
   }
+  const resetAll = async () => {
+   
+    const r = await reset()
+        .then((res) => {
+            return res
+        }).catch((error) => {
+            console.log('GET error. Message is: ' + error.message)
+            
+            return { message: error.message }
+            
+        })
+    console.log(r)
+
+
+
+}
+function navigateback(){
+  resetAll()
+  navigate("../")
+  
+}
 
   return (
+    <>
+    <div className="Ui">
+      <h1 className='CurrentPlayer'>Aktueller Spieler</h1>
+      <p id="currentPlayer" className='currentPlayerone'></p>
+      <input type="button" className="resetGame" value="Aktuelles Spiel Beenden" onClick={navigateback}></input>
+    </div>
     <div className="board" onLoad={setBoard}>
 
       <div id="a0" className="box white" onClick={() => select(0, 0)}></div>
@@ -610,6 +653,7 @@ export default function Game() {
       <div id="i9" className="box black" onClick={() => select(9, 8)}></div>
       <div id="j9" className="box white" onClick={() => select(9, 9)}></div>
     </div>
+   </>
   )
 }
 
