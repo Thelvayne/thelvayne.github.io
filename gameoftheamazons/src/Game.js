@@ -180,12 +180,12 @@ export default function Game() {
 
       let str = document.getElementById(letter(startcolumn)+startrow).className
       if (document.getElementById(letter(startcolumn)+startrow).classList.contains("pieceblack")){
-        str.replace(", pieceblack", "")
+        str = str.replace(", pieceblack", "")
         document.getElementById(letter(startcolumn)+startrow).className = str
         document.getElementById(letter(endcolumn)+endrow).className += ", pieceblack"
       }
       else{
-        str.replace(", piecewhite", "")
+        str = str.replace(", piecewhite", "")
         document.getElementById(letter(startcolumn)+startrow).className = str
         document.getElementById(letter(endcolumn)+endrow).className += ", piecewhite"
       }
