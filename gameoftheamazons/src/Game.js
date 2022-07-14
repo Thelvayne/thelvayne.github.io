@@ -167,7 +167,7 @@ export default function Game() {
         }
       }
 
-      console.log(b.turnPlayer + ", " + b.id);
+      console.log(b.turnPlayer + ", " + b.id + ", " + startrow + ", " + startcolumn + ", " + endrow + ", " + endcolumn + ", " + shotrow + ", " + shotcolumn);
 
       await move(b.turnPlayer, b.id, startrow, startcolumn, endrow, endcolumn, shotrow, shotcolumn)
       .then((res) => {
@@ -182,12 +182,12 @@ export default function Game() {
       if (document.getElementById(letter(startcolumn)+startrow).classList.contains("pieceblack")){
         str.replace(", pieceblack", "")
         document.getElementById(letter(startcolumn)+startrow).className = str
-        document.getElementById(letter(endcolumn)+endrow).className = + ", pieceblack"
+        document.getElementById(letter(endcolumn)+endrow).className += ", pieceblack"
       }
       else{
         str.replace(", piecewhite", "")
         document.getElementById(letter(startcolumn)+startrow).className = str
-        document.getElementById(letter(endcolumn)+endrow).className = + ", piecewhite"
+        document.getElementById(letter(endcolumn)+endrow).className += ", piecewhite"
       }
       document.getElementById(letter(shotcolumn)+shotrow).className += " arrow"
     }
@@ -498,7 +498,7 @@ export default function Game() {
   }
 
   return (
-    <div className="board" onLoad={() => setBoard()}>
+    <div className="board" onLoad={setBoard}>
 
       <div id="a0" className="box white" onClick={() => select(0, 0)}></div>
       <div id="b0" className="box black" onClick={() => select(0, 1)}></div>
