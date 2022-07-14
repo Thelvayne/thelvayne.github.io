@@ -14,6 +14,7 @@ export default function Startscreen() {
     const playernameone = useRef()
     const playernametwo = useRef()
 
+    // Aufgabenspezifische Bedingungen
     let checkRequirements = async () => {
         let g = await getGames()
         .then((res) => {
@@ -25,7 +26,6 @@ export default function Startscreen() {
 
         console.log(g.games.length)
         if (g.games.length > 0) {
-            console.log("Es geht hier rein")
             navigate('./Game')
             return
         }
@@ -62,6 +62,7 @@ export default function Startscreen() {
         }
     }
 
+    // UI für Spieler1-Erstellung
     async function getInfoone() {
 
         const playername = playernameone.current.value
@@ -79,6 +80,7 @@ export default function Startscreen() {
 
     }
 
+    // UI für Spieler2-Erstellung
     async function getInfotwo() {
         const playername = playernametwo.current.value
 

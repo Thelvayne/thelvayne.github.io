@@ -261,22 +261,22 @@ export const deleteGame = async (id) => {
 }
 
 // FIXME: fix this stuff
-export const move = async (playerID, gameID, infos) => {
+export const move = async (playerID, gameID, startrow, startcolumn, endrow, endcolumn, shotrow, shotcolumn) => {
     try{
         const move = {
             "move": {
                 "start": {
-                    "row": 3, // Startzeile der Bewegung
-                    "column": 2, // Startspalte der Bewegung
+                    "row": startrow, // Startzeile der Bewegung
+                    "column": startcolumn, // Startspalte der Bewegung
                 },
                 "end": {
-                    "row": 6, // Zielzeile der Bewegung
-                    "column": 2, // Zielspalte der Bewegung
+                    "row": endrow, // Zielzeile der Bewegung
+                    "column": endcolumn, // Zielspalte der Bewegung
                 }
             },
             "shot": {
-                "row": 5, // Zeile des Pfeilschusses
-                "column": 2, // Spalte des Pfeilschusses
+                "row": shotrow, // Zeile des Pfeilschusses
+                "column": shotcolumn, // Spalte des Pfeilschusses
             }
         }
         
@@ -291,6 +291,7 @@ export const move = async (playerID, gameID, infos) => {
     } catch (error){
         console.log(error)
     }
+    
 }
 
 

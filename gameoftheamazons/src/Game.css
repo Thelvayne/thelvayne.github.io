@@ -31,6 +31,10 @@
     background-color: yellow;
     cursor: pointer;
 }
+.box.arrowselected {
+    background-color: greenyellow;
+    cursor: pointer;
+}
 .box.ready {
     background-color: green;
 }
@@ -76,6 +80,12 @@
 }
 .piecewhite {
     background:url(Amazoness2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.arrow {
+    background: ";" ;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
