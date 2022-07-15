@@ -1,7 +1,7 @@
-
-body{
+body {
     font-family: sans-serif;
 }
+
 .board {
     width: 1000px;
     height: 1000px;
@@ -10,6 +10,7 @@ body{
     left: 25%;
     position: absolute;
 }
+
 .box {
     width: 100px;
     height: 100px;
@@ -20,33 +21,40 @@ body{
 }
 
 
-    
+
 /** ####################################################### */
 
 .black {
-    background-color: #999;    
+    background-color: #999;
 }
-.white {   
+
+.white {
     background-color: #fff;
 }
+
 .box.selected {
     background-color: yellow;
     cursor: pointer;
 }
+
 .box.arrowselected {
     background-color: greenyellow;
     cursor: pointer;
 }
+
 .box.ready {
     background-color: green;
 }
+
 .box.potential {
     background-color: lightskyblue;
     border: 0.1px solid rgb(24, 155, 236);
 }
+
 .box.not-allowed {
     background: coral;
 }
+
 .box.pointer {
     cursor: pointer;
 }
@@ -61,6 +69,7 @@ body{
     text-align: center;
     padding: 10px 50px;
 }
+
 .message.white-wins {
     display: none;
     background: white;
@@ -68,30 +77,35 @@ body{
     box-shadow: 0 0 150px 75px black;
 
 }
+
 .message.black-wins {
     display: none;
     background: black;
     color: white;
     box-shadow: 0 0 150px 75px white;
 }
+
 .pieceblack {
-    background:url(Amazoness1.jpg);
+    background: url(Amazoness1.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 .piecewhite {
-    background:url(Amazoness2.jpg);
+    background: url(Amazoness2.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 .arrow {
-    background: url(Arrow.png) ;
+    background: url(Arrow.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 .Ui {
     width: 320px;
     height: 800px;
@@ -101,28 +115,32 @@ body{
     left: 10%;
     top: 420px;
     position: fixed;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     box-sizing: border-box;
     padding: 70px 30px;
 }
-.currentPlayerone{
+
+.currentPlayerone {
     color: red;
     font-size: 40px;
 }
-.currentPlayerone{
+
+.currentPlayerone {
     color: blue;
     font-size: 40px;
     font-weight: bold;
 }
-.CurrentPlayer{
+
+.CurrentPlayer {
     color: black;
     font-size: 30px;
     font-weight: bold;
 }
-.resetGame{
+
+.resetGame {
     top: 80%;
     position: relative;
-    border:none;
+    border: none;
     width: 100%;
     margin-bottom: 20px;
     border-bottom: 1px solid #fff;
@@ -134,203 +152,223 @@ body{
     background-color: black;
     color: white;
 }
-.resetGame:hover{
+
+.resetGame:hover {
     cursor: pointer;
     background: #ffc107;
     color: #000;
 }
 
 
-    @media (max-width: 1366px){
-        .board {
-            width: 500px;
-            height: 500px;
-            margin: 20px;
-            border: 25px solid #333;
-            left: 25%;
-            position: absolute;
-        }
-        .box {
-            width: 50px;
-            height: 50px;
-            float: left;
-            font-size: 80px;
-            text-align: center;
-            vertical-align: middle;
-        }
-        .Ui {
-            width: 160px;
-            height: 400px;
-            background: #999;
-            color: #fff;
-            border: 3px solid red;
-            left: 10%;
-            top: 210px;
-            position: fixed;
-            transform: translate(-50%,-50%);
-            box-sizing: border-box;
-            padding: 70px 25px;
-        }
-        .currentPlayerone{
-            color: red;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .currentPlayerone{
-            color: blue;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .CurrentPlayer{
-            color: black;
-            font-size: 15px;
-            font-weight: bold;
-        }
-        .resetGame{
-            top: 80%;
-            position: relative;
-            border:none;
-            width: 100%;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #fff;
-            background: transparent;
-            outline: none;
-            height: 20px;
-            font-size: 8px;
-            border-radius: 20px;
-            background-color: black;
-            color: white;
-            text-align: center;
-        }
+@media (max-width: 1366px) {
+    .board {
+        width: 500px;
+        height: 500px;
+        margin: 20px;
+        border: 25px solid #333;
+        left: 25%;
+        position: absolute;
     }
-    @media (max-width: 1024px){
-        .board {
-            width: 300px;
-            height: 300px;
-            margin: 20px;
-            border: 25px solid #333;
-            left: 25%;
-            position: absolute;
-        }
-        .box {
-            width: 30px;
-            height: 30px;
-            float: left;
-            font-size: 80px;
-            text-align: center;
-            vertical-align: middle;
-        }
-        .Ui {
-            width: 100px;
-            height: 200px;
-            background: #999;
-            color: #fff;
-            border: 3px solid red;
-            left: 10%;
-            top: 120px;
-            position: fixed;
-            transform: translate(-50%,-50%);
-            box-sizing: border-box;
-            padding: 70px 6px;
-        }
-        .currentPlayerone{
-            color: red;
-            font-size: 10px;
-            font-weight: bold;
-        }
-        .currentPlayerone{
-            color: blue;
-            font-size: 10px;
-            font-weight: bold;
-        }
-        .CurrentPlayer{
-            color: black;
-            font-size: 9px;
-            font-weight: bold;
-        }
-        .resetGame{
-            top: 80%;
-            position:relative;
-            border:none;
-            width: 100%;
-           
-            
-            margin-bottom: 5px;
-            border-bottom: 1px solid #fff;
-            background: transparent;
-            outline: none;
-            height: 15px;
-            text-align: center;
-            font-size: 6px;
-            border-radius: 10px;
-            background-color: black;
-            color: white;
-           
-        }
+
+    .box {
+        width: 50px;
+        height: 50px;
+        float: left;
+        font-size: 80px;
+        text-align: center;
+        vertical-align: middle;
     }
-        @media (max-width: 320px){
-            .board {
-                width: 50px;
-                height: 50px;
-                margin: 20px;
-                border: 5px solid #333;
-                left: 25%;
-                position: absolute;
-            }
-            .box {
-                width: 5px;
-                height: 5px;
-                float: left;
-                font-size: 80px;
-                text-align: center;
-                vertical-align: middle;
-            }
-            .Ui {
-                width: 10px;
-                height: 12px;
-                background: #999;
-                color: #fff;
-                border: 0.1px solid red;
-                left: 10%;
-                top: 5px;
-                position: fixed;
-                transform: translate(-50%,-50%);
-                box-sizing: border-box;
-                padding: 17px 1px;
-            }
-            .currentPlayerone{
-                color: red;
-                font-size: 1px;
-                font-weight: bold;
-            }
-            .currentPlayerone{
-                color: blue;
-                font-size: 1px;
-                font-weight: bold;
-            }
-            .CurrentPlayer{
-                color: black;
-                font-size: 1px;
-                font-weight: bold;
-            }
-            .resetGame{
-                top: 80%;
-                position:relative;
-                border:none;
-                width: 100%;
-               
-                
-                margin-bottom: 5px;
-                border-bottom: 1px solid #fff;
-                background: transparent;
-                outline: none;
-                height: 3px;
-                text-align: center;
-                font-size: 1px;
-                border-radius: 10px;
-                background-color: black;
-                color: white;
-               
-            }
+
+    .Ui {
+        width: 160px;
+        height: 400px;
+        background: #999;
+        color: #fff;
+        border: 3px solid red;
+        left: 10%;
+        top: 210px;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        box-sizing: border-box;
+        padding: 70px 25px;
     }
-    
+
+    .currentPlayerone {
+        color: red;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .currentPlayerone {
+        color: blue;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .CurrentPlayer {
+        color: black;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .resetGame {
+        top: 80%;
+        position: relative;
+        border: none;
+        width: 100%;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #fff;
+        background: transparent;
+        outline: none;
+        height: 20px;
+        font-size: 8px;
+        border-radius: 20px;
+        background-color: black;
+        color: white;
+        text-align: center;
+    }
+}
+
+@media (max-width: 1024px) {
+    .board {
+        width: 300px;
+        height: 300px;
+        margin: 20px;
+        border: 25px solid #333;
+        left: 25%;
+        position: absolute;
+    }
+
+    .box {
+        width: 30px;
+        height: 30px;
+        float: left;
+        font-size: 80px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .Ui {
+        width: 100px;
+        height: 200px;
+        background: #999;
+        color: #fff;
+        border: 3px solid red;
+        left: 10%;
+        top: 120px;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        box-sizing: border-box;
+        padding: 70px 6px;
+    }
+
+    .currentPlayerone {
+        color: red;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .currentPlayerone {
+        color: blue;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .CurrentPlayer {
+        color: black;
+        font-size: 9px;
+        font-weight: bold;
+    }
+
+    .resetGame {
+        top: 80%;
+        position: relative;
+        border: none;
+        width: 100%;
+
+
+        margin-bottom: 5px;
+        border-bottom: 1px solid #fff;
+        background: transparent;
+        outline: none;
+        height: 15px;
+        text-align: center;
+        font-size: 6px;
+        border-radius: 10px;
+        background-color: black;
+        color: white;
+
+    }
+}
+
+@media (max-width: 320px) {
+    .board {
+        width: 50px;
+        height: 50px;
+        margin: 20px;
+        border: 5px solid #333;
+        left: 25%;
+        position: absolute;
+    }
+
+    .box {
+        width: 5px;
+        height: 5px;
+        float: left;
+        font-size: 80px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .Ui {
+        width: 10px;
+        height: 12px;
+        background: #999;
+        color: #fff;
+        border: 0.1px solid red;
+        left: 10%;
+        top: 5px;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        box-sizing: border-box;
+        padding: 17px 1px;
+    }
+
+    .currentPlayerone {
+        color: red;
+        font-size: 1px;
+        font-weight: bold;
+    }
+
+    .currentPlayerone {
+        color: blue;
+        font-size: 1px;
+        font-weight: bold;
+    }
+
+    .CurrentPlayer {
+        color: black;
+        font-size: 1px;
+        font-weight: bold;
+    }
+
+    .resetGame {
+        top: 80%;
+        position: relative;
+        border: none;
+        width: 100%;
+
+
+        margin-bottom: 5px;
+        border-bottom: 1px solid #fff;
+        background: transparent;
+        outline: none;
+        height: 3px;
+        text-align: center;
+        font-size: 1px;
+        border-radius: 10px;
+        background-color: black;
+        color: white;
+
+    }
+}
