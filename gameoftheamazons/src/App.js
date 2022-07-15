@@ -27,6 +27,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Startscreen />} />
         <Route exact path="/Game" element={<Game />} />
+        <Route exact path="/help" element={<Help />} />
       </Routes>
     </Router>
   )
