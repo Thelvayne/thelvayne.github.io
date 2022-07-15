@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\public",
-    "\\src"
+    "\\src",
+    "\\src\\ui"
   ],
-  "SelectedNode": "\\src\\Startscreen.js",
+  "SelectedNode": "\\src\\Help.css",
   "PreviewInSolutionExplorer": false
 }
