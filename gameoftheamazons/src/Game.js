@@ -313,7 +313,10 @@ export default function Game() {
 
 
 
-  }
+    }
+    function navigatehelp() {
+        navigate("../Help")
+    }
 
   async function navigateback() {
     await resetAll()
@@ -360,9 +363,10 @@ export default function Game() {
       <div className="Ui" onLoad={setBoard}>
         <h1 className='CurrentPlayer'>Aktueller Spieler</h1>
         <p id="currentPlayer" className='currentPlayerone'></p>
-        <input type="button" className="resetGame" value="Aktuelles Spiel Beenden" onClick={navigateback}></input>
-      </div>
-      <div className="board" >
+              <input type="button" className="resetGame" value="Aktuelles Spiel Beenden" onClick={navigateback}></input>
+              <input type="button" className="resetGame help" value="Hilfe" onClick={navigatehelp}/>
+          </div>
+      <div className="board" onLoad={setBoard}>
 
         <div id="a0" className="box white" onClick={() => select(0, 0)}></div>
         <div id="b0" className="box black" onClick={() => select(0, 1)}></div>
@@ -473,7 +477,7 @@ export default function Game() {
         <div id="h9" className="box white" onClick={() => select(9, 7)}></div>
         <div id="i9" className="box black" onClick={() => select(9, 8)}></div>
         <div id="j9" className="box white" onClick={() => select(9, 9)}></div>
-      </div>
+          </div>
     </>
   )
 }
