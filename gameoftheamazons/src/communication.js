@@ -3,7 +3,7 @@ const urlGame = "https://gruppe17.toni-barth.com/games/"
 const urlMove = "https://gruppe17.toni-barth.com/move/"
 
 const FETCH = async (requestOptions, url) => {
-    console.log("FETCH: " + url);
+    // console.log("FETCH: " + url);
     const fetched = await fetch(url, requestOptions)
         .then(async (response) => {
             return response.json()
@@ -12,7 +12,8 @@ const FETCH = async (requestOptions, url) => {
             console.log("FETCH error. Message is: " + error.message);
             return { message: error.message }
         })
-
+        // console.log("FETCH returned...")
+        // console.log(fetched)
     return fetched;
 }
 
@@ -34,7 +35,8 @@ export const GET = async (url) => {
             console.log("GET error. Message is: " + error.message);
             return { message: error.message }
         })
-
+        // console.log("GET returned...")
+        // console.log(fetched)
     return fetched;
 }
 
@@ -54,6 +56,8 @@ export const PUT = async (value, url) => {
             console.log("PUT error. Message is: " + error.message);
             return { message: error.message }
         });
+        // console.log("PUT returned...")
+        // console.log(fetched)
     return fetched;
 }
 
@@ -72,6 +76,8 @@ export const DELETE = async (url) => {
             console.log("DELETE error. Message is: " + error.message);
             return { message: error.message }
         });
+        // console.log("DELETE returned...")
+        // console.log(fetched)
     return fetched;
 }
 
@@ -91,8 +97,8 @@ export const POST = async (value, url) => {
             console.log("POST error. Message is: " + error.message);
             return { message: error.message }
         });
-    console.log("POST returned...")
-    console.log(fetched)
+    // console.log("POST returned...")
+    // console.log(fetched)
     return fetched;
 }
 
@@ -186,16 +192,16 @@ export const newGame = async () => {
                     // 1: Amazone des Spielers mit Index 1 in players
                     // -1: leeres Feld
                     // -2: Giftpfeil
-                    [0, -1, 0, -1, 0, -1, 0, -1, 0, -1],
+                    [-1, -1, -1, 0, -1, -1, 0, -1, -1, -1],
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                     [0, -1, -1, -1, -1, -1, -1, -1, -1, 0],
                     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                     [1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
-                    [1, -1, 1, -1, 1, -1, 1, -1, 1, -1]
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                    [-1, -1, -1, 1, -1, -1, 1, -1, -1, -1]
                 ]
             }
         }

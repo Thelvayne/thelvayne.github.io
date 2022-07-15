@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import Avatar from './Avatar.jpg'
 import Avatar2 from './Avatar2.jpg'
 import { useNavigate } from 'react-router-dom'
-import { createPlayer, deletePlayer, getPlayers, reset, generateAI, getGames, newGame } from './communication'
+import { createPlayer, deletePlayer, getPlayers, generateAI, getGames, newGame } from './communication'
 
 
 
@@ -41,7 +41,7 @@ export default function Startscreen() {
         console.log(ps.players.length)
 
         if (ps.players.length > 1) {
-            let g = await newGame()
+            await newGame()
                 .then((res) => {
                     return res
                 }).catch((error) => {
@@ -128,6 +128,14 @@ export default function Startscreen() {
 
 
         if (playernametwo.current.value !== "") {
+            let g = await newGame()
+            .then((res) => {
+                return res
+            }).catch((error) => {
+                console.log('STARTGAME error. Message is: ' + error.message)
+                return { message: error.message }
+            })
+        console.log("Your game has the id: " + g.id)
             navigate('./game')
         }
 
@@ -150,7 +158,7 @@ export default function Startscreen() {
             let lastPlayerID = ps.players[ps.players.length - 1].id
             console.log(lastPlayerID)
 
-            let del = await deletePlayer(lastPlayerID)
+            await deletePlayer(lastPlayerID)
                 .then((res) => {
                     return res
                 }).catch((error) => {
