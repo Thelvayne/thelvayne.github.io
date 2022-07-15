@@ -2,10 +2,15 @@ const urlPlayer = "https://gruppe17.toni-barth.com/players/"
 const urlGame = "https://gruppe17.toni-barth.com/games/"
 const urlMove = "https://gruppe17.toni-barth.com/move/"
 
+
+// CRUD-Operationen
 const FETCH = async (requestOptions, url) => {
-    // console.log("FETCH: " + url);
+    console.log("FETCH: " + requestOptions + ", " + url);
     const fetched = await fetch(url, requestOptions)
         .then(async (response) => {
+           if(response.status === 400){
+            return {message: 400}
+           }
             return response.json()
         })
         .catch((error) => {
@@ -40,7 +45,7 @@ export const GET = async (url) => {
     return fetched;
 }
 
-
+// PUT
 export const PUT = async (value, url) => {
 
     const requestOptions = {
@@ -102,7 +107,7 @@ export const POST = async (value, url) => {
     return fetched;
 }
 
-
+// befiehlt Backend einen Spieler anzulegen
 export const createPlayer = async (name) => {
     try {
         const user = {
@@ -124,6 +129,7 @@ export const createPlayer = async (name) => {
     }
 }
 
+// befiehlt Backend eine KI anzulegen
 export const generateAI = async (name) => {
     try {
         const user = {
@@ -145,6 +151,7 @@ export const generateAI = async (name) => {
     }
 }
 
+// hole vom Server eine Liste von Spielern
 export const getPlayers = async () => {
     try {
         const res = await GET(urlPlayer)
@@ -160,6 +167,7 @@ export const getPlayers = async () => {
     }
 }
 
+// beauftrage den Server einen Spieler aus der Liste zu löschen
 export const deletePlayer = async (id) => {
     try {
         const res = await DELETE(urlPlayer + id)
@@ -175,6 +183,7 @@ export const deletePlayer = async (id) => {
     }
 }
 
+// Anfrage an Server ein neues Spiel zu erstellen
 export const newGame = async () => {
     try {
         const game = {
@@ -219,6 +228,7 @@ export const newGame = async () => {
     }
 }
 
+// gib Liste von allen Spielen
 export const getGames = async () => {
     try {
         const res = await GET(urlGame)
@@ -235,6 +245,7 @@ export const getGames = async () => {
     }
 }
 
+// gib zu einem spezifischen Spiel die Statistiken
 export const getGameID = async (id) => {
     try {
         const res = await GET(urlGame + id)
@@ -250,6 +261,7 @@ export const getGameID = async (id) => {
     }
 }
 
+// lösche ein Spiel
 export const deleteGame = async (id) => {
     try {
         const res = await DELETE(urlGame + id)
@@ -265,7 +277,7 @@ export const deleteGame = async (id) => {
     }
 }
 
-// FIXME: fix this stuff
+// gib den Server den Spielzug zum setzen
 export const move = async (playerID, gameID, startrow, startcolumn, endrow, endcolumn, shotrow, shotcolumn) => {
     try {
         const move = {
@@ -299,7 +311,7 @@ export const move = async (playerID, gameID, startrow, startcolumn, endrow, endc
     }
 }
 
-
+// reset Server
 export const reset = async () => {
     try {
         const res = await DELETE("https://gruppe17.toni-barth.com/reset/")

@@ -17,14 +17,14 @@ export default function Startscreen() {
     // Aufgabenspezifische Bedingungen
     let checkRequirements = async () => {
         let g = await getGames()
-        .then((res) => {
-            return res
-        }).catch((error) => {
-            console.log('ISGAMEONGOING error. Message is: ' + error.message)
-            return { message: error.message }
-        })
+            .then((res) => {
+                return res
+            }).catch((error) => {
+                console.log('ISGAMEONGOING error. Message is: ' + error.message)
+                return { message: error.message }
+            })
 
-        console.log(g.games.length)
+        // wenn bereits ein Spiel offen ist, wechsel zum Spiel
         if (g.games.length > 0) {
             navigate('./Game')
             return
@@ -40,6 +40,7 @@ export default function Startscreen() {
 
         console.log(ps.players.length)
 
+        // wenn mehr als ein Spieler, erzeuge Spiel und wechsel zum Spiel
         if (ps.players.length > 1) {
             await newGame()
                 .then((res) => {
@@ -50,19 +51,16 @@ export default function Startscreen() {
                 })
             navigate('./Game')
             return
+            // wenn nur ein Spieler da ist, wechsel zum Spieler 2 erstellen Screen
         } else if (ps.players.length === 1) {
             document.getElementById("playeruno").style.display = "none"
             document.getElementById("playerdos").style.display = "block"
             getInfotwo()
             return
-
-        // } else {
-        //     getInfoone()
-        //     return
         }
     }
 
-    // UI für Spieler1-Erstellung
+    // Spieler1-Erstellung
     async function getInfoone() {
 
         const playername = playernameone.current.value
@@ -80,7 +78,7 @@ export default function Startscreen() {
 
     }
 
-    // UI für Spieler2-Erstellung
+    // Spieler2-Erstellung und anschließend Spielerzeugung
     async function getInfotwo() {
         const playername = playernametwo.current.value
 
@@ -105,8 +103,9 @@ export default function Startscreen() {
 
     }
 
+    // erzeut einen KI Spieler, funktioniert aber noch nicht korrekt
     const createAI = async () => {
-
+/*
         let playername
         if (playernameone.current.value !== "") {
             playername = playernameone.current.value
@@ -129,20 +128,19 @@ export default function Startscreen() {
 
         if (playernametwo.current.value !== "") {
             let g = await newGame()
-            .then((res) => {
-                return res
-            }).catch((error) => {
-                console.log('STARTGAME error. Message is: ' + error.message)
-                return { message: error.message }
-            })
-        console.log("Your game has the id: " + g.id)
+                .then((res) => {
+                    return res
+                }).catch((error) => {
+                    console.log('STARTGAME error. Message is: ' + error.message)
+                    return { message: error.message }
+                })
+            console.log("Your game has the id: " + g.id)
             navigate('./game')
         }
-
+      */  
     }
 
-  
-
+// löscht den letzten Spieler in der Spielerliste
     const deletePlayerWithID = async () => {
 
         let ps = await getPlayers()
@@ -182,7 +180,7 @@ export default function Startscreen() {
                     <input type="button" className="submitone" name="" value="Create as Player" onClick={getInfoone}></input>
                     <input type="button" className="ai" value="Create as KI" onClick={createAI}></input>
                     <input type="button" className="deletePlayer" value="deletePlayer" onClick={deletePlayerWithID}></input>
-                    
+
                 </form>
             </div>
             <div className="loginbox playertwo" id="playerdos">
@@ -195,7 +193,7 @@ export default function Startscreen() {
                     <input type="button" className="submittwo" name="" value="Create as Player" onClick={getInfotwo}></input>
                     <input type="button" className="ai" value="Create as KI" onClick={createAI}></input>
                     <input type="button" className="deletePlayer" value="deletePlayer" onClick={deletePlayerWithID}></input>
-                   
+
 
                 </form>
             </div>

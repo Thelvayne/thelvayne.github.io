@@ -125,13 +125,29 @@ body {
     height: 800px;
     background: #999;
     color: #fff;
-    border: 3px solid red;
+     /* border: 3px solid red; */
+    left: 5%;
+    top:10%;
+   
+    position: fixed; 
+    /* transform: translate(-50%, -50%); */
+    /* box-sizing: border-box;  */
+     /* padding: 20px 10px;  */
+}
+
+.grid-container{
+    display: grid;    
+    width: 100%;
+    height: 100%;
+    align-content: space-evenly;
+}
+
+.grid-item{
+    margin-left: 10%;
+    width: 80%;
+    height: 25%;
     left: 10%;
-    top: 420px;
-    position: fixed;
-    transform: translate(-50%, -50%);
-    box-sizing: border-box;
-    padding: 70px 30px;
+    
 }
 
 .currentPlayerone {

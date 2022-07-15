@@ -12,15 +12,17 @@ export default function Game() {
   // Spieler 2: rot, turnPlayer = 1, piecewhite
   let navigate = useNavigate();
   // Variablen
-  let countGenerateBoard = 0
   let amazoneSelected = 0
   let currentSelectedRow
   let currentSelectedColumn
   let startrow, startcolumn, endrow, endcolumn, shotrow, shotcolumn
+  let thereIsAWinner = false
+
 
   // Funktion, die das Spielfeld setzt
   // holt und ließt aus Array, wie das Spielfeld auszusehen hat
-  let setBoard = async () => {
+  const setBoard = async () => {
+    console.log("text");
 
     // Methodeninterne Variable(n)
     let idToGet = ""
@@ -33,12 +35,18 @@ export default function Game() {
         console.log('GetGameID error. Message is: ' + error.message)
         return { message: error.message }
       })
-    if (b.turnPlayer === 0) {
-      var cplayer = b.players[0].name;
-      document.getElementById("currentPlayer").textContent = cplayer
-    }else {
-      var cplayertwo = b.players[1].name;
-      document.getElementById("currentPlayer").textContent = cplayertwo
+
+    console.log(b);
+
+    //falls noch keinen Gewinner gibt, gebe den Spieler an, der als nächstes am Zug ist
+    if (thereIsAWinner === false) {
+      if (b.turnPlayer === 0) {
+        var cplayer = b.players[0].name;
+        document.getElementById("currentPlayer").textContent = cplayer
+      } else {
+        var cplayertwo = b.players[1].name;
+        document.getElementById("currentPlayer").textContent = cplayertwo
+      }
     }
 
     // geschachtelte for-Schleifen, um über das Spielfeld zu gehen und die Felder korrekt zu belegen (Amazonen und Giftpfeile, sowie freie Felder)
@@ -67,115 +75,93 @@ export default function Game() {
         }
       }
     }
-
   }
 
+
+  setBoard()
+
+
   // Funktion für onClick Ereignis
+  // entscheidet je nach State, was zu machen ist
   const select = async (row, column) => {
 
-    if (countGenerateBoard === 0) {
-      setBoard()
-      countGenerateBoard = 1
-    }
+    if (thereIsAWinner === false) {
+      // GET-Aufruf, um Informationen über das laufende Spiel zu bekommen
+      let b = await getGameID(0)
+        .then((res) => {
+          return res
+        }).catch((error) => {
+          console.log('GetGameID error. Message is: ' + error.message)
+          return { message: error.message }
+        })
 
-    // GET-Aufruf, um Informationen über das laufende Spiel zu bekommen
-    let b = await getGameID(0)
-      .then((res) => {
-        return res
-      }).catch((error) => {
-        console.log('GetGameID error. Message is: ' + error.message)
-        return { message: error.message }
-      })
+      let whoHasTurn = b.turnPlayer
 
-    let whoHasTurn = b.turnPlayer
+      // falls noch keine Amazone gewählt wurde
+      if (amazoneSelected === 0) {
 
-    if (amazoneSelected === 0) {
+        // console.log(row + ", " + column)
+        currentSelectedRow = row
+        currentSelectedColumn = column
 
-      // console.log(row + ", " + column)
-      currentSelectedRow = row
-      currentSelectedColumn = column
+        // schaut, ob Spieler1 auch seine Figur auswählt
+        let isPlayer1 = () => {
+          if (b.turnPlayer === 0 && b.board.squares[row][column] === 0) {
 
-      // schaut, ob Spieler1 auch seine Figur auswählt
-      let isPlayer1 = () => {
-        if (b.turnPlayer === 0 && b.board.squares[row][column] === 0) {
-
-          return true
+            return true
+          }
+          else {
+            return false
+          }
         }
-        else {
-          return false
+
+        // schaut, ob Spieler2 auch seine Figur auswählt
+        let isPlayer2 = () => {
+          if (b.turnPlayer === 1 && b.board.squares[row][column] === 1) {
+            return true
+          }
+          else {
+            return false
+          }
         }
-      }
 
-      // schaut, ob Spieler2 auch seine Figur auswählt
-      let isPlayer2 = () => {
-        if (b.turnPlayer === 1 && b.board.squares[row][column] === 1) {
-          return true
+        //überprüfen, ob korrekte Figur ausgewählt wurde
+        if (isPlayer1()) {
+          amazoneSelected = 1
+          document.getElementById(letter(column) + row).className += "select"
+          // markieren aller erlaubten Spielzüge
+          markMoveable(row, column)
+
+          startrow = row
+          startcolumn = column
+        } else if (isPlayer2()) {
+          amazoneSelected = 1
+          document.getElementById(letter(column) + row).className += "select"
+          // markieren aller erlaubten Spielzüge
+          markMoveable(row, column)
+
+          startrow = row
+          startcolumn = column
         }
-        else {
-          return false
+
+      }
+      // falls gleiches Feld nochmal ausgewählt wird, entferne wieder die Anzeige der möglichen Züge
+      else if (amazoneSelected === 1 && (currentSelectedColumn === column && currentSelectedRow === row)) {
+
+        let listWhite = document.getElementsByClassName("piecewhiteselect")
+        let listBlack = document.getElementsByClassName("pieceblackselect")
+
+        if (listWhite.length > 0) {
+          let id = listWhite[0].id
+          let str = listWhite[0].className
+          str = str.replace("piecewhiteselect", "piecewhite")
+          document.getElementById(id).className = str
+        } else if (listBlack.length > 0) {
+          let id = listBlack[0].id
+          let str = listBlack[0].className
+          str = str.replace("pieceblackselect", "pieceblack")
+          document.getElementById(id).className = str
         }
-      }
-
-      //überprüfen, ob korrekte Figur ausgewählt wurde
-      if (isPlayer1()) {
-        amazoneSelected = 1
-        document.getElementById(letter(column) + row).className += "select"
-        // markieren aller erlaubten Spielzüge
-        markMoveable(row, column)
-
-        startrow = row
-        startcolumn = column
-      } else if (isPlayer2()) {
-        amazoneSelected = 1
-        document.getElementById(letter(column) + row).className += "select"
-        // markieren aller erlaubten Spielzüge
-        markMoveable(row, column)
-
-        startrow = row
-        startcolumn = column
-      }
-
-    }
-    // falls gleiches Feld nochmal ausgewählt wird, entferne wieder die Anzeige der möglichen Züge
-    else if (amazoneSelected === 1 && (currentSelectedColumn === column && currentSelectedRow === row)) {
-
-      let listWhite = document.getElementsByClassName("piecewhiteselect")
-      let listBlack = document.getElementsByClassName("pieceblackselect")
-
-      if (listWhite.length > 0) {
-        let id = listWhite[0].id
-        let str = listWhite[0].className
-        str = str.replace("piecewhiteselect", "piecewhite")
-        document.getElementById(id).className = str
-      } else if (listBlack.length > 0) {
-        let id = listBlack[0].id
-        let str = listBlack[0].className
-        str = str.replace("pieceblackselect", "pieceblack")
-        document.getElementById(id).className = str
-      }
-
-      let list = document.getElementsByClassName("selected")
-
-      // entferne die Markierung der möglichen Felder
-      while (list.length > 0) {
-        let ind = 0
-        let id = list[ind].id
-        let str = list[ind].className
-        str = str.replace(" selected", "")
-        document.getElementById(id).className = str
-        ind++
-      }
-
-      amazoneSelected = 0
-    }
-    // Zweig für den Zug
-    else if (amazoneSelected === 1) {
-      currentSelectedRow = row
-      currentSelectedColumn = column
-      // falls ein Feld gewählt wurde, welches gültig ist
-      if (document.getElementById(letter(column) + row).classList.contains("selected")) {
-        endrow = row
-        endcolumn = column
 
         let list = document.getElementsByClassName("selected")
 
@@ -189,50 +175,49 @@ export default function Game() {
           ind++
         }
 
-        markShootable(row, column, startrow, startcolumn)
-        amazoneSelected = 2
+        amazoneSelected = 0
       }
-    }
-    // falls gleiches Feld nochmal ausgewählt wird, entferne wieder die Anzeige der möglichen Ziele
-    else if (amazoneSelected === 2 && (currentSelectedColumn === column && currentSelectedRow === row)) {
-      let listWhite = document.getElementsByClassName("piecewhiteselect")
-      let listBlack = document.getElementsByClassName("pieceblackselect")
+      // Zweig für den Zug
+      else if (amazoneSelected === 1) {
+        currentSelectedRow = row
+        currentSelectedColumn = column
+        // falls ein Feld gewählt wurde, welches gültig ist
+        if (document.getElementById(letter(column) + row).classList.contains("selected")) {
+          endrow = row
+          endcolumn = column
 
-      if (listWhite.length > 0) {
-        let id = listWhite[0].id
-        let str = listWhite[0].className
-        str = str.replace("piecewhiteselect", "piecewhite")
-        document.getElementById(id).className = str
-      } else if (listBlack.length > 0) {
-        let id = listBlack[0].id
-        let str = listBlack[0].className
-        str = str.replace("pieceblackselect", "pieceblack")
-        document.getElementById(id).className = str
+          let list = document.getElementsByClassName("selected")
+
+          // entferne die Markierung der möglichen Felder
+          while (list.length > 0) {
+            let ind = 0
+            let id = list[ind].id
+            let str = list[ind].className
+            str = str.replace(" selected", "")
+            document.getElementById(id).className = str
+            ind++
+          }
+
+          markShootable(row, column, startrow, startcolumn)
+          amazoneSelected = 2
+        }
       }
+      // falls gleiches Feld nochmal ausgewählt wird, entferne wieder die Anzeige der möglichen Ziele
+      else if (amazoneSelected === 2 && (currentSelectedColumn === column && currentSelectedRow === row)) {
+        let listWhite = document.getElementsByClassName("piecewhiteselect")
+        let listBlack = document.getElementsByClassName("pieceblackselect")
 
-      let list = document.getElementsByClassName("arrowselected")
-
-      // entferne die Markierung der möglichen Felder
-      while (list.length > 0) {
-        let ind = 0
-        let id = list[ind].id
-        let str = list[ind].className
-        str = str.replace("arrowselected", "")
-        document.getElementById(id).className = str
-        ind++
-      }
-
-      amazoneSelected = 0
-    }
-    // verschieße den Pfeil
-    else {
-      currentSelectedRow = row
-      currentSelectedColumn = column
-
-      // falls ein Feld gewählt wurde, welches gültig ist
-      if (document.getElementById(letter(column) + row).classList.contains("arrowselected")) {
-        shotrow = row
-        shotcolumn = column
+        if (listWhite.length > 0) {
+          let id = listWhite[0].id
+          let str = listWhite[0].className
+          str = str.replace("piecewhiteselect", "piecewhite")
+          document.getElementById(id).className = str
+        } else if (listBlack.length > 0) {
+          let id = listBlack[0].id
+          let str = listBlack[0].className
+          str = str.replace("pieceblackselect", "pieceblack")
+          document.getElementById(id).className = str
+        }
 
         let list = document.getElementsByClassName("arrowselected")
 
@@ -241,16 +226,124 @@ export default function Game() {
           let ind = 0
           let id = list[ind].id
           let str = list[ind].className
-          str = str.replace(" arrowselected", "")
+          str = str.replace("arrowselected", "")
           document.getElementById(id).className = str
           ind++
         }
+
+        amazoneSelected = 0
+      }
+      // verschieße den Pfeil
+      else {
+        currentSelectedRow = row
+        currentSelectedColumn = column
+
+        // falls ein Feld gewählt wurde, welches gültig ist
+        if (document.getElementById(letter(column) + row).classList.contains("arrowselected")) {
+          shotrow = row
+          shotcolumn = column
+
+          let list = document.getElementsByClassName("arrowselected")
+
+          // entferne die Markierung der möglichen Felder
+          while (list.length > 0) {
+            let ind = 0
+            let id = list[ind].id
+            let str = list[ind].className
+            str = str.replace(" arrowselected", "")
+            document.getElementById(id).className = str
+            // ind++
+          }
+
+
+          console.log(whoHasTurn + ", " + b.id + ", " + startrow + ", " + startcolumn + ", " + endrow + ", " + endcolumn + ", " + shotrow + ", " + shotcolumn);
+
+          // Zug an Server senden
+          let m = await move(whoHasTurn, b.id, startrow, startcolumn, endrow, endcolumn, shotrow, shotcolumn)
+            .then((res) => {
+              return res
+            }).catch((error) => {
+              console.log('GetGameID error. Message is: ' + error.message)
+              return { message: error.message }
+            })
+
+          // falls 400 bad request zurückkommt, brich den Zug ab und setze den Zug zurück
+          if (m.message === 400) {
+            let b1 = await getGameID(0)
+              .then((res) => {
+                return res
+              }).catch((error) => {
+                console.log('GetGameID error. Message is: ' + error.message)
+                return { message: error.message }
+              })
+
+            console.log(b1.turnPlayer)
+            console.log("Nicht fortsetzen")
+            amazoneSelected = 0
+            let listWhite = document.getElementsByClassName("piecewhiteselect")
+            let listBlack = document.getElementsByClassName("pieceblackselect")
+
+            if (listWhite !== null && listWhite.length > 0) {
+              let id = listWhite[0].id
+              let str = listWhite[0].className
+              str = str.replace("piecewhiteselect", "piecewhite")
+              document.getElementById(id).className = str
+            } else if (listBlack !== null && listBlack.length > 0) {
+              let id = listBlack[0].id
+              let str = listBlack[0].className
+              str = str.replace("pieceblackselect", "pieceblack")
+              document.getElementById(id).className = str
+            }
+            return
+          }
+
+          // Figuren setzen
+          let str = document.getElementById(letter(startcolumn) + startrow).className
+          if (document.getElementById(letter(startcolumn) + startrow).classList.contains("pieceblackselect")) {
+            str = str.replace(", pieceblackselect", "")
+            document.getElementById(letter(startcolumn) + startrow).className = str
+            document.getElementById(letter(endcolumn) + endrow).className += ", pieceblack"
+          }
+          else {
+            str = str.replace(", piecewhiteselect", "")
+            document.getElementById(letter(startcolumn) + startrow).className = str
+            document.getElementById(letter(endcolumn) + endrow).className += ", piecewhite"
+          }
+
+          // Pfeil setzen
+          document.getElementById(letter(shotcolumn) + shotrow).className += " arrow"
+          amazoneSelected = 0
+        }
+        // wenn ein falsches Feld gewählt wird, bring das Spielfeld zum Anfang des Zugs zurück
+        else {
+          let list = document.getElementsByClassName("arrowselected")
+          while (list.length > 0) {
+            let ind = 0
+            let id = list[ind].id
+            let str = list[ind].className
+            str = str.replace(" arrowselected", "")
+            document.getElementById(id).className = str
+          }
+          let listWhite = document.getElementsByClassName("piecewhiteselect")
+          let listBlack = document.getElementsByClassName("pieceblackselect")
+
+          if (listWhite !== null && listWhite.length > 0) {
+            let id = listWhite[0].id
+            let str = listWhite[0].className
+            str = str.replace("piecewhiteselect", "piecewhite")
+            document.getElementById(id).className = str
+          } else if (listBlack !== null && listBlack.length > 0) {
+            let id = listBlack[0].id
+            let str = listBlack[0].className
+            str = str.replace("pieceblackselect", "pieceblack")
+            document.getElementById(id).className = str
+          }
+          setBoard()
+        }
       }
 
-      console.log(whoHasTurn + ", " + b.id + ", " + startrow + ", " + startcolumn + ", " + endrow + ", " + endcolumn + ", " + shotrow + ", " + shotcolumn);
-
-      // Zug an Server senden
-      await move(whoHasTurn, b.id, startrow, startcolumn, endrow, endcolumn, shotrow, shotcolumn)
+      // aktuelles Spielbrett aktuallisieren
+      let b1 = await getGameID(0)
         .then((res) => {
           return res
         }).catch((error) => {
@@ -258,46 +351,32 @@ export default function Game() {
           return { message: error.message }
         })
 
-      // Figuren setzen
-      let str = document.getElementById(letter(startcolumn) + startrow).className
-      if (document.getElementById(letter(startcolumn) + startrow).classList.contains("pieceblackselect")) {
-        str = str.replace(", pieceblackselect", "")
-        document.getElementById(letter(startcolumn) + startrow).className = str
-        document.getElementById(letter(endcolumn) + endrow).className += ", pieceblack"
-      }
-      else {
-        str = str.replace(", piecewhiteselect", "")
-        document.getElementById(letter(startcolumn) + startrow).className = str
-        document.getElementById(letter(endcolumn) + endrow).className += ", piecewhite"
+      // wenn es einen Gewinner gibt
+      if (b1.winningPlayer !== undefined) {
+        document.getElementById("currentPlayer").textContent = "GEWINNER: " + b1.winningPlayer
+        thereIsAWinner = true
+        return
       }
 
-      // Pfeil setzen
-      document.getElementById(letter(shotcolumn) + shotrow).className += " arrow"
-      amazoneSelected = 0
+      console.log(b1);
+      // Spieler, der am Zug ist anzeigen
+      document.getElementById("currentPlayer").textContent = b1.turnPlayer
+      if (b1.turnPlayer === 0) {
+        var cplayerone = b1.players[0].name;
+        document.getElementById("currentPlayer").textContent = cplayerone
+      } else {
+        var cplayertwo = b1.players[1].name;
+        document.getElementById("currentPlayer").textContent = cplayertwo
+      }
     }
-
-    // aktuelles Spielbrett aktuallisieren
-    let b1 = await getGameID(0)
-      .then((res) => {
-        return res
-      }).catch((error) => {
-        console.log('GetGameID error. Message is: ' + error.message)
-        return { message: error.message }
-      })
-
-
-    // Spieler, der am Zug ist anzeigen
-    document.getElementById("currentPlayer").textContent = b1.turnPlayer
-    if (b1.turnPlayer === 0) {
-      var cplayerone = b1.players[0].name;
-      document.getElementById("currentPlayer").textContent = cplayerone
-    } else {
-      var cplayertwo = b1.players[1].name;
-      document.getElementById("currentPlayer").textContent = cplayertwo
+    else {
+      console.log(thereIsAWinner);
+      setBoard()
     }
-
   }
 
+  // Funktion für den 'Aktuelles Spiel Beenden'
+  // setzt alles auf die Anfangswerte zurück (Spieler und Spiele werden gelöscht)
   const resetAll = async () => {
 
     const r = await reset()
@@ -313,11 +392,13 @@ export default function Game() {
 
 
 
-    }
-    function navigatehelp() {
-        navigate("../Help")
-    }
+  }
+  function navigatehelp() {
+    thereIsAWinner = false
+    navigate("../Help")
+  }
 
+  // Funktion um zu Hilfe zu navigieren
   async function navigateback() {
     await resetAll()
       .then((res) => {
@@ -332,41 +413,18 @@ export default function Game() {
 
   }
 
-// Überprüfe Bedingungen für Spielerfiguren für markMoveable
-// let check = async (rowForShoot, columnForShot) => {
-
-//   let b = await getGameID(0)
-//     .then((res) => {
-//       return res
-//     }).catch((error) => {
-//       console.log('GetGameID error. Message is: ' + error.message)
-//       return { message: error.message }
-//     })
-
-//   if (b.turnPlayer === 0) {
-//     if (document.getElementById(letter(columnForShot) + rowForShoot).className.contains("pieceblackselect")) {
-//       return true
-//     } else {
-//       return false
-//     }
-//   } else if (b.turnPlayer === 1) {
-//     if (document.getElementById(letter(columnForShot) + rowForShoot).className.contains("piecewhiteselect")) {
-//       return true
-//     } else {
-//       return false
-//     }
-//   }
-// }
-
   return (
     <>
-      <div className="Ui" onLoad={setBoard}>
-        <h1 className='CurrentPlayer'>Aktueller Spieler</h1>
-        <p id="currentPlayer" className='currentPlayerone'></p>
-              <input type="button" className="resetGame" value="Aktuelles Spiel Beenden" onClick={navigateback}></input>
-              <input type="button" className="resetGame help" value="Hilfe" onClick={navigatehelp}/>
-          </div>
-      <div className="board" onLoad={setBoard}>
+      <div className="Ui">
+        <div className='grid-container'>
+
+          <div className='grid-item'><h1 className='CurrentPlayer'>Aktueller Spieler</h1></div>
+          <div className='grid-item'><p id="currentPlayer" className='currentPlayerone'></p></div>
+          <div className='grid-item'><input type="button" className="resetGame" value="Aktuelles Spiel Beenden" onClick={navigateback}></input></div>
+          <div className='grid-item'><input type="button" className="resetGame help" value="Hilfe" onClick={navigatehelp} /></div>
+        </div>
+      </div>
+      <div className="board">
 
         <div id="a0" className="box white" onClick={() => select(0, 0)}></div>
         <div id="b0" className="box black" onClick={() => select(0, 1)}></div>
@@ -477,7 +535,7 @@ export default function Game() {
         <div id="h9" className="box white" onClick={() => select(9, 7)}></div>
         <div id="i9" className="box black" onClick={() => select(9, 8)}></div>
         <div id="j9" className="box white" onClick={() => select(9, 9)}></div>
-          </div>
+      </div>
     </>
   )
 }

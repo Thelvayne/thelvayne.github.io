@@ -26,7 +26,8 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
   do {
     if (rowForShoot + i === 10 ||
       (board[rowForShoot + i][columnForShot] === 0) ||
-      (board[rowForShoot + i][columnForShot] === 1)) {
+      (board[rowForShoot + i][columnForShot] === 1) ||
+      (board[rowForShoot + i][columnForShot] === -2)) {
       break
     }
     else {
@@ -43,7 +44,8 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
   do {
     if (rowForShoot - i === -1 ||
       (board[rowForShoot - i][columnForShot] === 0) ||
-      (board[rowForShoot - i][columnForShot] === 1)) {
+      (board[rowForShoot - i][columnForShot] === 1) ||
+      (board[rowForShoot - i][columnForShot] === -2)) {
       break
     }
     else {
@@ -60,7 +62,8 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
   do {
     if (columnForShot - i === -1 ||
       (board[rowForShoot][columnForShot - i] === 0) ||
-      (board[rowForShoot][columnForShot - i] === 1)) {
+      (board[rowForShoot][columnForShot - i] === 1) ||
+      (board[rowForShoot][columnForShot - i] === -2)) {
       break
     }
     else {
@@ -77,7 +80,8 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
   do {
     if (columnForShot + i === 10 ||
       (board[rowForShoot][columnForShot + i] === 0) ||
-      (board[rowForShoot][columnForShot + i] === 1)) {
+      (board[rowForShoot][columnForShot + i] === 1) ||
+      (board[rowForShoot][columnForShot + i] === -2)) {
       break
     }
     else {
@@ -95,7 +99,8 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
     if (rowForShoot - i === -1 ||
       columnForShot + i === 10 ||
       (board[rowForShoot - i][columnForShot + i] === 0) ||
-      (board[rowForShoot - i][columnForShot + i] === 1)) {
+      (board[rowForShoot - i][columnForShot + i] === 1) ||
+      (board[rowForShoot - i][columnForShot + i] === -2)) {
       break
     }
     else {
@@ -113,7 +118,8 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
     if (rowForShoot + i === 10 ||
       columnForShot + i === 10 ||
       (board[rowForShoot + i][columnForShot + i] === 0) ||
-      (board[rowForShoot + i][columnForShot + i] === 1)) {
+      (board[rowForShoot + i][columnForShot + i] === 1) ||
+      (board[rowForShoot + i][columnForShot + i] === -2)) {
       break
     }
     else {
@@ -131,7 +137,8 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
     if (rowForShoot - i === -1 ||
       columnForShot - i === -1 ||
       (board[rowForShoot - i][columnForShot - i] === 0) ||
-      (board[rowForShoot - i][columnForShot - i] === 1)) {
+      (board[rowForShoot - i][columnForShot - i] === 1) ||
+      (board[rowForShoot - i][columnForShot - i] === -2)) {
       break
     }
     else {
@@ -149,7 +156,8 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
     if (rowForShoot + i === 10 ||
       columnForShot - i === -1 ||
       (board[rowForShoot + i][columnForShot - i] === 0) ||
-      (board[rowForShoot + i][columnForShot - i] === 1)) {
+      (board[rowForShoot + i][columnForShot - i] === 1) ||
+      (board[rowForShoot + i][columnForShot - i] === -2)) {
       break
     }
     else {
