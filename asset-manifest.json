@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/Game/static/css/main.45b808e9.css",
+    "main.js": "/Game/static/js/main.99a1a40b.js",
+    "static/media/amazonessvillage-tf05-jp-vg.png": "/Game/static/media/amazonessvillage-tf05-jp-vg.3d767600cc91b684206e.png",
+    "static/media/Amazoness1.jpg": "/Game/static/media/Amazoness1.81e0ebec67630cbca165.jpg",
+    "static/media/Avatar.jpg": "/Game/static/media/Avatar.8acf63113c7436abfcc1.jpg",
+    "static/media/Avatar2.jpg": "/Game/static/media/Avatar2.fa1b03860dc92a9c52dc.jpg",
+    "static/media/Amazoness2.jpg": "/Game/static/media/Amazoness2.07883cc1973da495ea09.jpg",
+    "index.html": "/Game/index.html",
+    "main.45b808e9.css.map": "/Game/static/css/main.45b808e9.css.map",
+    "main.99a1a40b.js.map": "/Game/static/js/main.99a1a40b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.45b808e9.css",
+    "static/js/main.99a1a40b.js"
+  ]
+}
