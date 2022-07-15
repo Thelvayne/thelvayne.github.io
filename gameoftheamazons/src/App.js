@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Startscreen from "./Startscreen.js";
 import Game from "./Game.js";
+import Help from "./Help.js";
 
 
 
@@ -27,7 +28,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Startscreen />} />
         <Route exact path="/Game" element={<Game />} />
-        <Route exact path="/help" element={<Help />} />
+        <Route exact path="/Help" element={<Help />} />
       </Routes>
     </Router>
   )

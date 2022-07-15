@@ -243,8 +243,16 @@ export default function Game() {
 
 
   }
-  function navigateback() {
-    resetAll()
+  async function navigateback() {
+    await resetAll()
+    .then((res) => {
+      return res
+    }).catch((error) => {
+      console.log('GET error. Message is: ' + error.message)
+
+      return { message: error.message }
+
+    })
     navigate("../")
 
   }
