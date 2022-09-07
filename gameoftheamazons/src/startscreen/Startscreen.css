@@ -1,7 +1,7 @@
 body{
     margin: 0;
     padding: 0;
-    background:url(amazonessvillage-tf05-jp-vg.png);
+    background:url(../pictures/amazonessvillage-tf05-jp-vg.png);
     background-size: cover;
     background-position-y:-500px;
     background-repeat: no-repeat;
@@ -109,7 +109,7 @@ h1{
     body{
         margin: 0;
         padding: 0;
-        background:url(amazonessvillage-tf05-jp-vg.png);
+        background:url(../pictures/amazonessvillage-tf05-jp-vg.png);
         background-size: cover;
         background-position-y:-30px;
         
@@ -156,7 +156,7 @@ h1{
     body{
         margin: 0;
         padding: 0;
-        background:url(amazonessvillage-tf05-jp-vg.png);
+        background:url(../pictures/amazonessvillage-tf05-jp-vg.png);
         background-size: cover;
         background-position-y:-100px;
         background-repeat: no-repeat;
@@ -168,7 +168,7 @@ h1{
     body{
         margin: 0;
         padding: 0;
-        background:url(amazonessvillage-tf05-jp-vg.png);
+        background:url(../pictures/amazonessvillage-tf05-jp-vg.png);
        
         background-size: cover;
         background-position-y:-400px;

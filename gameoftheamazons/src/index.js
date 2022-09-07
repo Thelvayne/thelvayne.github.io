@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './Startscreen.css'
-import './Avatar.jpg'
-import './Avatar2.jpg'
-import './amazonessvillage-tf05-jp-vg.png'
-import './Game.css'
-import './Help.css'
+import './startscreen/Startscreen.css'
+import './pictures/Avatar.jpg'
+import './pictures/Avatar2.jpg'
+import './pictures/amazonessvillage-tf05-jp-vg.png'
+import './game/Game.css'
+import './help/Help.css'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

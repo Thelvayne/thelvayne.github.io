@@ -1,5 +1,5 @@
 import { letter } from "./letter"
-import { getGameID } from "../communication"
+import { getGameID } from "../communication/Communication"
 
 // Funktion um alle erlaubten Züge zu markieren
 export const markMoveable = async (currentSelectedRow, currentSelectedColumn) => {
@@ -20,7 +20,7 @@ export const markMoveable = async (currentSelectedRow, currentSelectedColumn) =>
 
     // Schleife, die nach unten alle erlaubten Felder markiert
     do {
-      if (startrow + i === 10 || b.board.squares[startrow + i][startcolumn] === 0 || b.board.squares[startrow + i][startcolumn] === 1) {
+      if (startrow + i === b.board.rows || b.board.squares[startrow + i][startcolumn] === 0 || b.board.squares[startrow + i][startcolumn] === 1) {
         break
       }
       else {

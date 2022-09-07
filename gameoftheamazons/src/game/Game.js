@@ -1,15 +1,16 @@
 import React from 'react'
-import { getGameID, move, reset } from './communication'
+import { getGameID, move, reset } from '../communication/Communication'
 import { useNavigate } from 'react-router-dom'
-import { markMoveable } from './game/markMoveable'
-import { markShootable } from './game/markShootable'
-import { letter } from './game/letter'
+import { markMoveable } from './markMoveable'
+import { markShootable } from './markShootable'
+import { letter } from './letter'
+import { CreateBoard, setBoard } from './createBoard/CreateBoard'
 
 
-export default function Game() {
+export default async function Game() {
 
-  // Spieler 1: blau, turnPlayer = 0, pieceblack
-  // Spieler 2: rot, turnPlayer = 1, piecewhite
+  // Spieler 1: blau, turnPlayer = 0 pieceblack
+  // Spieler 2: rot, turnPlayer = 1 piecewhite
   let navigate = useNavigate();
   // Variablen
   let amazoneSelected = 0
@@ -17,68 +18,20 @@ export default function Game() {
   let currentSelectedColumn
   let startrow, startcolumn, endrow, endcolumn, shotrow, shotcolumn
   let thereIsAWinner = false
+  let IDGame;
+
+  const game = await getGameID(IDGame).then((res) => {
+    return res;
+  }).catch((error) => {
+    console.log("getGameID error. Error message is: " + error.message);
+    return {message: error.message};
+  });
+  const gameRows = game.board.gameSizeRows;
+  const gameColumns = game.board.gameSizeColumns;
 
 
-  // Funktion, die das Spielfeld setzt
-  // holt und ließt aus Array, wie das Spielfeld auszusehen hat
-  const setBoard = async () => {
-    console.log("text");
-
-    // Methodeninterne Variable(n)
-    let idToGet = ""
-
-    // GET-Aufruf, um Informationen über das laufende Spiel zu bekommen
-    let b = await getGameID(0)
-      .then((res) => {
-        return res
-      }).catch((error) => {
-        console.log('GetGameID error. Message is: ' + error.message)
-        return { message: error.message }
-      })
-
-    console.log(b);
-
-    //falls noch keinen Gewinner gibt, gebe den Spieler an, der als nächstes am Zug ist
-    if (thereIsAWinner === false) {
-      if (b.turnPlayer === 0) {
-        var cplayer = b.players[0].name;
-        document.getElementById("currentPlayer").textContent = cplayer
-      } else {
-        var cplayertwo = b.players[1].name;
-        document.getElementById("currentPlayer").textContent = cplayertwo
-      }
-    }
-
-    // geschachtelte for-Schleifen, um über das Spielfeld zu gehen und die Felder korrekt zu belegen (Amazonen und Giftpfeile, sowie freie Felder)
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        // wenn blaue Amazone gefunden wird
-        if (b.board.squares[i][j] === 0 && !document.getElementById(letter(j) + i).classList.contains("pieceblack")) {
-          idToGet = ""
-          idToGet += letter(j)
-          idToGet += i
-          document.getElementById(idToGet).className += ", pieceblack"
-        }
-        // wenn rote Amazone gefunden wird
-        else if (b.board.squares[i][j] === 1 && !document.getElementById(letter(j) + i).classList.contains("piecewhite")) {
-          idToGet = ""
-          idToGet += letter(j)
-          idToGet += i
-          document.getElementById(idToGet).className += ", piecewhite"
-        }
-        // wenn Giftpfeil gefunden wird
-        else if (b.board.squares[i][j] === -2 && !document.getElementById(letter(j) + i).classList.contains("arrow")) {
-          idToGet = ""
-          idToGet += letter(j)
-          idToGet += i
-          document.getElementById(idToGet).className += ", arrow"
-        }
-      }
-    }
-  }
-
-
-  setBoard()
+  const doOnlyOnce = CreateBoard(gameRows, gameColumns);
+  window.addEventListener('load', setBoard(thereIsAWinner));
 
 
   // Funktion für onClick Ereignis
@@ -86,6 +39,7 @@ export default function Game() {
   const select = async (row, column) => {
 
     if (thereIsAWinner === false) {
+      //TODO: ist nicht mehr automatisch gameID 0
       // GET-Aufruf, um Informationen über das laufende Spiel zu bekommen
       let b = await getGameID(0)
         .then((res) => {
@@ -300,14 +254,14 @@ export default function Game() {
           // Figuren setzen
           let str = document.getElementById(letter(startcolumn) + startrow).className
           if (document.getElementById(letter(startcolumn) + startrow).classList.contains("pieceblackselect")) {
-            str = str.replace(", pieceblackselect", "")
+            str = str.replace(" pieceblackselect", "")
             document.getElementById(letter(startcolumn) + startrow).className = str
-            document.getElementById(letter(endcolumn) + endrow).className += ", pieceblack"
+            document.getElementById(letter(endcolumn) + endrow).className += " pieceblack"
           }
           else {
-            str = str.replace(", piecewhiteselect", "")
+            str = str.replace(" piecewhiteselect", "")
             document.getElementById(letter(startcolumn) + startrow).className = str
-            document.getElementById(letter(endcolumn) + endrow).className += ", piecewhite"
+            document.getElementById(letter(endcolumn) + endrow).className += " piecewhite"
           }
 
           // Pfeil setzen
@@ -393,9 +347,10 @@ export default function Game() {
 
 
   }
+
   function navigatehelp() {
     thereIsAWinner = false
-    navigate("../Help")
+    navigate("../help/Help")
   }
 
   // Funktion um zu Hilfe zu navigieren
@@ -409,7 +364,7 @@ export default function Game() {
         return { message: error.message }
 
       })
-    navigate("../")
+    navigate("../gamelobby/Gamelobby")
 
   }
 
@@ -424,117 +379,7 @@ export default function Game() {
           <div className='grid-item'><input type="button" className="resetGame help" value="Hilfe" onClick={navigatehelp} /></div>
         </div>
       </div>
-      <div className="board">
-
-        <div id="a0" className="box white" onClick={() => select(0, 0)}></div>
-        <div id="b0" className="box black" onClick={() => select(0, 1)}></div>
-        <div id="c0" className="box white" onClick={() => select(0, 2)}></div>
-        <div id="d0" className="box black" onClick={() => select(0, 3)}></div>
-        <div id="e0" className="box white" onClick={() => select(0, 4)}></div>
-        <div id="f0" className="box black" onClick={() => select(0, 5)}></div>
-        <div id="g0" className="box white" onClick={() => select(0, 6)}></div>
-        <div id="h0" className="box black" onClick={() => select(0, 7)}></div>
-        <div id="i0" className="box white" onClick={() => select(0, 8)}></div>
-        <div id="j0" className="box black" onClick={() => select(0, 9)}></div>
-
-        <div id="a1" className="box black" onClick={() => select(1, 0)}></div>
-        <div id="b1" className="box white" onClick={() => select(1, 1)}></div>
-        <div id="c1" className="box black" onClick={() => select(1, 2)}></div>
-        <div id="d1" className="box white" onClick={() => select(1, 3)}></div>
-        <div id="e1" className="box black" onClick={() => select(1, 4)}></div>
-        <div id="f1" className="box white" onClick={() => select(1, 5)}></div>
-        <div id="g1" className="box black" onClick={() => select(1, 6)}></div>
-        <div id="h1" className="box white" onClick={() => select(1, 7)}></div>
-        <div id="i1" className="box black" onClick={() => select(1, 8)}></div>
-        <div id="j1" className="box white" onClick={() => select(1, 9)}></div>
-
-        <div id="a2" className="box white" onClick={() => select(2, 0)}></div>
-        <div id="b2" className="box black" onClick={() => select(2, 1)}></div>
-        <div id="c2" className="box white" onClick={() => select(2, 2)}></div>
-        <div id="d2" className="box black" onClick={() => select(2, 3)}></div>
-        <div id="e2" className="box white" onClick={() => select(2, 4)}></div>
-        <div id="f2" className="box black" onClick={() => select(2, 5)}></div>
-        <div id="g2" className="box white" onClick={() => select(2, 6)}></div>
-        <div id="h2" className="box black" onClick={() => select(2, 7)}></div>
-        <div id="i2" className="box white" onClick={() => select(2, 8)}></div>
-        <div id="j2" className="box black" onClick={() => select(2, 9)}></div>
-
-        <div id="a3" className="box black" onClick={() => select(3, 0)}></div>
-        <div id="b3" className="box white" onClick={() => select(3, 1)}></div>
-        <div id="c3" className="box black" onClick={() => select(3, 2)}></div>
-        <div id="d3" className="box white" onClick={() => select(3, 3)}></div>
-        <div id="e3" className="box black" onClick={() => select(3, 4)}></div>
-        <div id="f3" className="box white" onClick={() => select(3, 5)}></div>
-        <div id="g3" className="box black" onClick={() => select(3, 6)}></div>
-        <div id="h3" className="box white" onClick={() => select(3, 7)}></div>
-        <div id="i3" className="box black" onClick={() => select(3, 8)}></div>
-        <div id="j3" className="box white" onClick={() => select(3, 9)}></div>
-
-        <div id="a4" className="box white" onClick={() => select(4, 0)}></div>
-        <div id="b4" className="box black" onClick={() => select(4, 1)}></div>
-        <div id="c4" className="box white" onClick={() => select(4, 2)}></div>
-        <div id="d4" className="box black" onClick={() => select(4, 3)}></div>
-        <div id="e4" className="box white" onClick={() => select(4, 4)}></div>
-        <div id="f4" className="box black" onClick={() => select(4, 5)}></div>
-        <div id="g4" className="box white" onClick={() => select(4, 6)}></div>
-        <div id="h4" className="box black" onClick={() => select(4, 7)}></div>
-        <div id="i4" className="box white" onClick={() => select(4, 8)}></div>
-        <div id="j4" className="box black" onClick={() => select(4, 9)}></div>
-
-        <div id="a5" className="box black" onClick={() => select(5, 0)}></div>
-        <div id="b5" className="box white" onClick={() => select(5, 1)}></div>
-        <div id="c5" className="box black" onClick={() => select(5, 2)}></div>
-        <div id="d5" className="box white" onClick={() => select(5, 3)}></div>
-        <div id="e5" className="box black" onClick={() => select(5, 4)}></div>
-        <div id="f5" className="box white" onClick={() => select(5, 5)}></div>
-        <div id="g5" className="box black" onClick={() => select(5, 6)}></div>
-        <div id="h5" className="box white" onClick={() => select(5, 7)}></div>
-        <div id="i5" className="box black" onClick={() => select(5, 8)}></div>
-        <div id="j5" className="box white" onClick={() => select(5, 9)}></div>
-
-        <div id="a6" className="box white" onClick={() => select(6, 0)}></div>
-        <div id="b6" className="box black" onClick={() => select(6, 1)}></div>
-        <div id="c6" className="box white" onClick={() => select(6, 2)}></div>
-        <div id="d6" className="box black" onClick={() => select(6, 3)}></div>
-        <div id="e6" className="box white" onClick={() => select(6, 4)}></div>
-        <div id="f6" className="box black" onClick={() => select(6, 5)}></div>
-        <div id="g6" className="box white" onClick={() => select(6, 6)}></div>
-        <div id="h6" className="box black" onClick={() => select(6, 7)}></div>
-        <div id="i6" className="box white" onClick={() => select(6, 8)}></div>
-        <div id="j6" className="box black" onClick={() => select(6, 9)}></div>
-
-        <div id="a7" className="box black" onClick={() => select(7, 0)}></div>
-        <div id="b7" className="box white" onClick={() => select(7, 1)}></div>
-        <div id="c7" className="box black" onClick={() => select(7, 2)}></div>
-        <div id="d7" className="box white" onClick={() => select(7, 3)}></div>
-        <div id="e7" className="box black" onClick={() => select(7, 4)}></div>
-        <div id="f7" className="box white" onClick={() => select(7, 5)}></div>
-        <div id="g7" className="box black" onClick={() => select(7, 6)}></div>
-        <div id="h7" className="box white" onClick={() => select(7, 7)}></div>
-        <div id="i7" className="box black" onClick={() => select(7, 8)}></div>
-        <div id="j7" className="box white" onClick={() => select(7, 9)}></div>
-
-        <div id="a8" className="box white" onClick={() => select(8, 0)}></div>
-        <div id="b8" className="box black" onClick={() => select(8, 1)}></div>
-        <div id="c8" className="box white" onClick={() => select(8, 2)}></div>
-        <div id="d8" className="box black" onClick={() => select(8, 3)}></div>
-        <div id="e8" className="box white" onClick={() => select(8, 4)}></div>
-        <div id="f8" className="box black" onClick={() => select(8, 5)}></div>
-        <div id="g8" className="box white" onClick={() => select(8, 6)}></div>
-        <div id="h8" className="box black" onClick={() => select(8, 7)}></div>
-        <div id="i8" className="box white" onClick={() => select(8, 8)}></div>
-        <div id="j8" className="box black" onClick={() => select(8, 9)}></div>
-
-        <div id="a9" className="box black" onClick={() => select(9, 0)}></div>
-        <div id="b9" className="box white" onClick={() => select(9, 1)}></div>
-        <div id="c9" className="box black" onClick={() => select(9, 2)}></div>
-        <div id="d9" className="box white" onClick={() => select(9, 3)}></div>
-        <div id="e9" className="box black" onClick={() => select(9, 4)}></div>
-        <div id="f9" className="box white" onClick={() => select(9, 5)}></div>
-        <div id="g9" className="box black" onClick={() => select(9, 6)}></div>
-        <div id="h9" className="box white" onClick={() => select(9, 7)}></div>
-        <div id="i9" className="box black" onClick={() => select(9, 8)}></div>
-        <div id="j9" className="box white" onClick={() => select(9, 9)}></div>
+      <div className="Board">
       </div>
     </>
   )

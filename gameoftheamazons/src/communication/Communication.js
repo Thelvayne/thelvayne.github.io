@@ -1,6 +1,6 @@
-const urlPlayer = "https://gruppe17.toni-barth.com/players/"
-const urlGame = "https://gruppe17.toni-barth.com/games/"
-const urlMove = "https://gruppe17.toni-barth.com/move/"
+const urlPlayer = "https://gruppe12.toni-barth.com/players/"
+const urlGame = "https://gruppe12.toni-barth.com/games/"
+const urlMove = "https://gruppe12.toni-barth.com/move/"
 
 
 // CRUD-Operationen
@@ -184,10 +184,11 @@ export const deletePlayer = async (id) => {
 }
 
 // Anfrage an Server ein neues Spiel zu erstellen
-export const newGame = async () => {
+// FIXME: muss noch angepasst werden an die neuen Vorraussetzungen
+export const newGame = async (maxTurnTime, gameSizeRows, gameSizeColumns, board) => {
     try {
         const game = {
-            "maxTurnTime": 60000, // eine Minute
+            "maxTurnTime": maxTurnTime, 
             "players": [
                 0,
                 1
@@ -201,16 +202,7 @@ export const newGame = async () => {
                     // 1: Amazone des Spielers mit Index 1 in players
                     // -1: leeres Feld
                     // -2: Giftpfeil
-                    [-1, -1, -1, 0, -1, -1, 0, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [0, -1, -1, -1, -1, -1, -1, -1, -1, 0],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, 1, -1, -1, 1, -1, -1, -1]
+                    board
                 ]
             }
         }
@@ -314,7 +306,7 @@ export const move = async (playerID, gameID, startrow, startcolumn, endrow, endc
 // reset Server
 export const reset = async () => {
     try {
-        const res = await DELETE("https://gruppe17.toni-barth.com/reset/")
+        const res = await DELETE("https://gruppe12.toni-barth.com/reset/")
             .then((response) => {
                 return response
             }).catch((error) => {

@@ -4,9 +4,10 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import Startscreen from "./Startscreen.js";
-import Game from "./Game.js";
-import Help from "./Help.js";
+import Startscreen from "./startscreen/Startscreen.js";
+import Game from "./game/Game.js";
+import Help from "./help/Help.js";
+import Gamelobby from "./gamelobby/Gamelobby.js";
 
 
 
@@ -27,6 +28,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<Startscreen />} />
+        <Route exact path="/Gamelobby" element={<Gamelobby />} />
         <Route exact path="/Game" element={<Game />} />
         <Route exact path="/Help" element={<Help />} />
       </Routes>

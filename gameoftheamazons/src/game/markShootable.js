@@ -1,5 +1,5 @@
 import { letter } from "./letter.js"
-import { getGameID } from "../communication.js"
+import { getGameID } from "../communication/Communication.js"
 
 // gleiches Vorgehen wie markMovable, bloß mit anderen className-Anhang
 export const markShootable = async (currentSelectedRow, currentSelectedColumn, rowAmazon, columnAmazon) => {
@@ -24,7 +24,7 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
 
   // Schleife, die nach unten alle erlaubten Felder markiert
   do {
-    if (rowForShoot + i === 10 ||
+    if (rowForShoot + i === b.board.rows ||
       (board[rowForShoot + i][columnForShot] === 0) ||
       (board[rowForShoot + i][columnForShot] === 1) ||
       (board[rowForShoot + i][columnForShot] === -2)) {
@@ -78,7 +78,7 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
   // Schleife, die nach rechts alle erlaubten Felder markiert
   i = 1
   do {
-    if (columnForShot + i === 10 ||
+    if (columnForShot + i === b.board.columns ||
       (board[rowForShoot][columnForShot + i] === 0) ||
       (board[rowForShoot][columnForShot + i] === 1) ||
       (board[rowForShoot][columnForShot + i] === -2)) {
@@ -97,7 +97,7 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
   i = 1
   do {
     if (rowForShoot - i === -1 ||
-      columnForShot + i === 10 ||
+      columnForShot + i === b.board.columns ||
       (board[rowForShoot - i][columnForShot + i] === 0) ||
       (board[rowForShoot - i][columnForShot + i] === 1) ||
       (board[rowForShoot - i][columnForShot + i] === -2)) {
@@ -115,8 +115,8 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
   // Schleife, die nach rechts-unten alle erlaubten Felder markiert
   i = 1
   do {
-    if (rowForShoot + i === 10 ||
-      columnForShot + i === 10 ||
+    if (rowForShoot + i === b.board.rows ||
+      columnForShot + i === b.board.columns ||
       (board[rowForShoot + i][columnForShot + i] === 0) ||
       (board[rowForShoot + i][columnForShot + i] === 1) ||
       (board[rowForShoot + i][columnForShot + i] === -2)) {
@@ -153,7 +153,7 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
   // Schleife, die nach links-unten alle erlaubten Felder markiert
   i = 1
   do {
-    if (rowForShoot + i === 10 ||
+    if (rowForShoot + i === b.board.rows ||
       columnForShot - i === -1 ||
       (board[rowForShoot + i][columnForShot - i] === 0) ||
       (board[rowForShoot + i][columnForShot - i] === 1) ||

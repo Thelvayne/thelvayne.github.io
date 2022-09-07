@@ -86,35 +86,35 @@ body {
 }
 
 .pieceblack {
-    background: url(Amazoness1.jpg);
+    background: url(../pictures/Amazoness1.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .piecewhite {
-    background: url(Amazoness2.jpg);
+    background: url(../pictures/Amazoness2.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .pieceblackselect {
-    background: url(Amazoness1.jpg);
+    background: url(../pictures/Amazoness1.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .piecewhiteselect {
-    background: url(Amazoness2.jpg);
+    background: url(../pictures/Amazoness2.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .arrow {
-    background: url(Arrow.png);
+    background: url(../pictures/Arrow.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
