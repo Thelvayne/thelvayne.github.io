@@ -8,6 +8,7 @@ import Startscreen from "./startscreen/Startscreen.js";
 import Game from "./game/Game.js";
 import Help from "./help/Help.js";
 import Gamelobby from "./gamelobby/Gamelobby.js";
+import { GenerateBoard } from "./game/generateBoard/GenerateBoard.js";
 
 
 
@@ -28,6 +29,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<Startscreen />} />
+        <Route exact path="/GenerateBoard" element={<GenerateBoard/>} />
         <Route exact path="/Gamelobby" element={<Gamelobby />} />
         <Route exact path="/Game" element={<Game />} />
         <Route exact path="/Help" element={<Help />} />
