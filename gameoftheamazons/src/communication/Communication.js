@@ -238,7 +238,7 @@ export const getGames = async () => {
 }
 
 // gib zu einem spezifischen Spiel die Statistiken
-export const getGameID = async (id) => {
+export const getGameByID = async (id) => {
     try {
         const res = await GET(urlGame + id)
             .then((response) => {
