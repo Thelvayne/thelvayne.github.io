@@ -1,6 +1,8 @@
 
 import { useRef, useState } from "react";
 import { newGame } from "../../communication/Communication";
+import { createBoard } from "../createBoard/CreateNewBoard";
+import { setIDGame } from "../Game"
 
 export function GenerateBoard() {
 
@@ -11,19 +13,24 @@ export function GenerateBoard() {
 
     const [settings, setSettings] = useState({ boardWidth: 10, boardHeigth: 10, amountAmazons: 4, timeoutTime: 600 });
 
-
-    function submit(){
+    function submit() {
         setSettings({
             boardWidth: xSize.current.value,
             boardHeigth: ySize.current.value,
             amountAmazons: amount.current.value,
             timeoutTime: timeout.current.value
         });
-        console.log(xSize.current.value+ ", " + ySize.current.value + ", " + amount.current.value + ", " + timeout.current.value)
+        console.log(xSize.current.value + ", " + ySize.current.value + ", " + amount.current.value + ", " + timeout.current.value)
     };
 
-    function createBoard(){
-        // TODO: algorithm for creation of the board inclusive amazons
+    async function startGame() {
+        const g = await newGame(
+            settings.timeoutTime,
+            settings.boardHeigth,
+            settings.boardWidth,
+            createBoard(settings.boardHeigth, settings.boardWidth, settings.amountAmazons)
+        )
+        setIDGame({ id: g.id })
     }
 
     return (
@@ -41,11 +48,7 @@ export function GenerateBoard() {
                 </div>
                 <div className="submitbutton">
                     <input type="button" className="submitSettings" value="save settings" onClick={submit} />
-                    <input type={button} className="generateField" value={"create Playfield"} onClick={newGame(
-                        settings.timeoutTime, 
-                        settings.boardHeigth,
-                        settings.boardWidth,
-                        createBoard)} />
+                    <input type="button" className="generateField" value={"create Playfield"} onClick={startGame} />
                 </div>
                 <div className="currentSettings">
                     <p>Deine Aktuellen Einstellungen sind:</p>
