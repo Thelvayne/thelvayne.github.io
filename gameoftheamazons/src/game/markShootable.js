@@ -1,26 +1,26 @@
 import { letter } from "./letter.js"
-import { getGameID } from "../communication/Communication.js"
+import { getGameByID } from "../communication/Communication.js"
 
 // gleiches Vorgehen wie markMovable, bloß mit anderen className-Anhang
-export const markShootable = async (currentSelectedRow, currentSelectedColumn, rowAmazon, columnAmazon) => {
+export const markShootable = async (currentSelectedRow, currentSelectedColumn, rowAmazon, columnAmazon, game) => {
 
   // GET-Aufruf, um Informationen über das laufende Spiel zu bekommen
-  let b = await getGameID(0)
-    .then((res) => {
-      return res
-    }).catch((error) => {
-      console.log('GetGameID error. Message is: ' + error.message)
-      return { message: error.message }
-    })
+  let b = game;
 
   // Variablen
   const rowForShoot = currentSelectedRow
   const columnForShot = currentSelectedColumn
-  // console.log(rowForShoot + ", " + columnForShot);
-  let i = 1
 
+  let i = 1
   let board = b.board.squares
-  board[rowAmazon][columnAmazon] = -1
+  board[rowAmazon][columnAmazon] = -1 // setzt das vorherige Feld der Amazone auf -1 (freies Feld)
+
+  // Funktion
+  const write = (l, n) => {
+    let str = document.getElementById(l + n).className
+    str += " arrowselected"
+    document.getElementById(l + n).className = str
+  }
 
   // Schleife, die nach unten alle erlaubten Felder markiert
   do {
@@ -28,14 +28,12 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
       (board[rowForShoot + i][columnForShot] === 0) ||
       (board[rowForShoot + i][columnForShot] === 1) ||
       (board[rowForShoot + i][columnForShot] === -2)) {
-      break
+      break;
     }
     else {
-      let l = letter(columnForShot)
-      let n = rowForShoot + i
-      let str = document.getElementById(l + n).className
-      str += " arrowselected"
-      document.getElementById(l + n).className = str
+      let l = letter(columnForShot);
+      let n = rowForShoot + i;
+      write(l, n);
     }
   } while (board[rowForShoot + i++][columnForShot] === -1)
 
@@ -49,11 +47,9 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
       break
     }
     else {
-      let l = letter(columnForShot)
-      let n = rowForShoot - i
-      let str = document.getElementById(l + n).className
-      str += " arrowselected"
-      document.getElementById(l + n).className = str
+      let l = letter(columnForShot);
+      let n = rowForShoot - i;
+      write(l, n);
     }
   } while (board[rowForShoot - i++][columnForShot] === -1)
 
@@ -67,11 +63,9 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
       break
     }
     else {
-      let l = letter(columnForShot - i)
-      let n = rowForShoot
-      let str = document.getElementById(l + n).className
-      str += " arrowselected"
-      document.getElementById(l + n).className = str
+      let l = letter(columnForShot - i);
+      let n = rowForShoot;
+      write(l, n);
     }
   } while (board[rowForShoot][columnForShot - i++] === -1)
 
@@ -85,11 +79,9 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
       break
     }
     else {
-      let l = letter(columnForShot + i)
-      let n = rowForShoot
-      let str = document.getElementById(l + n).className
-      str += " arrowselected"
-      document.getElementById(l + n).className = str
+      let l = letter(columnForShot + i);
+      let n = rowForShoot;
+      write(l, n);
     }
   } while (board[rowForShoot][columnForShot + i++] === -1)
 
@@ -104,11 +96,9 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
       break
     }
     else {
-      let l = letter(columnForShot + i)
-      let n = rowForShoot - i
-      let str = document.getElementById(l + n).className
-      str += " arrowselected"
-      document.getElementById(l + n).className = str
+      let l = letter(columnForShot + i);
+      let n = rowForShoot - i;
+      write(l, n);
     }
   } while (board[rowForShoot - i][columnForShot + i++] === -1)
 
@@ -123,11 +113,9 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
       break
     }
     else {
-      let l = letter(columnForShot + i)
-      let n = rowForShoot + i
-      let str = document.getElementById(l + n).className
-      str += " arrowselected"
-      document.getElementById(l + n).className = str
+      let l = letter(columnForShot + i);
+      let n = rowForShoot + i;
+      write(l, n);
     }
   } while (board[rowForShoot + i][columnForShot + i++] === -1)
 
@@ -142,11 +130,9 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
       break
     }
     else {
-      let l = letter(columnForShot - i)
-      let n = rowForShoot - i
-      let str = document.getElementById(l + n).className
-      str += " arrowselected"
-      document.getElementById(l + n).className = str
+      let l = letter(columnForShot - i);
+      let n = rowForShoot - i;
+      write(l, n);
     }
   } while (board[rowForShoot - i][columnForShot - i++] === -1)
 
@@ -161,11 +147,9 @@ export const markShootable = async (currentSelectedRow, currentSelectedColumn, r
       break
     }
     else {
-      let l = letter(columnForShot - i)
-      let n = rowForShoot + i
-      let str = document.getElementById(l + n).className
-      str += " arrowselected"
-      document.getElementById(l + n).className = str
+      let l = letter(columnForShot - i);
+      let n = rowForShoot + i;
+      write(l, n);
     }
   } while (board[rowForShoot + i][columnForShot - i++] === -1)
 }
