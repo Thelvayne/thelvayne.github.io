@@ -1,14 +1,14 @@
 import { letter } from "./letter"
-import { getGameID } from "../communication/Communication"
+import { getGameByID } from "../communication/Communication"
 
 // Funktion um alle erlaubten Züge zu markieren
 export const markMoveable = async (currentSelectedRow, currentSelectedColumn) => {
     // GET-Aufruf, um Informationen über das laufende Spiel zu bekommen
-    let b = await getGameID(0)
+    let b = await getGameByID(0)
       .then((res) => {
         return res
       }).catch((error) => {
-        console.log('GetGameID error. Message is: ' + error.message)
+        console.log('GetGameByID error. Message is: ' + error.message)
         return { message: error.message }
       })
 

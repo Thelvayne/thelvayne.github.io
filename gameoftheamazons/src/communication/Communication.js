@@ -185,10 +185,10 @@ export const deletePlayer = async (id) => {
 
 // Anfrage an Server ein neues Spiel zu erstellen
 // FIXME: muss noch angepasst werden an die neuen Vorraussetzungen
-export const newGame = async (maxTurnTime, gameSizeRows, gameSizeColumns, board) => {
+export const newGame = async (/*maxTurnTime, gameSizeRows, gameSizeColumns, board, playerOne, playerTwo*/) => {
     try {
         const game = {
-            "maxTurnTime": maxTurnTime, 
+            "maxTurnTime": 60000, 
             "players": [
                 0,
                 1
@@ -196,13 +196,17 @@ export const newGame = async (maxTurnTime, gameSizeRows, gameSizeColumns, board)
             "board": {
                 "gameSizeRows": 10, // Zeilen des Spielbrettes
                 "gameSizeColumns": 10, // Spalten des Spielbrettes
-                "squares": [ // Liste von Zeilen des Spielbrettes (von 0 bis gameSizeRows - 1)
-                    // folgende Integer-Werte sind in diesen Arrays erlaubt:
-                    // 0: Amazone des Spielers mit Index 0 in players
-                    // 1: Amazone des Spielers mit Index 1 in players
-                    // -1: leeres Feld
-                    // -2: Giftpfeil
-                    board
+                "squares": [
+                    [-1, -1, -1, 0, -1, -1, 0, -1, -1, -1],
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                    [0, -1, -1, -1, -1, -1, -1, -1, -1, 0],
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                    [1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                    [-1, -1, -1, 1, -1, -1, 1, -1, -1, -1]
                 ]
             }
         }

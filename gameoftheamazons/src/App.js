@@ -8,7 +8,7 @@ import Startscreen from "./startscreen/Startscreen.js";
 import Game from "./game/Game.js";
 import Help from "./help/Help.js";
 import Gamelobby from "./gamelobby/Gamelobby.js";
-import { GenerateBoard } from "./game/generateBoard/GenerateBoard.js";
+import { GenerateBoard } from "./game/createBoardSettings/GenerateBoard.js";
 
 
 

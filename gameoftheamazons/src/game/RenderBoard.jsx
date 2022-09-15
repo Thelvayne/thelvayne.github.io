@@ -1,13 +1,13 @@
 import { getGameByID } from "../communication/Communication"
-import { ReactDOM } from "react";
-import { letter } from "./letter";
+
 
 export const RenderBoard = async (gameID) => {
 
     const current = await getGameByID(gameID);
     const currentBoard = current.board.squares;
     
-
+    //do something with currentBoard
+    return currentBoard; //not really
 }
 
 export const BackgroundColor = (row, column) => {

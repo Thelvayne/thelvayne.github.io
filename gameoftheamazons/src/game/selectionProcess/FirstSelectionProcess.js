@@ -1,9 +1,8 @@
-import { setSelectedCoordinates, currentPlayer, amazoneSelected, selectionProcess } from '../Game'
 import { markMoveable } from '../markMoveable';
 import { letter } from '../letter';
 
-export const firstSelectionProcess = async (row, column, g) => {
-    setSelectedCoordinates({ currentRow: row, currentColumn: column });
+export const firstSelectionProcess = async (row, column, g, currentPlayer) => {
+    
     let isInputCorrect = () => {
         if (g.turnPlayer === currentPlayer.current && g.board.squares[row][column] === g.turnPlayer) {
             return true;
@@ -15,9 +14,6 @@ export const firstSelectionProcess = async (row, column, g) => {
         document.getElementById(letter(column) + row).className += "select";
         // markieren aller erlaubten Spielzüge
         markMoveable(row, column);
-        amazoneSelected.current = 1;
-        selectionProcess.current.startrow = row;
-        selectionProcess.current.startcolumn = column;
     }
 }
 
@@ -50,5 +46,4 @@ export const redoFirstSelectionProcess = async () => {
         ind++
     }
 
-    amazoneSelected.current = 0;
 }

@@ -1,10 +1,9 @@
-import { setSelectedCoordinates, amazoneSelected, selectionProcess, currentPlayer, gameID, setGame } from '../Game'
 import { letter } from '../letter'
 import { move, getGameByID } from '../../communication/Communication'
 
-export const shotArrow = async (row, column) => {
+export const shotArrow = async (row, column, gameID, currentPlayer, selectedCoordinates, selectionProcess, amazoneSelected) => {
 
-    setSelectedCoordinates({ currentRow: row, currentColumn: column })
+    selectedCoordinates({ currentRow: row, currentColumn: column });
 
     // falls ein Feld gewählt wurde, welches gültig ist
     if (document.getElementById(letter(column) + row).classList.contains("arrowselected")) {
@@ -65,7 +64,7 @@ export const shotArrow = async (row, column) => {
                 str = str.replace("pieceblackselect", "pieceblack")
                 document.getElementById(id).className = str
             }
-            return
+            return;
         }
 
         // Figuren setzen
@@ -109,8 +108,8 @@ export const shotArrow = async (row, column) => {
             str = str.replace("pieceblackselect", "pieceblack")
             document.getElementById(id).className = str
         }
-        setGame(await getGameByID(gameID).then((res) => { return res })
-            .catch((error) => { console.log("getGamesByID error. Message is: " + error.message); return { message: error.message }; }));
     }
+
+    return {selectedCoordinates, selectionProcess, amazoneSelected}
 
 }
