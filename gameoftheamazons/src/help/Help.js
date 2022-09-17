@@ -27,12 +27,12 @@ export default function Help(){
                 </p>
                 <p>
                     Jeder Spielzug besteht aus 2 Phasen:
+                </p>
                     <ol>
                         <li> Spielfigur w&auml;hlen und bewegen.</li>
                         <li> Giftpfeil platzieren</li>
                     </ol>
 
-                </p>
                 <p>
                     Dieses Projekt ist an der HS Anhalt und unter der Aufsicht von Toni Barth entstanden.
                     Es wurde von Nick Cwertetschka, Philipp J&auml;ckel und Danny N&auml;ckel entwickelt.

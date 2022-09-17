@@ -1,13 +1,16 @@
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import React from 'react'
+
 import { getGameByID, reset } from '../communication/Communication'
+
 import { firstSelectionProcess, redoFirstSelectionProcess } from './selectionProcess/FirstSelectionProcess'
 import { moveAmazone, redoMove } from './selectionProcess/SecondSelectionProcess'
 import { shotArrow } from './selectionProcess/ThirdSelectionProcess'
-import { getID } from './createBoardSettings/GenerateBoard'
-import { useState, useRef} from 'react'
-import {  useNavigate } from 'react-router-dom'
-import React from 'react'
+
 import { letter } from './letter'
-import { BackgroundColor } from './RenderBoard'
+import { getID } from './createBoardSettings/GenerateBoard'
+import { BackgroundColor, PlaceAmazons } from './RenderBoard'
 
 export default function Game() {
 
@@ -17,65 +20,94 @@ export default function Game() {
   // Spieler 2: rot, turnPlayer = 1 piecewhite
 
   // Variablen
-  const [idGame, setIDGame] = useState({ id: 0 });
-  const [game, setGame] = useState();
+  const gameboard = useRef({});
+  const idGame = useRef({});
+  const currentPlayer = useRef();
+  const [turn, setTurn] = useState();
+  const winningPlayer = useRef();
 
-  const currentPlayer = useRef({});
-  const selectedCoordinates = useRef({ currentRow: -1, currentColumn: -1 });
+
+  const [thereIsAWinner, setThereIsAWinner] = useState({b: false});
+  const selectedCoordinates = useRef();
   const amazoneSelected = useRef(0);
-  const thereIsAWinner = useRef(false);
   const firstRunFinished = useRef(false);
-
-  const selectionProcess = useRef({ startrow: -1, startcolumn: -1, endrow: -1, endcolumn: -1, shotrow: -1, shotcolumn: -1 })
+  const elementLoaded = useRef(false);
+  const selectionProcess = useRef({/* startrow: undefined, startcolumn: undefined, endrow: undefined, endcolumn: undefined, shotrow: undefined, shotcolumn: undefined */ })
 
   const fetchGameData = async () => {
-    const g = await getGameByID(idGame.id).then((res) => {
-      return res;
+    const id = getID() !== undefined ? getID() : 0;
+    const _game = getGameByID(id).then((g) => {      
+        gameboard.current = g.board;
+        // idGame.current = g.id;
+        currentPlayer.current = g.players;
+        setTurn({playerWithTurn: g.turnPlayer})
+        winningPlayer.current = g.winningPlayer;
+      return g;
     }).catch((error) => {
-      console.log("getGameByID error. Error message is: " + error.message);
+      console.log("setGame error. Message is: " + error.message);
       return { message: error.message };
     });
-    setGame({g});
-    return g;
+    return _game;
   }
 
   async function firstRun() {
-
-
     if (firstRunFinished.current === true) {
-      return
+      return;
     } else {
       const g = await fetchGameData();
-      currentPlayer.current = g.turnPlayer
-      setIDGame({getID});
+      setTurn({playerWithTurn: g.turnPlayer})
+      idGame.current = g.id;
     }
     firstRunFinished.current = true;
   }
 
-
-  const element = () => {
-    game.board.squares.forEach((row, indexRow) => {
-      row.forEach((column, indexColumn) => {
-        React.createElement("div", { id: letter(indexColumn) + indexRow, className: BackgroundColor(indexRow, indexColumn), onClick: select })
-      });
+  const element = async () => {
+    firstRun();
+    if (elementLoaded.current === true) return;
+    const parent = document.getElementById("parent");
+    // console.log(gameboard.current.squares);
+    const board = gameboard.current.squares;
+    board.forEach((row, indexr) => {
+      row.forEach((column, indexc) => {
+        /**
+         * erstellt die nötigen divs für das Spielfeld beim erstmaligen laden
+         */
+        // console.log(indexr, indexc, column);
+        const child = document.createElement("div");
+        child.id = letter(indexc) + indexr;
+        child.className = BackgroundColor(indexr, indexc);
+        // child.ref = {row: indexr, column: indexc };
+        // child.addEventListener("click", select(indexr, indexc), false);
+        // console.log(child);
+        parent.appendChild(child);
+        /**
+         * Plaziert die Pfeile und Amazonen bei erstmaligen Rendern des Spielfeldes
+         */
+        var str = " " + PlaceAmazons(column);
+        var box = document.getElementById(letter(indexc) + indexr);
+        box.className += str;
+      })
     })
+    elementLoaded.current = true;
   }
 
   // Funktion für onClick Ereignis
   const select = async (row, column) => {
 
-    if (thereIsAWinner.current === false) {
+    if (thereIsAWinner.b === false && (document.getElementsByTagName("pieceblack").id === letter(column) + row || document.getElementsByTagName("piecewhite").id === letter(column) + row)) {
 
       const g = await fetchGameData();
-      currentPlayer.current = g.turnPlayer;
+      setTurn({playerWithTurn: g.turnPlayer});
 
       // falls noch keine Amazone gewählt wurde
       if (amazoneSelected.current === 0) {
         await firstSelectionProcess(row, column, g, currentPlayer, selectedCoordinates, amazoneSelected, selectionProcess);
-        selectedCoordinates({ currentRow: row, currentColumn: column });
-        amazoneSelected(1);
-        selectionProcess({startrow: row, startcolumn: column});
-        
+        selectedCoordinates.current.currentRow = row;
+        selectedCoordinates.current.currentColumn = column
+        amazoneSelected.current = 1
+        selectionProcess.current.startrow = row;
+        selectionProcess.current.startcolumn = column
+
 
       }
       // falls gleiches Feld nochmal ausgewählt wird, entferne wieder die Anzeige der möglichen Züge
@@ -86,7 +118,7 @@ export default function Game() {
       }
       // Zweig für den Zug
       else if (amazoneSelected === 1) {
-        let obj = await moveAmazone(row, column, game, selectedCoordinates, amazoneSelected, selectionProcess);
+        let obj = await moveAmazone(row, column, gameboard, selectedCoordinates, amazoneSelected, selectionProcess);
         selectedCoordinates({ selectedCoordinates: obj.selectedCoordinates });
         amazoneSelected({ amazoneSelected: obj.amazoneSelected });
         selectionProcess({ selectionProcess: obj.selectionProcess });
@@ -103,86 +135,72 @@ export default function Game() {
         amazoneSelected({ amazoneSelected: obj.amazoneSelected });
         selectionProcess({ selectionProcess: obj.selectionProcess });
         // aktuelles Spielbrett aktuallisieren
-        const newGameData = await fetchGameData
-        setGame({newGameData});
+        const newGameData = await fetchGameData;
+        gameboard.current = newGameData.board;
+        // idGame.current = newGameData.id;
+        currentPlayer.current = newGameData.players;
+        setTurn({playerWithTurn: newGameData.turnPlayer})
+        winningPlayer.current = newGameData.winningPlayer;
       }
 
       // wenn es einen Gewinner gibt
-      if (game.winningPlayer !== undefined) {
-        document.getElementById("currentPlayer").textContent = "GEWINNER: " + game.winningPlayer;
-        // thereIsAWinner.current = true;
-        thereIsAWinner(true);
+      if (gameboard.winningPlayer !== undefined) {
+        document.getElementById("currentPlayer").textContent = "GEWINNER: " + gameboard.winningPlayer;
+        setThereIsAWinner({b: true});
         return;
       }
 
-      console.log(game);
+      console.log(gameboard);
       // Spieler, der am Zug ist anzeigen
-      document.getElementById("currentPlayer").textContent = game.turnPlayer
-      if (game.turnPlayer === 0) {
-        var cplayerone = game.players[0].name;
+      document.getElementById("currentPlayer").textContent = turn.playerWithTurn
+      if (turn.playerWithTurn === 0) {
+        var cplayerone = gameboard.players[0].name;
         document.getElementById("currentPlayer").textContent = cplayerone
       } else {
-        var cplayertwo = game.players[1].name;
+        var cplayertwo = gameboard.players[1].name;
         document.getElementById("currentPlayer").textContent = cplayertwo
       }
     }
     else {
-      console.log(thereIsAWinner.current);
+      console.log(thereIsAWinner.b);
     }
   }
 
   // Funktion für den 'Aktuelles Spiel Beenden'
   // setzt alles auf die Anfangswerte zurück (Spieler und Spiele werden gelöscht)
   const resetAll = async () => {
-
-    const r = await reset()
-      .then((res) => {
-        return res
-      }).catch((error) => {
-        console.log('GET error. Message is: ' + error.message)
-
-        return { message: error.message }
-
-      })
+    const r = await reset();
     console.log(r)
-
-
-
   }
 
   function Navigatehelp() {
-    // thereIsAWinner.current = false //wird das hier überhaupt gebraucht?
-    useNavigate("../help/Help")
+    navigate("/Help")
   }
 
   // Funktion um zu Hilfe zu navigieren
   async function Navigateback() {
-    await resetAll()
-      .then((res) => {
-        return res
-      }).catch((error) => {
-        console.log('GET error. Message is: ' + error.message)
-
-        return { message: error.message }
-
-      })
-    useNavigate("../gamelobby/Gamelobby")
-
+    await resetAll();
+    navigate("/Gamelobby")
   }
 
+  // window.addEventListener("load", element);
+  useEffect(() => {
+    element();
+  });
+
   return (
-    <div>
-      <div className="Ui" onLoad={firstRun}>
+    <div className='outer-container'>
+      <div className="Ui">
         <div className='grid-container'>
 
           <div className='grid-item'><h1 className='CurrentPlayer'>Aktueller Spieler</h1></div>
           <div className='grid-item'><p id="currentPlayer" className='currentPlayerone'></p></div>
           <div className='grid-item'><input type="button" className="resetGame" value="Aktuelles Spiel Beenden" onClick={Navigateback}></input></div>
           <div className='grid-item'><input type="button" className="resetGame help" value="Hilfe" onClick={Navigatehelp} /></div>
+          <div className='grid-item'><input type="button" className='test' value="log" onClick={element} /></div>
         </div>
       </div>
-      <div className="Board" id="root">
-        <element/>
+      <div className="Board" id="parent">
       </div>
     </div>
   )

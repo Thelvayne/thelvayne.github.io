@@ -20,6 +20,11 @@ body {
     vertical-align: middle;
 }
 
+.outer-container {
+    display: grid;
+    grid-auto-flow: column;
+}
+
 
 
 /** ####################################################### */

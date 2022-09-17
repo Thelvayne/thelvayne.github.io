@@ -3,7 +3,7 @@ import { newGame } from "../../communication/Communication";
 import { createBoard } from "../createBoard/CreateNewBoard";
 import { useNavigate } from "react-router-dom";
 
-var gameID = 0;
+var gameID;
 
 export function GenerateBoard() {
     let navigate = useNavigate();
