@@ -1,22 +1,43 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import {useState} from 'react';
+import LoginForm from '../game/loginForm/LoginForm';
+
+
+
 
 export default function Gamelobby(){
     let navigate = useNavigate();
     function OpenRules(){
         
-        navigate("./help/Help")
+        navigate("../Help")
     } 
     function CreateLobby(){
         document.getElementById("CLobby").classList.remove("visually-hidden");
     }
     function GotoLogin(){
-        navigate("./Startscreen/Startscreen")
+        navigate("../Startscreen")
     }
+    const adminUser= {
+        password: "admin123"
+    }
+    const [user, setUser] = useState({name: ""});
+    const [error, setError] = useState("");
+
+    const Login = details => {
+        console.log(details);
+    }
+    const Logout = () => 
+        console.log("Logout");
     return (
         <div>
         <div class ="sidenav">
         <h1>Game Of the Amazons</h1>
+        {(user.name !== "") ? (
+            <h2>Welcome, <span>{user.name}</span></h2>
+        ):(
+          <LoginForm />  
+        )}
         <button onClick={CreateLobby}>Create new Lobby</button>
         <button onClick={OpenRules}>Rules</button>
         <button onClick={GotoLogin}>Login</button>
@@ -26,15 +47,17 @@ export default function Gamelobby(){
        
         <div className="OpenLobbies">
             <h1>Open Lobbies</h1>
-            <button>Create new Lobby</button>
+            <button onClick={CreateLobby}>Create new Lobby</button>
+            
         </div>
 
             
 
     </div>
-    <div id="CLobby" className="visually-hidden">
+    <div id="CLobby" className="visually-hidden CLobby">
         <h1 className="Create Lobby">Create Lobby</h1>
-        <input id="lobbyName" type="text" value="New Lobby"></input>
+        <p>Lobby Name</p>
+        <input id="lobbyName" type="text"></input>
         <button id="createLobby" onClick={CreateLobby}>Create Lobby</button>
     </div>
     </div>
