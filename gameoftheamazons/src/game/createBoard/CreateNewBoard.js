@@ -1,14 +1,17 @@
 export const createBoard = async (rows) => {
-    let board = () => {
-        var b;
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < rows; i++) {
-                b[i][j] = -1;
-            }
-        }
-        return b;
-    } 
-    // TODO: add algorithm for creating game according to user-input
 
-    return board;
+    var b = new Array(10);
+    for ( let i = 0 ; i < rows; i++) {
+        b[i] = new Array(10)
+    }
+
+    for (let i = 0; i < b.length; i++){
+        for (let j = 0; j < b[i].length; j++){
+            b[i][j] = -1;
+        }
+    }
+
+    console.log(b);
+
+    return b;
 }
