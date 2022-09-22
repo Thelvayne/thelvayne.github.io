@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
 
@@ -9,7 +9,6 @@ import { moveAmazone, redoMove } from './selectionProcess/SecondSelectionProcess
 import { shotArrow } from './selectionProcess/ThirdSelectionProcess'
 
 import { letter } from './letter'
-import { getID } from './createBoardSettings/GenerateBoard'
 import { BackgroundColor, PlaceAmazons } from './RenderBoard'
 
 export default function Game() {
@@ -20,69 +19,69 @@ export default function Game() {
   // Spieler 2: rot, turnPlayer = 1 piecewhite
 
   // Variablen
-  const gameboard = useRef({});
-  const idGame = useRef({});
+  const gameboard = useRef({ board: undefined });
+  const idGame = useRef({ id: undefined });
   const currentPlayer = useRef();
-  const [turn, setTurn] = useState();
+  const thereIsAWinner = useRef(false);
   const winningPlayer = useRef();
-
-
-  const [thereIsAWinner, setThereIsAWinner] = useState({b: false});
-  const selectedCoordinates = useRef();
+  const selectedCoordinates = useRef({ currentRow: undefined, currentColumn: undefined });
   const amazoneSelected = useRef(0);
   const firstRunFinished = useRef(false);
   const elementLoaded = useRef(false);
-  const selectionProcess = useRef({/* startrow: undefined, startcolumn: undefined, endrow: undefined, endcolumn: undefined, shotrow: undefined, shotcolumn: undefined */ })
+  const selectionProcess = useRef({
+    startrow: undefined,
+    startcolumn: undefined,
+    endrow: undefined,
+    endcolumn: undefined,
+    shotrow: undefined,
+    shotcolumn: undefined
+  })
+  const figureAssigned = useRef({ pOne: undefined, pTwo: undefined });
 
   const fetchGameData = async () => {
-    const id = getID() !== undefined ? getID() : 0;
-    const _game = getGameByID(id).then((g) => {      
-        gameboard.current = g.board;
-        // idGame.current = g.id;
-        currentPlayer.current = g.players;
-        setTurn({playerWithTurn: g.turnPlayer})
-        winningPlayer.current = g.winningPlayer;
+    const id = idGame.id !== undefined ? idGame.id : 0;
+    const _game = getGameByID(id).then((g) => {
+      // console.log(g);
+      gameboard.current.board = g.board;
+      currentPlayer.current = g.turnPlayer;
+      winningPlayer.current = g.winningPlayer;
       return g;
     }).catch((error) => {
       console.log("setGame error. Message is: " + error.message);
       return { message: error.message };
     });
+    if (currentPlayer.current === 0) {
+      var cplayerone = currentPlayer.current;
+      document.getElementById("currentPlayer").textContent = cplayerone
+    } else {
+      var cplayertwo = currentPlayer.current;
+      document.getElementById("currentPlayer").textContent = cplayertwo
+    }
     return _game;
   }
 
   async function firstRun() {
-    if (firstRunFinished.current === true) {
-      return;
-    } else {
+    if (firstRunFinished.current === false) {
       const g = await fetchGameData();
-      setTurn({playerWithTurn: g.turnPlayer})
-      idGame.current = g.id;
+      figureAssigned.current.pOne = g.players[0].id;
+      figureAssigned.current.pTwo = g.players[1].id;
+      firstRunFinished.current = true;
     }
-    firstRunFinished.current = true;
   }
 
   const element = async () => {
-    firstRun();
+    await firstRun();
     if (elementLoaded.current === true) return;
+    // console.log(gameboard);
     const parent = document.getElementById("parent");
-    // console.log(gameboard.current.squares);
-    const board = gameboard.current.squares;
+    const board = gameboard.current.board.squares;
     board.forEach((row, indexr) => {
       row.forEach((column, indexc) => {
-        /**
-         * erstellt die nötigen divs für das Spielfeld beim erstmaligen laden
-         */
-        // console.log(indexr, indexc, column);
         const child = document.createElement("div");
         child.id = letter(indexc) + indexr;
         child.className = BackgroundColor(indexr, indexc);
-        // child.ref = {row: indexr, column: indexc };
-        // child.addEventListener("click", select(indexr, indexc), false);
-        // console.log(child);
+        // child.onClick = () => select(indexr, indexc);
         parent.appendChild(child);
-        /**
-         * Plaziert die Pfeile und Amazonen bei erstmaligen Rendern des Spielfeldes
-         */
         var str = " " + PlaceAmazons(column);
         var box = document.getElementById(letter(indexc) + indexr);
         box.className += str;
@@ -93,76 +92,114 @@ export default function Game() {
 
   // Funktion für onClick Ereignis
   const select = async (row, column) => {
+    // console.log(thereIsAWinner);
 
-    if (thereIsAWinner.b === false && (document.getElementsByTagName("pieceblack").id === letter(column) + row || document.getElementsByTagName("piecewhite").id === letter(column) + row)) {
-
+    /**
+     * Bedingung: es gibt keinen Gewinner
+     * -> führe den Algorithmus aus
+     */
+    if (thereIsAWinner.current === false) {
+      /**
+       * 1te Überprüfung: wurde noch keine Amazone gewählt -> merke Amazone und markiere mögliche Züge
+       * 2te Überprüfung: es ist eine Amazone gewählt und erneut gleiche ausgewählt -> lösche alle Einträge aus 1.
+       * 3te Überprüfung: es ist eine Amazone gewählt -> bewege die Amazone
+       * 4te Überprüfung: es wurde die Amazone bewegt und wählt nochmal die Amazone -> setze die Amazone zurück und lösche alle Einträge aus 1.
+       * else: verschieße den Pfeil und beende den Zug
+       */
+      console.log("Stage 1.0");
+      console.log(amazoneSelected.current);
       const g = await fetchGameData();
-      setTurn({playerWithTurn: g.turnPlayer});
 
       // falls noch keine Amazone gewählt wurde
       if (amazoneSelected.current === 0) {
-        await firstSelectionProcess(row, column, g, currentPlayer, selectedCoordinates, amazoneSelected, selectionProcess);
-        selectedCoordinates.current.currentRow = row;
-        selectedCoordinates.current.currentColumn = column
-        amazoneSelected.current = 1
-        selectionProcess.current.startrow = row;
-        selectionProcess.current.startcolumn = column
-
+        console.log("Stage 1.1");
+        console.log(figureAssigned);
+        if (await firstSelectionProcess(row, column, g, currentPlayer, figureAssigned) === true) {
+          // speichere letztes gewähltes Feld
+          selectedCoordinates.current.currentRow = row;
+          selectedCoordinates.current.currentColumn = column
+          // setze auf 1, weil Amazone ausgewählt wurde
+          amazoneSelected.current = 1
+          // speichere Koordinaten der Amazone für den Startpunkt des Zuges
+          selectionProcess.current.startrow = row;
+          selectionProcess.current.startcolumn = column
+        }
 
       }
       // falls gleiches Feld nochmal ausgewählt wird, entferne wieder die Anzeige der möglichen Züge
-      else if (amazoneSelected.current === 1 && (selectedCoordinates.currentColumn === column && selectedCoordinates.currentRow === row)) {
-        redoFirstSelectionProcess();
-        selectedCoordinates({ currentRow: -1, currentColumn: -1 });
-        amazoneSelected({ amazoneSelected: 0 });
+      else if (amazoneSelected.current === 1 && (selectedCoordinates.current.currentColumn === column && selectedCoordinates.current.currentRow === row)) {
+        console.log("Stage 1.1.r");
+        await redoFirstSelectionProcess();
+        // setze letztes Feld auf Koordinaten auserhalb des wählbaren Bereichs
+        selectedCoordinates.current.currentRow = -1;
+        selectedCoordinates.current.currentColumn = -1;
+        // setze den Wert auf 0, da keine Amazone mehr ausgewählt ist
+        amazoneSelected.current = 0
       }
       // Zweig für den Zug
       else if (amazoneSelected === 1) {
-        let obj = await moveAmazone(row, column, gameboard, selectedCoordinates, amazoneSelected, selectionProcess);
-        selectedCoordinates({ selectedCoordinates: obj.selectedCoordinates });
-        amazoneSelected({ amazoneSelected: obj.amazoneSelected });
-        selectionProcess({ selectionProcess: obj.selectionProcess });
+        console.log("Stage 1.2");
+        await moveAmazone(row, column, gameboard, selectionProcess);
+        // speichere letzten gewählte Koordinaten
+        selectedCoordinates.current.currentRow = row;
+        selectedCoordinates.current.currentColumn = column;
+        // setze den Wert auf 2, weil wir die Amazone bewegt haben
+        amazoneSelected.current = 2;
+        // merke die Position, an die sich die Amazone bewwegt hat
+        selectionProcess.current.endrow = row;
+        selectionProcess.current.endcolumn = column;
       }
       // falls gleiches Feld nochmal ausgewählt wird, entferne wieder die Anzeige der möglichen Ziele
       else if (amazoneSelected === 2 && (selectedCoordinates.currentColumn === column && selectedCoordinates.currentRow === row)) {
-        let obj = redoMove(amazoneSelected);
-        amazoneSelected({ amazoneSelected: obj.amazoneSelected });
+        console.log("Stage 1.2.r");
+        await redoMove();
+        // setze den Wert auf 1, da die Amazone wieder auf ihre Startposition gesetzt wird
+        amazoneSelected.current = 0;
       }
       // verschieße den Pfeil
-      else {
-        let obj = await shotArrow(row, column, idGame, currentPlayer, selectedCoordinates, selectionProcess, amazoneSelected);
-        selectedCoordinates({ selectedCoordinates: obj.selectedCoordinates });
-        amazoneSelected({ amazoneSelected: obj.amazoneSelected });
-        selectionProcess({ selectionProcess: obj.selectionProcess });
+      else if (amazoneSelected === 2) {
+        console.log("Stage 1.3");
+        await shotArrow(row, column, idGame.current, currentPlayer.current, selectionProcess, amazoneSelected.current);
+        // speicher letzte Auswahl
+        selectedCoordinates.current.currentRow = row;
+        selectedCoordinates.current.currentColumn = column;
+        // setzt Wert auf 0 da der Zug beendet wird
+        amazoneSelected.current = 0;
+        // merkt sich die Position, an die der Pfeil verschossen wurde
+        selectionProcess.current.shotrow = row;
+        selectionProcess.current.shotcolumn = column;
         // aktuelles Spielbrett aktuallisieren
-        const newGameData = await fetchGameData;
-        gameboard.current = newGameData.board;
-        // idGame.current = newGameData.id;
-        currentPlayer.current = newGameData.players;
-        setTurn({playerWithTurn: newGameData.turnPlayer})
-        winningPlayer.current = newGameData.winningPlayer;
+        let newGameData = fetchGameData().then((res) => {
+          console.log(res);
+          return res;
+        }).catch((error) => {
+          console.log("newGameData error. Message is: " + error.message);
+          return { message: error.message }
+        });
+        gameboard.current.board = newGameData.board;
+        currentPlayer.current = newGameData.turnPlayer;
+      }
+      else {
+        console.log("wtf you doing here? you ain't supposed to be here!!");
       }
 
       // wenn es einen Gewinner gibt
-      if (gameboard.winningPlayer !== undefined) {
+      const w = fetchGameData();
+      if (w.winningPlayer !== undefined) {
         document.getElementById("currentPlayer").textContent = "GEWINNER: " + gameboard.winningPlayer;
-        setThereIsAWinner({b: true});
+        thereIsAWinner.current = true
         return;
       }
 
-      console.log(gameboard);
       // Spieler, der am Zug ist anzeigen
-      document.getElementById("currentPlayer").textContent = turn.playerWithTurn
-      if (turn.playerWithTurn === 0) {
-        var cplayerone = gameboard.players[0].name;
+      document.getElementById("currentPlayer").textContent = currentPlayer.current
+      if (currentPlayer.current === 0) {
+        var cplayerone = currentPlayer.current;
         document.getElementById("currentPlayer").textContent = cplayerone
       } else {
-        var cplayertwo = gameboard.players[1].name;
+        var cplayertwo = currentPlayer.current;
         document.getElementById("currentPlayer").textContent = cplayertwo
       }
-    }
-    else {
-      console.log(thereIsAWinner.b);
     }
   }
 
@@ -188,6 +225,17 @@ export default function Game() {
     element();
   });
 
+  document.addEventListener("click", async evt => {
+    const targetClick = evt.target.className;
+    if (targetClick.includes("box")) {
+      console.log(evt.target.id);
+      const row = Number(evt.target.id.charAt(1));
+      const column = Number((evt.target.id.charCodeAt(0) - 97));
+      console.log(row + ", " + column);
+      await select(row, column);
+    }
+  })
+
   return (
     <div className='outer-container'>
       <div className="Ui">
@@ -200,7 +248,7 @@ export default function Game() {
           <div className='grid-item'><input type="button" className='test' value="log" onClick={element} /></div>
         </div>
       </div>
-      <div className="Board" id="parent">
+      <div className="board" id="parent">
       </div>
     </div>
   )
