@@ -44,13 +44,14 @@ export function GenerateBoard() {
 
     async function startGame() {
         console.log(settings.timeoutTime, settings.boardHeigth, settings.boardWidth);
+        // const game = await createBoard(settings.boardHeigth, settings.boardWidth, settings.amountAmazons);
         const g = await newGame(
             settings.timeoutTime,
             settings.boardHeigth,
             settings.boardWidth,
             createBoard(settings.boardHeigth, settings.boardWidth, settings.amountAmazons),
-            1,
-            2
+            0,
+            1
         )
         console.log(g);
         gameID = g.id;
@@ -86,8 +87,4 @@ export function GenerateBoard() {
             </div>
         </>
     )
-}
-
-export const getID = () => {
-    return gameID;
 }
