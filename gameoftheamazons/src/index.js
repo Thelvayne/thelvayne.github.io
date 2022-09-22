@@ -7,6 +7,7 @@ import './pictures/Avatar2.jpg'
 import './pictures/amazonessvillage-tf05-jp-vg.png'
 import './game/Game.css'
 import './help/Help.css'
+import './gamelobby/gamelobby.css'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

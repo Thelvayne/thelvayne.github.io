@@ -6,7 +6,7 @@ export default function Help(){
     let navigate = useNavigate();
 
         async function navigategame() {
-            navigate("../Game")
+            navigate(".gamelobby/Gamelobby")
     }
 
     return (
