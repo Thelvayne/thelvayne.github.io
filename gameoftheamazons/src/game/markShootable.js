@@ -1,5 +1,4 @@
 import { letter } from "./letter.js"
-import { getGameByID } from "../communication/Communication.js"
 
 // gleiches Vorgehen wie markMovable, bloß mit anderen className-Anhang
 export const markShootable = async (currentSelectedRow, currentSelectedColumn, rowAmazon, columnAmazon, game) => {
