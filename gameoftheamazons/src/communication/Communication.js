@@ -185,29 +185,29 @@ export const deletePlayer = (id) => {
 
 // Anfrage an Server ein neues Spiel zu erstellen
 // FIXME: muss noch angepasst werden an die neuen Vorraussetzungen
-export const newGame = (/*maxTurnTime, gameSizeRows, gameSizeColumns, board, playerOne, playerTwo*/) => {
+export const newGame = (maxTurnTime, gameSizeRows, gameSizeColumns, board, playerOne, playerTwo) => {
     try {
         const game = {
-            "maxTurnTime": 60000, 
+            "maxTurnTime": maxTurnTime, 
             "players": [
-                1,
-                2
+                playerOne,
+                playerTwo
             ],
             "board": {
-                "gameSizeRows": 10, // Zeilen des Spielbrettes
-                "gameSizeColumns": 10, // Spalten des Spielbrettes
+                "gameSizeRows": gameSizeRows, // Zeilen des Spielbrettes
+                "gameSizeColumns": gameSizeColumns, // Spalten des Spielbrettes
                 "squares": [
-                    [-1, -1, -1, 0, -1, -1, 0, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [0, -1, -1, -1, -1, -1, -1, -1, -1, 0],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                    [-1, -1, -1, 1, -1, -1, 1, -1, -1, -1]
-                ]
+                [0, -1, 0, -1, 0, -1, 0, -1, 0, -1],
+                [0, -1, -1, -1, -1, -1, -1, -1, -1, 0],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                [1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
+                [1, -1, 1, -1, 1, -1, 1, -1, 1, -1]
+            ]
             }
         }
 
