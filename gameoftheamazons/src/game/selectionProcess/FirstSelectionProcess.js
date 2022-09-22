@@ -5,15 +5,11 @@ export const firstSelectionProcess = async (rowGiven, columnGiven, g, figureAssi
 
     let row = Number(rowGiven);
     let column = Number(columnGiven);
-
-    console.log(g.turnPlayer);
-    console.log(figureAssigned);
-    console.log(figureAssigned.current.pOne);
-    console.log(figureAssigned.current.pTwo);
+    let figure = figureAssigned
 
     let isInputCorrect = () => {
-        if ((g.turnPlayer === figureAssigned.current.pOne && g.board.squares[row][column] === 0) ||
-            (g.turnPlayer === figureAssigned.current.pTwo && g.board.squares[row][column] === 1)) {
+        if ((g.turnPlayer === figure.pOne && g.board.squares[row][column] === 0) ||
+            (g.turnPlayer === figure.pTwo && g.board.squares[row][column] === 1)) {
             return true;
         } else {
             return false;
