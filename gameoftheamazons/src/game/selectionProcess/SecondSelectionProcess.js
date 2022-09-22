@@ -1,7 +1,8 @@
 import { letter } from '../letter'
 import { markShootable } from '../markShootable'
 
-export const moveAmazone = async (row, column, game, selectedCoordinates, amazoneSelected, selectionProcess) => {
+export const moveAmazone = async (row, column, game, selectionProcess) => {
+    const selection = selectionProcess;
 
     // falls ein Feld gewählt wurde, welches gültig ist
     if (document.getElementById(letter(column) + row).classList.contains("selected")) {
@@ -18,7 +19,7 @@ export const moveAmazone = async (row, column, game, selectedCoordinates, amazon
             ind++
         }
 
-        await markShootable(row, column, selectionProcess.current.startrow, selectionProcess.current.startcolumn, game)
+        await markShootable(row, column, selection.startrow, selection.startcolumn, game)
 
     }
 }
