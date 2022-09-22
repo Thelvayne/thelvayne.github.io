@@ -20,12 +20,6 @@ export default function Startscreen() {
         const playername = playernameone.current.value
 
         let p = await createPlayer(playername)
-            .then((res) => {
-                return res
-            }).catch((error) => {
-                console.log('GET error. Message is: ' + error.message)
-                return { message: error.message }
-            })
         console.log('Your Playername is: ' + p.name + " and your ID is: " + p.id)
         document.getElementById("playeruno").style.display = "none"
         document.getElementById("playerdos").style.display = "block"

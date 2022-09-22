@@ -1,19 +1,17 @@
-import { newGame } from "../../communication/Communication"
+export const createBoard = async (rows) => {
 
-export const createBoard = async (rows, columns, amountAmazons) => {
-    let board = [
-    [0, -1, 0, -1, 0, -1, 0, -1, 0, -1],
-    [0, -1, -1, -1, -1, -1, -1, -1, -1, 0],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
-    [1, -1, 1, -1, 1, -1, 1, -1, 1, -1]
-]
-    // TODO: add algorithm for creating game according to user-input
+    var b = new Array(10);
+    for ( let i = 0 ; i < rows; i++) {
+        b[i] = new Array(10)
+    }
 
-    return board;
+    for (let i = 0; i < b.length; i++){
+        for (let j = 0; j < b[i].length; j++){
+            b[i][j] = -1;
+        }
+    }
+
+    console.log(b);
+
+    return b;
 }
