@@ -1,23 +1,14 @@
 import { letter } from "./letter"
-import { getGameByID } from "../communication/Communication"
 
 // Funktion um alle erlaubten Züge zu markieren
-export const markMoveable = async (currentSelectedRow, currentSelectedColumn) => {
-    // GET-Aufruf, um Informationen über das laufende Spiel zu bekommen
-    let b = await getGameByID(0)
-      .then((res) => {
-        return res
-      }).catch((error) => {
-        console.log('GetGameByID error. Message is: ' + error.message)
-        return { message: error.message }
-      })
+export const markMoveable = async (currentSelectedRow, currentSelectedColumn, game) => {
+    let b = game
 
     // Variablen
-    const startrow = currentSelectedRow
-    const startcolumn = currentSelectedColumn
-    // console.log(startrow + ", " + startcolumn);
+    const startrow = Number(currentSelectedRow);
+    const startcolumn = Number(currentSelectedColumn);
+    console.log(startrow + ", " + startcolumn);
     let i = 1
-
     // Schleife, die nach unten alle erlaubten Felder markiert
     do {
       if (startrow + i === b.board.rows || b.board.squares[startrow + i][startcolumn] === 0 || b.board.squares[startrow + i][startcolumn] === 1) {
