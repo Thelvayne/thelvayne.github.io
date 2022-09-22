@@ -1,20 +1,34 @@
 import { markMoveable } from '../markMoveable';
 import { letter } from '../letter';
 
-export const firstSelectionProcess = async (row, column, g, currentPlayer) => {
-    
+export const firstSelectionProcess = async (rowGiven, columnGiven, g, figureAssigned) => {
+
+    let row = Number(rowGiven);
+    let column = Number(columnGiven);
+
+    console.log(g.turnPlayer);
+    console.log(figureAssigned);
+    console.log(figureAssigned.current.pOne);
+    console.log(figureAssigned.current.pTwo);
+
     let isInputCorrect = () => {
-        if (g.turnPlayer === currentPlayer.current && g.board.squares[row][column] === g.turnPlayer) {
+        if ((g.turnPlayer === figureAssigned.current.pOne && g.board.squares[row][column] === 0) ||
+            (g.turnPlayer === figureAssigned.current.pTwo && g.board.squares[row][column] === 1)) {
             return true;
         } else {
             return false;
         }
     };
-    if (isInputCorrect) {
+    await isInputCorrect()
+    console.log(isInputCorrect());
+
+    if (await isInputCorrect()) {
         document.getElementById(letter(column) + row).className += "select";
         // markieren aller erlaubten Spielzüge
-        markMoveable(row, column);
+        markMoveable(row, column, g);
+        return true
     }
+    return false
 }
 
 export const redoFirstSelectionProcess = async () => {
