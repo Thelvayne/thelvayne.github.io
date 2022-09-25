@@ -6,10 +6,9 @@ import { BackgroundColor } from "../RenderBoard"
 import { letter } from "../letter"
 import { PlaceAmazons } from "../RenderBoard";
 
-export var gameID;
+
 export function GenerateBoard() {
     let [searchParams] = useSearchParams();
-
     let idOne = searchParams.get("pIdOne");
     if (idOne === undefined || idOne === null || Number.isNaN(idOne)) {
         idOne = '-1'
@@ -25,6 +24,7 @@ export function GenerateBoard() {
 
     const xSize = useRef();
     const timeout = useRef();
+    var gameID;
 
     const [settings, setSettings] = useState({ boardWidth: 10, timeoutTime: 60000 });
     const [boardPrev, setBoardPrev] = useState();
@@ -48,21 +48,19 @@ export function GenerateBoard() {
 
     async function startGame() {
 
-        if (checkFigureValidity() === true) {
-            const g = newGame(
+        if (checkFigureValidity() === true && boardPrev !== undefined) {
+            const g = await newGame(
                 Number(settings.timeoutTime),
                 Number(settings.boardWidth),
                 Number(settings.boardWidth),
                 boardPrev,
-                0,
-                1
-            ).then((res) => {
-                console.log(res);
-                return res;
-            })
+                idOne,
+                idTwo
+            )
             console.log(await g);
-            gameID = g.id;
-            if (await g.id !== undefined) {
+            gameID = await g.id;
+            console.log(g.id);
+            if (g.id !== undefined) {
                 console.log("bin trotzdem hier :P");
                 navigate("/Game/?id=" + gameID)
             }
@@ -78,7 +76,6 @@ export function GenerateBoard() {
         const parent = document.getElementById("parent");
         parent.style.width  = 100*settings.boardWidth+'px';
         const board = bb;
-        const board = bb
 
         if (parent.childElementCount !== 0) {
             while (parent.childElementCount > 0) {
@@ -115,22 +112,22 @@ export function GenerateBoard() {
             for (let j = 0; j < boardPrev[i].length; j++) {
                 if (boardPrev[i][j] === 0 && p1hasAFigure===false) {
                     p1hasAFigure = true;
-                    console.log(p1hasAFigure);
+                    // console.log(p1hasAFigure);
                     continue;
                 }
                 if (boardPrev[i][j] === 1 && p2hasAFigure === false) {
                     p2hasAFigure = true;
-                    console.log(p1hasAFigure);
+                    // console.log(p1hasAFigure);
                     continue;
                 }
                 if (p1hasAFigure === true && p2hasAFigure === true) {
-                    console.log(p1hasAFigure + " | " + p2hasAFigure);
+                    // console.log(p1hasAFigure + " | " + p2hasAFigure);
                     return true;
                 }
             }
 
         }
-        console.log(p1hasAFigure + " | " + p2hasAFigure);
+        // console.log(p1hasAFigure + " | " + p2hasAFigure);
         return (p1hasAFigure && p2hasAFigure);
     }
 
