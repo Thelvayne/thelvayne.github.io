@@ -74,20 +74,37 @@ export function GenerateBoard() {
         var bb = await createBoard(settings.boardWidth);
         setBoardPrev(bb);
 
+
         const parent = document.getElementById("parent");
-        const board = bb;
+        const board = bb
+
+        if (parent.childElementCount !== 0) {
+            while (parent.childElementCount > 0) {
+                parent.removeChild(parent.lastChild);
+            }
+            
+        }
+        /*
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
+                   // const child = document.getElementById(letter(j) + i);
+                    parent.removeChild(child);
+                }
+            }
+        }*/
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; j++) {
                 const child = document.createElement("div");
                 child.id = letter(j) + i;
                 child.className = BackgroundColor(i, j);
                 parent.appendChild(child);
-                
+
             }
             let br = document.createElement('br');
             parent.appendChild(br);
         }
     }
+    
 
     const checkFigureValidity = () => {
         let p1hasAFigure = false;
