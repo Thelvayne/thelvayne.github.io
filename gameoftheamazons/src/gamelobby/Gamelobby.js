@@ -12,9 +12,10 @@ export default function Gamelobby(){
     function OpenRules(){
         
         navigate("../Help")
-    } 
-    function CreateGame(){
-        document.getElementById("CGame").classList.remove("visually-hidden");
+    }
+
+    function CreateGame() {
+            document.getElementById("CGame").classList.remove("visually-hidden");
     }
    
     const adminUser= {
