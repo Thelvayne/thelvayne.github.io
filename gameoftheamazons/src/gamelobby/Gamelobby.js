@@ -46,6 +46,8 @@ export default function Gamelobby() {
         setUser({
             name: ""
         })
+        document.getElementById("CGame").classList.add("visually-hidden");
+        document.getElementById("sidebarright").classList.add("visually-hidden");
         console.log("Logout");
     }
 
