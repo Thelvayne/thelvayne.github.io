@@ -16,6 +16,7 @@ export default function Gamelobby() {
     }
     function CreateGame() {
         document.getElementById("CGame").classList.remove("visually-hidden");
+        document.getElementById("sidebarright").classList.remove("visually-hidden");
     }
 
     const adminUser = {
@@ -118,7 +119,10 @@ export default function Gamelobby() {
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button> */}
             </div>
-
+                    <div id="sidebarright" className="sidebarright visually-hidden">
+                        Choose your Opponent.
+                    </div>
         </div>
+
     )
 }

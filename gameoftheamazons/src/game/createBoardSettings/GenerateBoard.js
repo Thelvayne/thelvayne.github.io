@@ -8,7 +8,7 @@ import { PlaceAmazons } from "../RenderBoard";
 
 export var gameID;
 export function GenerateBoard() {
-    let [searchParams, setSearchParams] = useSearchParams();
+    let [searchParams] = useSearchParams();
 
     let idOne = searchParams.get("pIdOne");
     if (idOne === undefined || idOne === null || Number.isNaN(idOne)) {
@@ -76,6 +76,8 @@ export function GenerateBoard() {
 
 
         const parent = document.getElementById("parent");
+        parent.style.width  = 100*settings.boardWidth+'px';
+        const board = bb;
         const board = bb
 
         if (parent.childElementCount !== 0) {
@@ -97,11 +99,10 @@ export function GenerateBoard() {
                 const child = document.createElement("div");
                 child.id = letter(j) + i;
                 child.className = BackgroundColor(i, j);
-                parent.appendChild(child);
-
+                // child.style.width = 100;
+                parent.appendChild(child);        
             }
-            let br = document.createElement('br');
-            parent.appendChild(br);
+            
         }
     }
     
@@ -201,6 +202,8 @@ export function GenerateBoard() {
     //         }
     //     }
     // }
+
+   
 
     return (
         <div className="settingswindow" id="sw">

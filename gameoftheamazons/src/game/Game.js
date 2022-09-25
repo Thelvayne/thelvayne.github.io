@@ -87,14 +87,17 @@ export default function Game() {
   const element = async () => {
     await firstRun();
     if (elementLoaded.current === true) return;
-    // console.log(gameboard);
+    console.log(100*gameboard.current.board.rows+'px');
     const parent = document.getElementById("parent");
+    parent.style.width = (100*gameboard.current.board.column)+'px';
+    parent.style.height = 100*gameboard.current.board.rows+'px';
     const board = gameboard.current.board.squares;
     board.forEach((row, indexr) => {
       row.forEach((column, indexc) => {
         const child = document.createElement("div");
         child.id = letter(indexc) + indexr;
         child.className = BackgroundColor(indexr, indexc);
+        child.style.width = 100;
         // child.onClick = () => select(indexr, indexc);
         parent.appendChild(child);
         loadAmazone(column, indexc, indexr);
@@ -299,7 +302,7 @@ export default function Game() {
           <div className='grid-item'><p id="currentPlayer" className='currentPlayerone'></p></div>
           <div className='grid-item'><input type="button" className="resetGame" value="Aktuelles Spiel Beenden" onClick={Navigateback}></input></div>
           <div className='grid-item'><input type="button" className="resetGame help" value="Hilfe" onClick={Navigatehelp} /></div>
-          <div className='grid-item'><input type="button" className='test' value="log" onClick={element} /></div>
+          {/* <div className='grid-item'><input type="button" className='test' value="log" onClick={element} /></div> */}
         </div>
       </div>
       <div className="board" id="parent">
