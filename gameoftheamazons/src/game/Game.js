@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import React from 'react'
 
-import { deleteGame, getGameByID, getPlayers, reset } from '../communication/Communication'
+import { deleteGame, getGameByID, reset } from '../communication/Communication'
 
 import { firstSelectionProcess, redoFirstSelectionProcess } from './selectionProcess/FirstSelectionProcess'
 import { moveAmazone, redoMove } from './selectionProcess/SecondSelectionProcess'
@@ -13,6 +13,15 @@ import { BackgroundColor, PlaceAmazons } from './RenderBoard'
 
 export default function Game() {
 
+  let [searchParams] = useSearchParams();
+ 
+  let id = searchParams.get("id");
+      if (id === undefined || id === null || Number.isNaN(id) ){
+        id = '-1'
+      }
+
+      console.log("Das ist von der Game.js, um zu sehen ob es die ID von searchParams: " + id);
+
   let navigate = useNavigate();
 
   // Spieler 1: blau, turnPlayer = 0 pieceblack
@@ -20,7 +29,7 @@ export default function Game() {
 
   // Variablen
   const gameboard = useRef({ board: undefined });
-  const idGame = useRef({ id: 0 });
+  // const idGame = useRef({ id: 0 });
   const currentPlayer = useRef();
   const thereIsAWinner = useRef(false);
   const winningPlayer = useRef();
@@ -40,7 +49,6 @@ export default function Game() {
   
 
   const fetchGameData = () => {
-    const id = /*idGame.id !== undefined ? idGame.id : */5;
     const game = getGameByID(id).then((g) => {
       // console.log(g);
       gameboard.current.board = g.board;
@@ -48,19 +56,19 @@ export default function Game() {
       winningPlayer.current = g.winningPlayer;
       figureAssigned.current.pOne = g.players[0].id;
       figureAssigned.current.pTwo = g.players[1].id;
-      idGame.current.id = g.id;
+      // idGame.current.id = g.id;
       return g;
     }).catch((error) => {
       console.log("setGame error. Message is: " + error.message);
       return { message: error.message };
     });
-    if (currentPlayer.current === 0) {
-      var cplayerone = currentPlayer.current;
-      document.getElementById("currentPlayer").textContent = cplayerone
-    } else {
-      var cplayertwo = currentPlayer.current;
-      document.getElementById("currentPlayer").textContent = cplayertwo
-    }
+    // if (currentPlayer.current === 0) {
+    //   var cplayerone = currentPlayer.current;
+    //   document.getElementById("currentPlayer").textContent = cplayerone
+    // } else {
+    //   var cplayertwo = currentPlayer.current;
+    //   document.getElementById("currentPlayer").textContent = cplayertwo
+    // }
     
     
     return game;
@@ -190,8 +198,8 @@ export default function Game() {
       // verschieße den Pfeil
       else if (amazoneSelected.current === 2) {
         console.log("Stage 1.3");
-        console.log(idGame.current);
-        await shotArrow(row, column, idGame.current.id, currentPlayer.current, selectionProcess, amazoneSelected.current);
+        // console.log(idGame.current);
+        await shotArrow(row, column, id, currentPlayer.current, selectionProcess, amazoneSelected.current);
         // speicher letzte Auswahl
         selectedCoordinates.current.currentRow = row;
         selectedCoordinates.current.currentColumn = column;
@@ -222,10 +230,13 @@ export default function Game() {
 
       // wenn es einen Gewinner gibt
       const w = await fetchGameData();
+      console.log(await w.winningPlayer);
       if (w.winningPlayer !== undefined) {
-        console.log("WINNING PLAYER: " + winningPlayer.current === 0 ? "Spieler1" : "Spieler2");
-        document.getElementById("currentPlayer").textContent = "GEWINNER: " + Number(winningPlayer.current) === 0 ? "Spieler 1" : "Spieler 2";
+        console.log("WINNING PLAYER: " + (w.winningPlayer === 0 ? "Spieler1" : "Spieler2"));
+        document.getElementById("currentPlayer").textContent = "GEWINNER: " + (Number(await w.winningPlayer) === 0 ? "Spieler 1" : "Spieler 2");
+        winningPlayer.current = w.winningPlayer;
         thereIsAWinner.current = true
+        console.log(thereIsAWinner.current);
         return;
       }
 

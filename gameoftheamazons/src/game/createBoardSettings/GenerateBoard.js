@@ -1,13 +1,26 @@
 import { useRef, useState } from "react";
 import { newGame } from "../../communication/Communication";
 import { createBoard } from "../createBoard/CreateNewBoard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { BackgroundColor } from "../RenderBoard"
 import { letter } from "../letter"
 import { PlaceAmazons } from "../RenderBoard";
 
 export var gameID;
 export function GenerateBoard() {
+    let [searchParams] = useSearchParams();
+
+    let idOne = searchParams.get("pIdOne");
+    if (idOne === undefined || idOne === null || Number.isNaN(idOne)) {
+        idOne = '-1'
+    }
+    let idTwo = searchParams.get("pIdTwo");
+    if (idTwo === undefined || idTwo === null || Number.isNaN(idTwo)) {
+        idTwo = '-1'
+    }
+
+    console.log("Das ist von der GenerateBoard.js, um zu sehen ob es die ID von searchParams: " + idOne + ", " + idTwo);
+
     let navigate = useNavigate();
 
     const xSize = useRef();
@@ -34,6 +47,7 @@ export function GenerateBoard() {
 
 
     async function startGame() {
+
         const g = newGame(
             Number(settings.timeoutTime),
             Number(settings.boardWidth),
@@ -47,8 +61,9 @@ export function GenerateBoard() {
         })
         console.log(await g);
         gameID = g.id;
-        if (await g.message !== 400) {
-            navigate("/Game")
+        if (await g.id !== undefined) {
+            console.log("bin trotzdem hier :P");
+            navigate("/Game/?id=" + gameID)
         }
     }
 
@@ -107,11 +122,11 @@ export function GenerateBoard() {
     // useEffect(() => {
     //     console.log(boardPrev);
     //     console.log(change);
-        
-        
-        // const e = document.getElementById("parent");
-        // e.addEventListener("click", clicks)
-        // e.removeEventListener("click", clicks)
+
+
+    // const e = document.getElementById("parent");
+    // e.addEventListener("click", clicks)
+    // e.removeEventListener("click", clicks)
     // }, [boardPrev, change])
 
     // const place = (row, column, c) => {
@@ -146,7 +161,7 @@ export function GenerateBoard() {
                 <input id="inputTimeoutLength" type="number" ref={timeout} value={settings.timeoutTime} min="30000" onChange={submit} />
             </div>
             <div className="submitbutton">
-                <input type="button" className="generateField" value={"create Playfield"} onClick={startGame} />
+               
                 <input type="button" className="showUserPlayfield" value={"showField"} onClick={showField} />
             </div>
             <div>
@@ -158,8 +173,9 @@ export function GenerateBoard() {
                 <p>gewählte Amazone: {change}</p>
             </div>
             <div className="currentBoard" id="parent" onClick={clicks}>
-                
+
             </div>
+            <input type="button" id="createGame" className="createGame" value={"createGame"} onClick={startGame} />
         </div>
     )
 }
