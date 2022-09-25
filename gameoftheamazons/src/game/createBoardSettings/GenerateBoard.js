@@ -8,7 +8,7 @@ import { PlaceAmazons } from "../RenderBoard";
 
 export var gameID;
 export function GenerateBoard() {
-    let [searchParams] = useSearchParams();
+    let [searchParams, setSearchParams] = useSearchParams();
 
     let idOne = searchParams.get("pIdOne");
     if (idOne === undefined || idOne === null || Number.isNaN(idOne)) {
@@ -82,7 +82,10 @@ export function GenerateBoard() {
                 child.id = letter(j) + i;
                 child.className = BackgroundColor(i, j);
                 parent.appendChild(child);
+                
             }
+            let br = document.createElement('br');
+            parent.appendChild(br);
         }
     }
 
