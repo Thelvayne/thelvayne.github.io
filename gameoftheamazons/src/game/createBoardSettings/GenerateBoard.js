@@ -48,25 +48,27 @@ export function GenerateBoard() {
 
     async function startGame() {
 
-        const g = newGame(
-            Number(settings.timeoutTime),
-            Number(settings.boardWidth),
-            Number(settings.boardWidth),
-            boardPrev,
-            0,
-            1
-        ).then((res) => {
-            console.log(res);
-            return res;
-        })
-        console.log(await g);
-        gameID = g.id;
-        if (await g.id !== undefined) {
-            console.log("bin trotzdem hier :P");
-            navigate("/Game/?id=" + gameID)
+        if (checkFigureValidity) {
+            const g = newGame(
+                Number(settings.timeoutTime),
+                Number(settings.boardWidth),
+                Number(settings.boardWidth),
+                boardPrev,
+                0,
+                1
+            ).then((res) => {
+                console.log(res);
+                return res;
+            })
+            console.log(await g);
+            gameID = g.id;
+            if (await g.id !== undefined) {
+                console.log("bin trotzdem hier :P");
+                navigate("/Game/?id=" + gameID)
+            }
         }
     }
-    
+
 
     async function showField() {
         var bb = await createBoard(settings.boardWidth);
@@ -84,25 +86,26 @@ export function GenerateBoard() {
         }
     }
 
-    const checkFigureValidity = () =>  {
+    const checkFigureValidity = () => {
         var p1hasAFigure = false;
         var p2hasAFigure = false;
 
         for (let i = 0; i < boardPrev.length; i++) {
             for (let j = 0; j < boardPrev[i].length; j++) {
                 if (boardPrev[i][j] === 0) {
-                    p1hasAFigure = true;  
+                    p1hasAFigure = true;
+                    continue;
                 }
                 if (boardPrev[i][j] === 1) {
                     p2hasAFigure = true;
+                    continue;
                 }
-                if (p1hasAFigure === true && p2hasAFigure === true)
-                {
-                    console.log(p1hasAFigure+" | "+ p2hasAFigure);
+                if (p1hasAFigure === true && p2hasAFigure === true) {
+                    console.log(p1hasAFigure + " | " + p2hasAFigure);
                     return true;
                 }
             }
-            
+
         }
         console.log(p1hasAFigure + " | " + p2hasAFigure);
         return (p1hasAFigure && p2hasAFigure);
@@ -186,7 +189,7 @@ export function GenerateBoard() {
                 <input id="inputTimeoutLength" type="number" ref={timeout} value={settings.timeoutTime} min="30000" onChange={submit} />
             </div>
             <div className="submitbutton">
-               
+
                 <input type="button" className="showUserPlayfield" value={"showField"} onClick={showField} />
             </div>
             <div>
