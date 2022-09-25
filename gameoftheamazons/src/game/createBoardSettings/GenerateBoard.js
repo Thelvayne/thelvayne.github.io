@@ -48,7 +48,7 @@ export function GenerateBoard() {
 
     async function startGame() {
 
-        if (checkFigureValidity) {
+        if (checkFigureValidity() === true) {
             const g = newGame(
                 Number(settings.timeoutTime),
                 Number(settings.boardWidth),
@@ -87,17 +87,19 @@ export function GenerateBoard() {
     }
 
     const checkFigureValidity = () => {
-        var p1hasAFigure = false;
-        var p2hasAFigure = false;
+        let p1hasAFigure = false;
+        let p2hasAFigure = false;
 
         for (let i = 0; i < boardPrev.length; i++) {
             for (let j = 0; j < boardPrev[i].length; j++) {
-                if (boardPrev[i][j] === 0) {
+                if (boardPrev[i][j] === 0 && p1hasAFigure===false) {
                     p1hasAFigure = true;
+                    console.log(p1hasAFigure);
                     continue;
                 }
-                if (boardPrev[i][j] === 1) {
+                if (boardPrev[i][j] === 1 && p2hasAFigure === false) {
                     p2hasAFigure = true;
+                    console.log(p1hasAFigure);
                     continue;
                 }
                 if (p1hasAFigure === true && p2hasAFigure === true) {
