@@ -66,6 +66,7 @@ export function GenerateBoard() {
             navigate("/Game/?id=" + gameID)
         }
     }
+    
 
     async function showField() {
         var bb = await createBoard(settings.boardWidth);
@@ -81,6 +82,30 @@ export function GenerateBoard() {
                 parent.appendChild(child);
             }
         }
+    }
+
+    const checkFigureValidity = () =>  {
+        var p1hasAFigure = false;
+        var p2hasAFigure = false;
+
+        for (let i = 0; i < boardPrev.length; i++) {
+            for (let j = 0; j < boardPrev[i].length; j++) {
+                if (boardPrev[i][j] === 0) {
+                    p1hasAFigure = true;  
+                }
+                if (boardPrev[i][j] === 1) {
+                    p2hasAFigure = true;
+                }
+                if (p1hasAFigure === true && p2hasAFigure === true)
+                {
+                    console.log(p1hasAFigure+" | "+ p2hasAFigure);
+                    return true;
+                }
+            }
+            
+        }
+        console.log(p1hasAFigure + " | " + p2hasAFigure);
+        return (p1hasAFigure && p2hasAFigure);
     }
 
     const loadAmazone = (val, c, r) => {

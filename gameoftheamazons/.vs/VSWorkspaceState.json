@@ -2,9 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\public",
-    "\\src",
-    "\\src\\ui"
+    "\\src"
   ],
-  "SelectedNode": "\\src\\Help.css",
+  "SelectedNode": "\\src\\Game.js",
   "PreviewInSolutionExplorer": false
 }
