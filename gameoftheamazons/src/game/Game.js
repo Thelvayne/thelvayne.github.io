@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
 
-import { getGameByID, reset } from '../communication/Communication'
+import { deleteGame, getGameByID, getPlayers, reset } from '../communication/Communication'
 
 import { firstSelectionProcess, redoFirstSelectionProcess } from './selectionProcess/FirstSelectionProcess'
 import { moveAmazone, redoMove } from './selectionProcess/SecondSelectionProcess'
@@ -37,9 +37,10 @@ export default function Game() {
     shotcolumn: undefined
   })
   const figureAssigned = useRef({ pOne: undefined, pTwo: undefined });
+  
 
   const fetchGameData = () => {
-    const id = /*idGame.id !== undefined ? idGame.id : */0;
+    const id = /*idGame.id !== undefined ? idGame.id : */5;
     const game = getGameByID(id).then((g) => {
       // console.log(g);
       gameboard.current.board = g.board;
@@ -47,6 +48,7 @@ export default function Game() {
       winningPlayer.current = g.winningPlayer;
       figureAssigned.current.pOne = g.players[0].id;
       figureAssigned.current.pTwo = g.players[1].id;
+      idGame.current.id = g.id;
       return g;
     }).catch((error) => {
       console.log("setGame error. Message is: " + error.message);
@@ -67,6 +69,7 @@ export default function Game() {
   async function firstRun() {
     if (firstRunFinished.current === false) {
       const g = await fetchGameData();
+      console.log(await g);
       figureAssigned.current.pOne = g.players[0].id;
       figureAssigned.current.pTwo = g.players[1].id;
       firstRunFinished.current = true;
@@ -86,7 +89,7 @@ export default function Game() {
         child.className = BackgroundColor(indexr, indexc);
         // child.onClick = () => select(indexr, indexc);
         parent.appendChild(child);
-        loadAmazone(column, indexc, indexr)
+        loadAmazone(column, indexc, indexr);
       })
     })
     elementLoaded.current = true;
@@ -96,6 +99,29 @@ export default function Game() {
     var str = " " + PlaceAmazons(val);
     var box = document.getElementById(letter(c)+r);
     box.className += str;
+  }
+
+  const loadPlayfield = (field) => {
+    field.forEach((row, indR) => {
+      row.forEach((column, indC) => {
+        const el = document.getElementById(letter(indC) + indR);
+        var str = el.className;
+        str = str.trim();
+        el.className = str
+        el.classList.includes("box") ? el.classList.remove("box") : console.log("nothing to delete");
+        el.classList.includes("arrow") ? el.classList.remove("arrow") : console.log("nothing to delete");
+        el.classList.includes("piecewhite") ? el.classList.remove("piecewhite") : console.log("nothing to delete");
+        el.classList.includes("pieceblack") ? el.classList.remove("pieceblack") : console.log("nothing to delete");
+        el.classList.includes("arrowselected") ? el.classList.remove("arrowselected") : console.log("nothing to delete");
+        el.classList.includes("selected") ? el.classList.remove("selected") : console.log("nothing to delete");
+        el.classList.includes("select") ? el.classList.remove("select") : console.log("nothing to delete");
+        el.classList.includes("white") ? el.classList.remove("white") : console.log("nothing to delete");
+        el.classList.includes("black") ? el.classList.remove("black") : console.log("nothing to delete");
+        
+        el.className = BackgroundColor(indR, indC);
+        el.className = loadAmazone(column, indR, indC);
+      })
+    })
   }
 
   // Funktion für onClick Ereignis
@@ -165,7 +191,7 @@ export default function Game() {
       else if (amazoneSelected.current === 2) {
         console.log("Stage 1.3");
         console.log(idGame.current);
-        await shotArrow(row, column, idGame.current, currentPlayer.current, selectionProcess, amazoneSelected.current);
+        await shotArrow(row, column, idGame.current.id, currentPlayer.current, selectionProcess, amazoneSelected.current);
         // speicher letzte Auswahl
         selectedCoordinates.current.currentRow = row;
         selectedCoordinates.current.currentColumn = column;
@@ -179,11 +205,16 @@ export default function Game() {
           console.log(res);
           gameboard.current.board = newGameData.board;
           currentPlayer.current = newGameData.turnPlayer;
+          winningPlayer.current = newGameData.winningPlayer;
           return res;
         }).catch((error) => {
           console.log("newGameData error. Message is: " + error.message);
           return { message: error.message }
         });
+
+        // if (newGameData.players[1].controllable === false) {
+        //   setTimeout(loadPlayfield(gameboard.current.board),2500)
+        // }
       }
       else {
         console.log("wtf you doing here? you ain't supposed to be here!!");
@@ -192,7 +223,8 @@ export default function Game() {
       // wenn es einen Gewinner gibt
       const w = await fetchGameData();
       if (w.winningPlayer !== undefined) {
-        document.getElementById("currentPlayer").textContent = "GEWINNER: " + gameboard.winningPlayer;
+        console.log("WINNING PLAYER: " + winningPlayer.current === 0 ? "Spieler1" : "Spieler2");
+        document.getElementById("currentPlayer").textContent = "GEWINNER: " + Number(winningPlayer.current) === 0 ? "Spieler 1" : "Spieler 2";
         thereIsAWinner.current = true
         return;
       }
@@ -227,8 +259,8 @@ export default function Game() {
 
   // Funktion um zu Hilfe zu navigieren
   async function Navigateback() {
-    await resetAll();
-    navigate("/Gamelobby")
+    await deleteGame(0);
+    navigate("/GenerateBoard")
   }
 
   // window.addEventListener("load", element);

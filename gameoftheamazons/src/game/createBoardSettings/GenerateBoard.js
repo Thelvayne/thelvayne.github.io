@@ -14,8 +14,8 @@ export function GenerateBoard() {
     const timeout = useRef();
 
     const [settings, setSettings] = useState({ boardWidth: 10, timeoutTime: 60000 });
-    var boardPrev;
-    const [change, setChange] = useState({val: 0})
+    const [boardPrev, setBoardPrev] = useState();
+    const [change, setChange] = useState(0)
 
     function submit() {
         if (xSize.current.value === "" ||
@@ -38,7 +38,7 @@ export function GenerateBoard() {
             Number(settings.timeoutTime),
             Number(settings.boardWidth),
             Number(settings.boardWidth),
-            createBoard(settings.boardWidth),
+            boardPrev,
             0,
             1
         ).then((res) => {
@@ -54,7 +54,7 @@ export function GenerateBoard() {
 
     async function showField() {
         var bb = await createBoard(settings.boardWidth);
-        boardPrev = bb;
+        setBoardPrev(bb);
 
         const parent = document.getElementById("parent");
         const board = bb;
@@ -74,41 +74,68 @@ export function GenerateBoard() {
         box.className += str;
     }
 
-    document.addEventListener("click", evt => {
-        const targetClick = evt.target.className;
+    function changeAmazone() {
+        change === 0 ? setChange(1) : setChange(0);
+    }
+
+    const clicks = (evt) => {
+        const targetClick = evt.target.className
+
         if (targetClick.includes("box")) {
-            console.log(change.val);
+            // console.log(change);
             const row = Number(evt.target.id.charAt(1));
             const column = Number((evt.target.id.charCodeAt(0) - 97));
 
-            console.log(boardPrev);
-            if (boardPrev[row][column] === -1) {
-                boardPrev[row][column] = change.val;
-                loadAmazone(change.val, column, row)
-            } else {
-                boardPrev[row][column] = -1
-                var el = document.getElementById(letter(column) + row);
-                if (el.className.includes("pieceblack")) {
-                    let str = el.className
-                    str = str.replace("pieceblack", "")
-                    el.className = str;
+            // console.log(boardPrev);
+            // var b = boardPrev
+            if (boardPrev !== undefined) {
+                if (boardPrev[row][column] === -1) {
+                    boardPrev[row][column] = change;
+                    loadAmazone(change, column, row);
                 } else {
-                    let str = el.className
-                    str = str.replace("piecewhite", "")
-                    el.className = str;
+                    boardPrev[row][column] = -1;
+                    var el = document.getElementById(letter(column) + row);
+                    if (el.className.includes("pieceblack")) el.classList.remove("pieceblack")
+                    else el.classList.remove("piecewhite")
                 }
+                console.log(boardPrev);
             }
-           
-        }
-    })
-
-    function changeAmazone() {
-        if (change.val === 0) {
-            setChange({val: 1})
-        } else {
-            setChange({val: 0})
+            // setBoardPrev(b)
         }
     }
+
+    // useEffect(() => {
+    //     console.log(boardPrev);
+    //     console.log(change);
+        
+        
+        // const e = document.getElementById("parent");
+        // e.addEventListener("click", clicks)
+        // e.removeEventListener("click", clicks)
+    // }, [boardPrev, change])
+
+    // const place = (row, column, c) => {
+    //     if (boardPrev === undefined) return
+    //     var board = boardPrev
+    //     console.log(boardPrev);
+    //     console.log(board);
+    //     if (board[row][column] === -1) {
+    //         board[row][column] = c;
+    //         loadAmazone(c, column, row)
+    //     } else {
+    //         board[row][column] = -1
+    //         var el = document.getElementById(letter(column) + row);
+    //         if (el.className.includes("pieceblack")) {
+    //             let str = el.className
+    //             str = str.replace("pieceblack", "")
+    //             el.className = str;
+    //         } else {
+    //             let str = el.className
+    //             str = str.replace("piecewhite", "")
+    //             el.className = str;
+    //         }
+    //     }
+    // }
 
     return (
         <div className="settingswindow" id="sw">
@@ -122,13 +149,16 @@ export function GenerateBoard() {
                 <input type="button" className="generateField" value={"create Playfield"} onClick={startGame} />
                 <input type="button" className="showUserPlayfield" value={"showField"} onClick={showField} />
             </div>
-            <div className="currentBoard" id="parent">
+            <div>
                 <p>Deine Aktuellen Einstellungen sind:</p>
                 <p>Höhe: {settings.boardWidth}</p>
                 <p>Timeout: {settings.timeoutTime}</p>
                 <p>Ab hier soll das Feld dargestellt werden: </p>
                 <input type="button" className="setAmazone" value="changePlayerAmazone" onClick={changeAmazone} />
-                <p>gewählte Amazone: {change.val}</p>
+                <p>gewählte Amazone: {change}</p>
+            </div>
+            <div className="currentBoard" id="parent" onClick={clicks}>
+                
             </div>
         </div>
     )

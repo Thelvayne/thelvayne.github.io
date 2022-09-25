@@ -24,7 +24,7 @@ export const shotArrow = async (row, column, gameID, currentPlayer, selectionPro
         // Zug an Server senden
         console.log(selectionProcess.current);
         let m = await move(currentPlayer,
-            gameID.id,
+            gameID,
             selectionProcess.current.startrow,
             selectionProcess.current.startcolumn,
             selectionProcess.current.endrow,

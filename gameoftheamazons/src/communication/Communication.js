@@ -196,18 +196,7 @@ export const newGame = (maxTurnTime, gameSizeRows, gameSizeColumns, board, playe
             "board": {
                 "gameSizeRows": gameSizeRows, // Zeilen des Spielbrettes
                 "gameSizeColumns": gameSizeColumns, // Spalten des Spielbrettes
-                "squares": [
-                [0, -1, 0, -1, 0, -1, 0, -1, 0, -1],
-                [0, -1, -1, -1, -1, -1, -1, -1, -1, 0],
-                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-                [1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
-                [1, -1, 1, -1, 1, -1, 1, -1, 1, -1]
-            ]
+                "squares": board
             }
         }
 

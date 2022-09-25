@@ -1,8 +1,9 @@
 export const createBoard = async (rows) => {
 
-    var b = new Array(10);
-    for ( let i = 0 ; i < rows; i++) {
-        b[i] = new Array(10)
+    var size = Number(rows)
+    var b = new Array(size);
+    for ( let i = 0 ; i < size; i++) {
+        b[i] = new Array(size)
     }
 
     for (let i = 0; i < b.length; i++){
@@ -11,7 +12,7 @@ export const createBoard = async (rows) => {
         }
     }
 
-    console.log(b);
+    // console.log(b);
 
     return b;
 }
