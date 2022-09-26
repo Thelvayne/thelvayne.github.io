@@ -57,7 +57,11 @@ export default function Gamelobby() {
         console.log(await allCurrentGames);
 
         const parent = document.getElementById("listOfGames");
-
+        if (parent.childElementCount !== 0) {
+            while (parent.childElementCount > 0) {
+                parent.removeChild(parent.lastChild);
+            }         
+        }
         for (const ind in allCurrentGames.games) {
             if (Object.hasOwnProperty.call(allCurrentGames.games, ind)) {
                 console.log(ind);
@@ -69,16 +73,22 @@ export default function Gamelobby() {
                 baby.innerText = "Spiel " + allCurrentGames.games[ind].id;
                 child.appendChild(baby);
                 parent.appendChild(child);
-
             }
         }
     }
+
+    setInterval(renderGameList, 5000);
 
     const renderPlayerList = async () => {
         const allCurrentPlayer = await getPlayers();
         console.log(await allCurrentPlayer);
 
         const parent = document.getElementById("sidebarright");
+        if (parent.childElementCount !== 0) {
+            while (parent.childElementCount > 0) {
+                parent.removeChild(parent.lastChild);
+            }         
+        }
         for (const ind in allCurrentPlayer.players) {
             if (Object.hasOwnProperty.call(allCurrentPlayer.players, ind)) {
                 const child = document.createElement('li');
@@ -93,6 +103,8 @@ export default function Gamelobby() {
             }
         }
     }
+
+    setInterval(renderPlayerList, 5000);
 
     const choseOpponent = (evt) => {
         let userID = evt.target.id;
@@ -130,7 +142,6 @@ export default function Gamelobby() {
                         </div>
                     )}
                     <div id='listOfGames' className='gamelist'>
-                        <button onClick={renderGameList}>show all games</button>
                     </div>
                     {/* <li><a href='#'>Game von Atze</a></li>
 
@@ -149,7 +160,7 @@ export default function Gamelobby() {
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button> */}
             </div>
             <div id="sidebarright" className="sidebarright visually-hidden" onClick={choseOpponent}>
-                Choose your Opponent. <button onClick={renderPlayerList}>show Player List</button>
+                Choose your Opponent.
             </div>
         </div>
 

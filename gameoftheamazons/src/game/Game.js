@@ -14,13 +14,13 @@ import { BackgroundColor, PlaceAmazons } from './RenderBoard'
 export default function Game() {
 
   let [searchParams] = useSearchParams();
- 
-  let id = searchParams.get("id");
-      if (id === undefined || id === null || Number.isNaN(id) ){
-        id = '-1'
-      }
 
-      console.log("Das ist von der Game.js, um zu sehen ob es die ID von searchParams: " + id);
+  let id = searchParams.get("id");
+  if (id === undefined || id === null || Number.isNaN(id)) {
+    id = '-1'
+  }
+
+  console.log("Das ist von der Game.js, um zu sehen ob es die ID von searchParams: " + id);
 
   let navigate = useNavigate();
 
@@ -46,7 +46,7 @@ export default function Game() {
     shotcolumn: undefined
   })
   const figureAssigned = useRef({ pOne: undefined, pTwo: undefined });
-  
+
 
   const fetchGameData = () => {
     const game = getGameByID(id).then((g) => {
@@ -56,21 +56,13 @@ export default function Game() {
       winningPlayer.current = g.winningPlayer;
       figureAssigned.current.pOne = g.players[0].id;
       figureAssigned.current.pTwo = g.players[1].id;
-      // idGame.current.id = g.id;
       return g;
     }).catch((error) => {
       console.log("setGame error. Message is: " + error.message);
       return { message: error.message };
     });
-    // if (currentPlayer.current === 0) {
-    //   var cplayerone = currentPlayer.current;
-    //   document.getElementById("currentPlayer").textContent = cplayerone
-    // } else {
-    //   var cplayertwo = currentPlayer.current;
-    //   document.getElementById("currentPlayer").textContent = cplayertwo
-    // }
-    
-    
+
+
     return game;
   }
 
@@ -87,10 +79,10 @@ export default function Game() {
   const element = async () => {
     await firstRun();
     if (elementLoaded.current === true) return;
-    console.log(100*gameboard.current.board.rows+'px');
+    console.log(100 * gameboard.current.board.rows + 'px');
     const parent = document.getElementById("parent");
-    parent.style.width = (100*gameboard.current.board.column)+'px';
-    parent.style.height = 100*gameboard.current.board.rows+'px';
+    parent.style.width = (100 * gameboard.current.board.column) + 'px';
+    parent.style.height = 100 * gameboard.current.board.rows + 'px';
     const board = gameboard.current.board.squares;
     board.forEach((row, indexr) => {
       row.forEach((column, indexc) => {
@@ -98,7 +90,6 @@ export default function Game() {
         child.id = letter(indexc) + indexr;
         child.className = BackgroundColor(indexr, indexc);
         child.style.width = 100;
-        // child.onClick = () => select(indexr, indexc);
         parent.appendChild(child);
         loadAmazone(column, indexc, indexr);
       })
@@ -108,7 +99,7 @@ export default function Game() {
 
   const loadAmazone = (val, c, r) => {
     var str = " " + PlaceAmazons(val);
-    var box = document.getElementById(letter(c)+r);
+    var box = document.getElementById(letter(c) + r);
     box.className += str;
   }
 
@@ -128,7 +119,11 @@ export default function Game() {
         el.classList.includes("select") ? el.classList.remove("select") : console.log("nothing to delete");
         el.classList.includes("white") ? el.classList.remove("white") : console.log("nothing to delete");
         el.classList.includes("black") ? el.classList.remove("black") : console.log("nothing to delete");
-        
+      })
+    })
+    field.forEach((row, indR) => {
+      row.forEach((column, indC) => {
+        const el = document.getElementById(letter(indC) + indR);
         el.className = BackgroundColor(indR, indC);
         el.className = loadAmazone(column, indR, indC);
       })
@@ -137,10 +132,10 @@ export default function Game() {
 
   // Funktion für onClick Ereignis
   const select = async (row, column) => {
-     /**
-     * Bedingung: es gibt keinen Gewinner
-     * -> führe den Algorithmus aus
-     */
+    /**
+    * Bedingung: es gibt keinen Gewinner
+    * -> führe den Algorithmus aus
+    */
     if (thereIsAWinner.current === false) {
       /**
        * 1te Überprüfung: wurde noch keine Amazone gewählt -> merke Amazone und markiere mögliche Züge
@@ -165,7 +160,7 @@ export default function Game() {
           amazoneSelected.current = 1
           // speichere Koordinaten der Amazone für den Startpunkt des Zuges
           selectionProcess.current.startrow = row;
-          selectionProcess.current.startcolumn = column      
+          selectionProcess.current.startcolumn = column
         }
       }
       // falls gleiches Feld nochmal ausgewählt wird, entferne wieder die Anzeige der möglichen Züge
@@ -212,20 +207,15 @@ export default function Game() {
         selectionProcess.current.shotrow = row;
         selectionProcess.current.shotcolumn = column;
         // aktuelles Spielbrett aktuallisieren
-        let newGameData = fetchGameData().then((res) => {
-          console.log(res);
-          gameboard.current.board = newGameData.board;
-          currentPlayer.current = newGameData.turnPlayer;
-          winningPlayer.current = newGameData.winningPlayer;
-          return res;
-        }).catch((error) => {
-          console.log("newGameData error. Message is: " + error.message);
-          return { message: error.message }
-        });
+        let newGameData = await fetchGameData();
+        console.log(await newGameData);
+        gameboard.current.board = newGameData.board;
+        currentPlayer.current = newGameData.turnPlayer;
+        winningPlayer.current = newGameData.winningPlayer;
 
-        // if (newGameData.players[1].controllable === false) {
-        //   setTimeout(loadPlayfield(gameboard.current.board),2500)
-        // }
+        if (newGameData.players[1].controllable === false) {
+          setTimeout(loadPlayfield(gameboard.current.board), 2500)
+        }
       }
       else {
         console.log("wtf you doing here? you ain't supposed to be here!!");
@@ -253,11 +243,6 @@ export default function Game() {
         document.getElementById("currentPlayer").textContent = cplayertwo
       }
     }
-    /*if (player2 === ki-gesteuert*{
-      document.addEventListener("load", () => {
-        //seite neu laden
-      } , warte-zeit)
-    }*/
   }
 
   // Funktion für den 'Aktuelles Spiel Beenden'

@@ -67,11 +67,9 @@ export function GenerateBoard() {
         }
     }
 
-
     async function showField() {
         var bb = await createBoard(settings.boardWidth);
         setBoardPrev(bb);
-
 
         const parent = document.getElementById("parent");
         parent.style.width  = 100*settings.boardWidth+'px';
@@ -80,23 +78,13 @@ export function GenerateBoard() {
         if (parent.childElementCount !== 0) {
             while (parent.childElementCount > 0) {
                 parent.removeChild(parent.lastChild);
-            }
-            
+            }         
         }
-        /*
-            for (let i = 0; i < board.length; i++) {
-                for (let j = 0; j < board[i].length; j++) {
-                   // const child = document.getElementById(letter(j) + i);
-                    parent.removeChild(child);
-                }
-            }
-        }*/
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; j++) {
                 const child = document.createElement("div");
                 child.id = letter(j) + i;
                 child.className = BackgroundColor(i, j);
-                // child.style.width = 100;
                 parent.appendChild(child);        
             }
             
@@ -145,12 +133,9 @@ export function GenerateBoard() {
         const targetClick = evt.target.className
 
         if (targetClick.includes("box")) {
-            // console.log(change);
             const row = Number(evt.target.id.charAt(1));
             const column = Number((evt.target.id.charCodeAt(0) - 97));
 
-            // console.log(boardPrev);
-            // var b = boardPrev
             if (boardPrev !== undefined) {
                 if (boardPrev[row][column] === -1) {
                     boardPrev[row][column] = change;
@@ -163,44 +148,8 @@ export function GenerateBoard() {
                 }
                 console.log(boardPrev);
             }
-            // setBoardPrev(b)
         }
-    }
-
-    // useEffect(() => {
-    //     console.log(boardPrev);
-    //     console.log(change);
-
-
-    // const e = document.getElementById("parent");
-    // e.addEventListener("click", clicks)
-    // e.removeEventListener("click", clicks)
-    // }, [boardPrev, change])
-
-    // const place = (row, column, c) => {
-    //     if (boardPrev === undefined) return
-    //     var board = boardPrev
-    //     console.log(boardPrev);
-    //     console.log(board);
-    //     if (board[row][column] === -1) {
-    //         board[row][column] = c;
-    //         loadAmazone(c, column, row)
-    //     } else {
-    //         board[row][column] = -1
-    //         var el = document.getElementById(letter(column) + row);
-    //         if (el.className.includes("pieceblack")) {
-    //             let str = el.className
-    //             str = str.replace("pieceblack", "")
-    //             el.className = str;
-    //         } else {
-    //             let str = el.className
-    //             str = str.replace("piecewhite", "")
-    //             el.className = str;
-    //         }
-    //     }
-    // }
-
-   
+    }   
 
     return (
         <div className="settingswindow" id="sw">
