@@ -76,7 +76,7 @@ export default function Gamelobby() {
     return (
         <div>
             <div className="sidenav">
-                <h1>Game Of the Amazons</h1>
+                <h1>Game of the Amazons</h1>
                 {(user.name !== "") ? (
                     <div className='welcome'>
                         <h2>Welcome, <span>{user.name}</span></h2>

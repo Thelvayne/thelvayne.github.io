@@ -78,7 +78,7 @@ export function GenerateBoard() {
         const parent = document.getElementById("parent");
         parent.style.width  = 100*settings.boardWidth+'px';
         const board = bb;
-        const board = bb
+      
 
         if (parent.childElementCount !== 0) {
             while (parent.childElementCount > 0) {
