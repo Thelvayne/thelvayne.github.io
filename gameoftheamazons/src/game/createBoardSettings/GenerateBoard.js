@@ -1,29 +1,19 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { newGame } from "../../communication/Communication";
 import { createBoard } from "../createBoard/CreateNewBoard";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BackgroundColor } from "../RenderBoard"
 import { letter } from "../letter"
 import { PlaceAmazons } from "../RenderBoard";
 
 
 export function GenerateBoard() {
-    let [searchParams] = useSearchParams();
-    let idOne = searchParams.get("pIdOne");
-    if (idOne === undefined || idOne === null || Number.isNaN(idOne)) {
-        idOne = '-1'
-    }
-    let idTwo = searchParams.get("pIdTwo");
-    if (idTwo === undefined || idTwo === null || Number.isNaN(idTwo)) {
-        idTwo = '-1'
-    }
-
-    console.log("Das ist von der GenerateBoard.js, um zu sehen ob es die ID von searchParams: " + idOne + ", " + idTwo);
 
     let navigate = useNavigate();
 
     const xSize = useRef();
     const timeout = useRef();
+    const ids = useRef({ idOne: undefined, idTwo: undefined });
     var gameID;
 
     const [settings, setSettings] = useState({ boardWidth: 10, timeoutTime: 60000 });
@@ -54,8 +44,8 @@ export function GenerateBoard() {
                 Number(settings.boardWidth),
                 Number(settings.boardWidth),
                 boardPrev,
-                idOne,
-                idTwo
+                ids.current.idOne,
+                ids.current.idTwo
             )
             console.log(await g);
             gameID = await g.id;
@@ -72,25 +62,25 @@ export function GenerateBoard() {
         setBoardPrev(bb);
 
         const parent = document.getElementById("parent");
-        parent.style.width  = 100*settings.boardWidth+'px';
+        parent.style.width = 100 * settings.boardWidth + 'px';
         const board = bb;
 
         if (parent.childElementCount !== 0) {
             while (parent.childElementCount > 0) {
                 parent.removeChild(parent.lastChild);
-            }         
+            }
         }
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; j++) {
                 const child = document.createElement("div");
                 child.id = letter(j) + i;
                 child.className = BackgroundColor(i, j);
-                parent.appendChild(child);        
+                parent.appendChild(child);
             }
-            
+
         }
     }
-    
+
 
     const checkFigureValidity = () => {
         let p1hasAFigure = false;
@@ -98,7 +88,7 @@ export function GenerateBoard() {
 
         for (let i = 0; i < boardPrev.length; i++) {
             for (let j = 0; j < boardPrev[i].length; j++) {
-                if (boardPrev[i][j] === 0 && p1hasAFigure===false) {
+                if (boardPrev[i][j] === 0 && p1hasAFigure === false) {
                     p1hasAFigure = true;
                     // console.log(p1hasAFigure);
                     continue;
@@ -149,7 +139,21 @@ export function GenerateBoard() {
                 console.log(boardPrev);
             }
         }
-    }   
+    }
+    useEffect(() => readIds)
+
+    const readIds = () => {
+        var url = window.location.href;
+        var pId = url.indexOf("pId=")
+        var opId = url.indexOf("&opId=")
+        var s1 = url.substring(pId + 4, opId)
+        var s2 = url.substring(opId + 6)
+        console.log(s1 + ", " + s2);
+        ids.current.idOne = Number(s1);
+        ids.current.idTwo = Number(s2);
+        console.log(ids.current.idOne);
+        console.log(ids.current.idTwo);
+    }
 
     return (
         <div className="settingswindow" id="sw">
@@ -175,6 +179,7 @@ export function GenerateBoard() {
 
             </div>
             <input type="button" id="createGame" className="createGame" value={"createGame"} onClick={startGame} />
+            <input type="button" id="readIds" className="readIds" value={"readIds"} onClick={readIds} />
         </div>
     )
 }
