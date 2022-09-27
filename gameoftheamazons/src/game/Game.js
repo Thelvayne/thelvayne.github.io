@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import React from 'react'
 
-import { deleteGame, getGameByID, reset } from '../communication/Communication'
+import { deleteGame, getGameByID } from '../communication/Communication'
 
 import { firstSelectionProcess, redoFirstSelectionProcess } from './selectionProcess/FirstSelectionProcess'
 import { moveAmazone, redoMove } from './selectionProcess/SecondSelectionProcess'

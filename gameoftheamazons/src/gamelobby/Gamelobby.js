@@ -123,7 +123,7 @@ export default function Gamelobby() {
 
     const getAllPlayersInGames = async () => {
         const games = await getGames();
-        var list = new Array();
+        var list = new Array([]);
         console.log(await games);
         for (const ind in games.games) {
             if (Object.hasOwnProperty.call(games.games, ind)) {       
