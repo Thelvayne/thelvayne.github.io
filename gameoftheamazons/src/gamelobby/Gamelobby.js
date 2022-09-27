@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import LoginForm from '../game/loginForm/LoginForm';
 import { GenerateBoard } from '../game/createBoardSettings/GenerateBoard';
-import { getGames, getPlayers } from '../communication/Communication';
+import { createPlayer, deletePlayer, getGames, getPlayers } from '../communication/Communication';
 
 export default function Gamelobby() {
     let [searchParams] = useSearchParams();
@@ -50,24 +50,23 @@ export default function Gamelobby() {
     const Login = details => {
         console.log(details);
 
-        if (details.name === adminUser.name) {
+     
 
             console.log("Logged in");
             setUser({
                 name: details.name
             });
-        } else {
-            console.log("Details do not match");
-            setError("Details do not match")
-        }
+            createPlayer(details.name).then((c)=>{pId = c.id});
+        
     }
-    const Logout = () => {
+   const Logout = async() => {
         setUser({
             name: ""
         })
         document.getElementById("CGame").classList.add("visually-hidden");
         document.getElementById("sidebarright").classList.add("visually-hidden");
         console.log("Logout");
+        await deletePlayer(pId);
     }
 
     const renderGameList = async () => {
