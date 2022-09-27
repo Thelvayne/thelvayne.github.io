@@ -145,9 +145,9 @@ export function GenerateBoard() {
     const readIds = () => {
         var url = window.location.href;
         var pId = url.indexOf("pId=")
-        var opId = url.indexOf("&opId=")
-        var s1 = url.substring(pId + 4, opId)
-        var s2 = url.substring(opId + 6)
+        var opId = url.indexOf("opId=")
+        var s1 = url.substring(pId + 4, opId-1)
+        var s2 = url.substring(opId + 5)
         console.log(s1 + ", " + s2);
         ids.current.idOne = Number(s1);
         ids.current.idTwo = Number(s2);
