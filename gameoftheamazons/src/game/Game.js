@@ -82,7 +82,7 @@ export default function Game() {
     console.log(100 * gameboard.current.board.rows + 'px');
     const parent = document.getElementById("parent");
     parent.style.width = (100 * gameboard.current.board.column) + 'px';
-    parent.style.height = 100 * gameboard.current.board.rows + 'px';
+    // parent.style.height = 100 * gameboard.current.board.rows + 'px';
     const board = gameboard.current.board.squares;
     board.forEach((row, indexr) => {
       row.forEach((column, indexc) => {
@@ -103,31 +103,14 @@ export default function Game() {
     box.className += str;
   }
 
-  const loadPlayfield = (field) => {
-    field.forEach((row, indR) => {
-      row.forEach((column, indC) => {
-        const el = document.getElementById(letter(indC) + indR);
-        var str = el.className;
-        str = str.trim();
-        el.className = str
-        el.classList.includes("box") ? el.classList.remove("box") : console.log("nothing to delete");
-        el.classList.includes("arrow") ? el.classList.remove("arrow") : console.log("nothing to delete");
-        el.classList.includes("piecewhite") ? el.classList.remove("piecewhite") : console.log("nothing to delete");
-        el.classList.includes("pieceblack") ? el.classList.remove("pieceblack") : console.log("nothing to delete");
-        el.classList.includes("arrowselected") ? el.classList.remove("arrowselected") : console.log("nothing to delete");
-        el.classList.includes("selected") ? el.classList.remove("selected") : console.log("nothing to delete");
-        el.classList.includes("select") ? el.classList.remove("select") : console.log("nothing to delete");
-        el.classList.includes("white") ? el.classList.remove("white") : console.log("nothing to delete");
-        el.classList.includes("black") ? el.classList.remove("black") : console.log("nothing to delete");
-      })
-    })
-    field.forEach((row, indR) => {
-      row.forEach((column, indC) => {
-        const el = document.getElementById(letter(indC) + indR);
-        el.className = BackgroundColor(indR, indC);
-        el.className = loadAmazone(column, indR, indC);
-      })
-    })
+  const loadPlayfield = () => {
+    var parent = document.getElementById("parent");
+    if (parent.childElementCount !== 0) {
+      while (parent.childElementCount > 0) {
+        parent.removeChild(parent.lastChild);
+      }
+    }
+    element()
   }
 
   // Funktion für onClick Ereignis
@@ -245,21 +228,15 @@ export default function Game() {
     }
   }
 
-  // Funktion für den 'Aktuelles Spiel Beenden'
-  // setzt alles auf die Anfangswerte zurück (Spieler und Spiele werden gelöscht)
-  const resetAll = async () => {
-    const r = await reset();
-    console.log(r)
-  }
 
   function Navigatehelp() {
-    navigate("/Help")
+    navigate("/Help/?id=" + id)
   }
 
   // Funktion um zu Hilfe zu navigieren
   async function Navigateback() {
-    await deleteGame(0);
-    navigate("/GenerateBoard")
+    await deleteGame(id);
+    navigate("/")
   }
 
   // window.addEventListener("load", element);
