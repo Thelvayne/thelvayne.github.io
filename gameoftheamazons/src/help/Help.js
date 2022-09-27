@@ -4,17 +4,37 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 export default function Help() {
     let [searchParams] = useSearchParams();
 
-    let id = searchParams.get("id");
-    if (id === undefined || id === null || Number.isNaN(id)) {
-        id = '-1'
+    let gameId = searchParams.get("id");
+    if (gameId === undefined || gameId === null || Number.isNaN(gameId)) {
+        gameId = '-1'
     }
 
-    console.log("Das ist von der Help.js, um zu sehen ob es die ID von searchParams: " + id);
+    let userId = searchParams.get("id");
+    if (userId === undefined || userId === null || Number.isNaN(userId)) {
+        userId = '-1'
+    }
+
+    let pId = searchParams.get("id");
+    if (pId === undefined || pId === null || Number.isNaN(pId)) {
+        pId = '-1'
+    }
+
+    let opId = searchParams.get("id");
+    if (opId === undefined || opId === null || Number.isNaN(opId)) {
+        opId = '-1'
+    }
 
     let navigate = useNavigate();
 
     async function navigategame() {
-        navigate("../Game/?id=" + id)
+        if (gameId === -1) {
+            userId !== -1 ? opId !== -1 ?
+                navigate("../?userId=" + userId + "&pId=" + pId + "&opId=" + opId) :
+                navigate("../userId=" + userId + "&pId=" + pId) :
+                navigate("../");
+        } else {
+            navigate("../Game/?userId=" + userId + "&gameId=" + gameId)
+        }
     }
 
     return (

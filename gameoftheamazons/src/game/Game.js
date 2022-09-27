@@ -15,12 +15,17 @@ export default function Game() {
 
   let [searchParams] = useSearchParams();
 
-  let id = searchParams.get("id");
-  if (id === undefined || id === null || Number.isNaN(id)) {
-    id = '-1'
+  let gameId = searchParams.get("gameId");
+  if (gameId === undefined || gameId === null || Number.isNaN(gameId)) {
+    gameId = '-1'
   }
 
-  console.log("Das ist von der Game.js, um zu sehen ob es die ID von searchParams: " + id);
+  let userId = searchParams.get("userId");
+  if (userId === undefined || userId === null || Number.isNaN(userId)) {
+    userId = '-1'
+  }
+
+  console.log("Das ist von der Game.js, um zu sehen ob es die ID von searchParams: " + gameId);
 
   let navigate = useNavigate();
 
@@ -49,7 +54,7 @@ export default function Game() {
 
 
   const fetchGameData = () => {
-    const game = getGameByID(id).then((g) => {
+    const game = getGameByID(gameId).then((g) => {
       // console.log(g);
       gameboard.current.board = g.board;
       currentPlayer.current = g.turnPlayer;
@@ -119,7 +124,7 @@ export default function Game() {
     * Bedingung: es gibt keinen Gewinner
     * -> führe den Algorithmus aus
     */
-    if (thereIsAWinner.current === false) {
+    if (thereIsAWinner.current === false && currentPlayer.current === userId) {
       /**
        * 1te Überprüfung: wurde noch keine Amazone gewählt -> merke Amazone und markiere mögliche Züge
        * 2te Überprüfung: es ist eine Amazone gewählt und erneut gleiche ausgewählt -> lösche alle Einträge aus 1.
@@ -135,7 +140,7 @@ export default function Game() {
       // falls noch keine Amazone gewählt wurde
       if (amazoneSelected.current === 0) {
         console.log("Stage 1.1");
-        if (await firstSelectionProcess(row, column, g, figureAssigned.current) === true) {
+        if (firstSelectionProcess(row, column, g, figureAssigned.current) === true) {
           // speichere letztes gewähltes Feld
           selectedCoordinates.current.currentRow = row;
           selectedCoordinates.current.currentColumn = column
@@ -172,7 +177,7 @@ export default function Game() {
       // falls gleiches Feld nochmal ausgewählt wird, entferne wieder die Anzeige der möglichen Ziele
       else if (amazoneSelected.current === 2 && (selectedCoordinates.currentColumn === column && selectedCoordinates.currentRow === row)) {
         console.log("Stage 1.2.r");
-        await redoMove();
+        redoMove();
         // setze den Wert auf 1, da die Amazone wieder auf ihre Startposition gesetzt wird
         amazoneSelected.current = 0;
       }
@@ -180,7 +185,7 @@ export default function Game() {
       else if (amazoneSelected.current === 2) {
         console.log("Stage 1.3");
         // console.log(idGame.current);
-        await shotArrow(row, column, id, currentPlayer.current, selectionProcess, amazoneSelected.current);
+        await shotArrow(row, column, gameId, currentPlayer.current, selectionProcess, amazoneSelected.current);
         // speicher letzte Auswahl
         selectedCoordinates.current.currentRow = row;
         selectedCoordinates.current.currentColumn = column;
@@ -230,12 +235,12 @@ export default function Game() {
 
 
   function Navigatehelp() {
-    navigate("/Help/?id=" + id)
+    navigate("/Help/?userId=" + userId + "&gameId=" + gameId)
   }
 
   // Funktion um zu Hilfe zu navigieren
   async function Navigateback() {
-    await deleteGame(id);
+    await deleteGame(gameId);
     navigate("/")
   }
 

@@ -1,7 +1,7 @@
 import { markMoveable } from '../markMoveable';
 import { letter } from '../letter';
 
-export const firstSelectionProcess = async (rowGiven, columnGiven, g, figureAssigned) => {
+export const firstSelectionProcess = (rowGiven, columnGiven, g, figureAssigned) => {
 
     let row = Number(rowGiven);
     let column = Number(columnGiven);
@@ -15,10 +15,10 @@ export const firstSelectionProcess = async (rowGiven, columnGiven, g, figureAssi
             return false;
         }
     };
-    await isInputCorrect()
+    isInputCorrect()
     console.log(isInputCorrect());
 
-    if (await isInputCorrect()) {
+    if (isInputCorrect()) {
         document.getElementById(letter(column) + row).className += "select";
         // markieren aller erlaubten Spielzüge
         markMoveable(row, column, g);

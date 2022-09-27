@@ -7,6 +7,11 @@ import { getGames, getPlayers } from '../communication/Communication';
 
 export default function Gamelobby() {
     let [searchParams] = useSearchParams();
+    
+    let userId = searchParams.get("userId");
+    if (userId === undefined || userId === null || Number.isNaN(userId)) {
+        userId = '-1'
+    }
 
     let pId = searchParams.get("pId");
     if (pId === undefined || pId === null || Number.isNaN(pId)) {
@@ -25,8 +30,10 @@ export default function Gamelobby() {
 
     let navigate = useNavigate();
     function OpenRules() {
-
-        navigate("../Help")
+        userId !== -1 ? opId !== -1 ? 
+        navigate("../Help/?userId=" + userId + "&pId=" + pId + "&opId=" + opId) : 
+        navigate("../Help/?userId=" + userId + "&pId=" + pId) : 
+        navigate("../Help/");
     }
     function CreateGame() {
         document.getElementById("CGame").classList.remove("visually-hidden");
@@ -48,7 +55,6 @@ export default function Gamelobby() {
             console.log("Logged in");
             setUser({
                 name: details.name
-
             });
         } else {
             console.log("Details do not match");
@@ -94,7 +100,7 @@ export default function Gamelobby() {
     const renderPlayerList = async () => {
         const allCurrentPlayer = await getPlayers();
         const list = await getAllPlayersInGames()
-        console.log(await allCurrentPlayer + "||" + await list);
+        console.log(await allCurrentPlayer + "||" + list);
 
         const parent = document.getElementById("sidebarright");
         if (parent.childElementCount !== 0) {
@@ -139,12 +145,12 @@ export default function Gamelobby() {
     setInterval(renderPlayerList, 5000);
 
     const choseOpponent = (evt) => {
-        let userID = evt.target.id;
-        let userIDStr = userID.toString()
+        let opponentId = evt.target.id;
+        let opponentIdStr = opponentId.toString()
 
         if (evt.target.className.includes("clickable")) {
             if ('URLSearchParams' in window) {
-                searchParams.set("opId", userIDStr);
+                searchParams.set("opId", opponentIdStr);
                 var newURL = window.location.pathname + '?' + searchParams.toString();
                 window.history.pushState({}, null, newURL);
                 console.log("Das ist von der Gamelobby.js, um zu sehen ob es die ID von searchParams: " + pId + ", " + opId);

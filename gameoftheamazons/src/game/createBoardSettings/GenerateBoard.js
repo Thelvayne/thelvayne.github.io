@@ -13,7 +13,7 @@ export function GenerateBoard() {
 
     const xSize = useRef();
     const timeout = useRef();
-    const ids = useRef({ idOne: undefined, idTwo: undefined });
+    const ids = useRef({ userId: undefined, pId: undefined, opId: undefined });
     var gameID;
 
     const [settings, setSettings] = useState({ boardWidth: 10, timeoutTime: 60000 });
@@ -48,15 +48,15 @@ export function GenerateBoard() {
                 Number(settings.boardWidth),
                 Number(settings.boardWidth),
                 boardPrev,
-                ids.current.idOne,
-                ids.current.idTwo
+                ids.current.pId,
+                ids.current.opId
             )
             console.log(await g);
             gameID = await g.id;
             console.log(g.id);
             if (g.id !== undefined) {
                 console.log("bin trotzdem hier :P");
-                navigate("/Game/?id=" + gameID)
+                navigate("/Game/?userId="+ids.current.userId+"gameId=" + gameID)
             }
         }
     }
@@ -68,11 +68,7 @@ export function GenerateBoard() {
         const parent = document.getElementById("parent");
         parent.style.width = 100 * settings.boardWidth + 'px';
         const board = bb;
-<<<<<<< HEAD
       
-=======
->>>>>>> f7addbd4cc4b3ff0d7dbc05cc0fa7840c8c03732
-
         if (parent.childElementCount !== 0) {
             while (parent.childElementCount > 0) {
                 parent.removeChild(parent.lastChild);
@@ -141,8 +137,8 @@ export function GenerateBoard() {
                 } else {
                     boardPrev[row][column] = -1;
                     var el = document.getElementById(letter(column) + row);
-                    if (el.className.includes("pieceblack")) el.classList.remove("pieceblack")
-                    else el.classList.remove("piecewhite")
+                    if (el.className.includes("pieceblack")) el.classList.remove("pieceblack");
+                    else el.classList.remove("piecewhite");
                 }
                 console.log(boardPrev);
             }
@@ -152,15 +148,20 @@ export function GenerateBoard() {
 
     const readIds = () => {
         var url = window.location.href;
-        var pId = url.indexOf("pId=")
-        var opId = url.indexOf("opId=")
-        var s1 = url.substring(pId + 4, opId-1)
-        var s2 = url.substring(opId + 5)
-        console.log(s1 + ", " + s2);
-        ids.current.idOne = Number(s1);
-        ids.current.idTwo = Number(s2);
-        console.log(ids.current.idOne);
-        console.log(ids.current.idTwo);
+        var stringuserId, stringpId, stringopId;
+        stringuserId = url.indexOf("userId=");
+        stringpId = url.indexOf("pId=");
+        stringopId = url.indexOf("opId=");
+        var s1 = url.substring(stringuserId + 7, stringpId - 1);
+        var s2 = url.substring(stringpId + 4, stringopId - 1);
+        var s3 = url.substring(stringopId + 5);
+        console.log(s1 + ", " + s2 + ", " + s3);
+        ids.current.userId = Number(s1);
+        ids.current.pId = Number(s2);
+        ids.current.opId = Number(s3);
+        console.log(ids.current.userId);
+        console.log(ids.current.pId);
+        console.log(ids.current.opId);
     }
 
     return (
