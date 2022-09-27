@@ -35,6 +35,10 @@ export function GenerateBoard() {
         }
     };
 
+    function closeWindow() {
+        document.getElementById("CGame").classList.add("visually-hidden");
+        //document.getElementById("sidebarright").classList.add("visually-hidden");
+    }
 
     async function startGame() {
 
@@ -157,6 +161,7 @@ export function GenerateBoard() {
 
     return (
         <div className="settingswindow" id="sw">
+
             <div className="input">
                 <p>Gib die Breite des Spielfeldes an: </p>
                 <input id="inputBoardSize" type="number" ref={xSize} value={settings.boardWidth} min="5" onChange={submit} />
@@ -180,6 +185,7 @@ export function GenerateBoard() {
             </div>
             <input type="button" id="createGame" className="createGame" value={"createGame"} onClick={startGame} />
             <input type="button" id="readIds" className="readIds" value={"readIds"} onClick={readIds} />
+            <input type="button" id="back" className="readIds" value={"closeWindow"} onClick={closeWindow} />
         </div>
     )
 }
