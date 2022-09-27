@@ -19,9 +19,9 @@ export default function Gamelobby() {
     }
 
     setInterval(console.log("Das ist von der Gamelobby.js, um zu sehen ob es die ID von searchParams: " + pId + ", " + opId), 1000);
-    
-        
-    
+
+
+
 
     let navigate = useNavigate();
     function OpenRules() {
@@ -94,7 +94,8 @@ export default function Gamelobby() {
 
     const renderPlayerList = async () => {
         const allCurrentPlayer = await getPlayers();
-        console.log(await allCurrentPlayer);
+        const list = await getAllPlayersInGames()
+        console.log(await allCurrentPlayer + "||" + await list);
 
         const parent = document.getElementById("sidebarright");
         if (parent.childElementCount !== 0) {
@@ -104,6 +105,7 @@ export default function Gamelobby() {
         }
         for (const ind in allCurrentPlayer.players) {
             if (Object.hasOwnProperty.call(allCurrentPlayer.players, ind)) {
+                if (!list.includes(allCurrentPlayer.players[ind].id)){
                 const child = document.createElement('li');
                 const baby = document.createElement('a');
                 // console.log(allCurrentPlayer.players);
@@ -111,10 +113,28 @@ export default function Gamelobby() {
                 // console.log(allCurrentPlayer.players[ind]);
                 baby.innerHTML = allCurrentPlayer.players[ind].name;
                 baby.id = allCurrentPlayer.players[ind].id;
+                baby.className = "clickable"
                 child.appendChild(baby);
+                child.style.cursor = "pointer";
                 parent.appendChild(child);
+                }
             }
         }
+    }
+
+    const getAllPlayersInGames = async () => {
+        const games = await getGames();
+        var list = new Array();
+        console.log(await games);
+        for (const ind in games.games) {
+            if (Object.hasOwnProperty.call(games.games, ind)) {       
+                const playerOne = games.games[ind].players[0];
+                const playerTwo = games.games[ind].players[1];
+                list.push(playerOne);
+                list.push(playerTwo);        
+            }
+        }
+        return list;
     }
 
     setInterval(renderPlayerList, 5000);
@@ -122,37 +142,15 @@ export default function Gamelobby() {
     const choseOpponent = (evt) => {
         let userID = evt.target.id;
         let userIDStr = userID.toString()
-        // console.log(userID);
-        // var curURL = window.location.href;
-        // console.log(curURL);
-        // if (!curURL.includes("opId")) {
-        //     let newUrl = curURL + "&opId=" + userID;
-        //     window.history.pushState({}, null, newUrl);
-        // } else {
-        //     let startInd = curURL.indexOf("opId=")
-        //     let unchanged = curURL.substring(0, startInd)
-        //     console.log(unchanged); //domain/?pId=value&
-        //     console.log(startInd);
-        //     let str = curURL.substring(startInd) //opId=value
-        //     let equalInd = str.indexOf("=");
-        //     let strToChange = str.substring(equalInd+1) // 
-        //     console.log(strToChange);
-        //     strToChange = userID
-        //     let newUrl = unchanged + "opId=" + userID;
-        //     console.log(newUrl);
-        //     window.history.pushState({}, null, newUrl);
-        // }
-        // // searchParams.set('opId', userIDStr)
-        // searchParams.get('opId')
-        // console.log("Das ist von der Gamelobby.js, um zu sehen ob es die ID von searchParams: " + pId + ", " + opId);
 
-        if ('URLSearchParams' in window) {
-            searchParams.set("opId", userIDStr);
-            var newURL = window.location.pathname + '?' + searchParams.toString();
-            window.history.pushState({}, null, newURL);
-            console.log("Das ist von der Gamelobby.js, um zu sehen ob es die ID von searchParams: " + pId + ", " + opId);
+        if (evt.target.className.includes("clickable")) {
+            if ('URLSearchParams' in window) {
+                searchParams.set("opId", userIDStr);
+                var newURL = window.location.pathname + '?' + searchParams.toString();
+                window.history.pushState({}, null, newURL);
+                console.log("Das ist von der Gamelobby.js, um zu sehen ob es die ID von searchParams: " + pId + ", " + opId);
+            }
         }
-
     }
 
     return (
