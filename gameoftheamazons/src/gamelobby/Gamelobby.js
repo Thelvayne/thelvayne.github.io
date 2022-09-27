@@ -30,12 +30,11 @@ export default function Gamelobby() {
     }
     function CreateGame() {
         document.getElementById("CGame").classList.remove("visually-hidden");
-        document.getElementById("sidebarright").classList.remove("visually-hidden");
+        //document.getElementById("sidebarright").classList.remove("visually-hidden");
     }
 
     const adminUser = {
         name: "admin",
-        password: "admin123"
     }
     const [user, setUser] = useState({ name: "" });
     const [error, setError] = useState("");
@@ -44,7 +43,7 @@ export default function Gamelobby() {
     const Login = details => {
         console.log(details);
 
-        if (details.name === adminUser.name && details.password === adminUser.password) {
+        if (details.name === adminUser.name) {
 
             console.log("Logged in");
             setUser({
@@ -156,7 +155,7 @@ export default function Gamelobby() {
     return (
         <div>
             <div className="sidenav">
-                <h1>Game Of the Amazons</h1>
+                <h1>Game of the Amazons</h1>
                 {(user.name !== "") ? (
                     <div className='welcome'>
                         <h2>Welcome, <span>{user.name}</span></h2>
@@ -198,9 +197,9 @@ export default function Gamelobby() {
                 <input id="gameName" type="text"></input>
                 < GenerateBoard />
 
-                {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button> */}
+                {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/ }
             </div>
-            <div id="sidebarright" className="sidebarright visually-hidden" onClick={choseOpponent}>
+            <div id="sidebarright" className="sidebarright" onClick={choseOpponent}>
                 Choose your Opponent.
             </div>
         </div>

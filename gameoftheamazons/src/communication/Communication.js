@@ -9,7 +9,7 @@ const FETCH = (requestOptions, url) => {
     const fetched = fetch(url, requestOptions)
         .then((response) => {
            if(response.status === 400){
-            return {message: 400}
+            return {message: 400}   
            }
             return response.json()
         })
