@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 
 
 
+
+
 function LoginForm({Login, error}) {
     const [details, setDetails] = useState({name: ""});
     const submitHandler = e => {
@@ -16,9 +18,10 @@ function LoginForm({Login, error}) {
             {(error !== "") ? ( <div className='error'>{error}</div>): ""}
             <div className='form-group'>
                 <label htmlFor='name'>Name:</label>
-                <input type='text' name="name" id='name' onChange={e => setDetails({...details, name: e.target.value})} value={details.name}></input>
+                <input type='text' placeholder="Enter Name" name="name" id='name' onChange={e => setDetails({...details, name: e.target.value})} value={details.name}></input>
               </div>
               <input type='submit' className='submit' value="login"></input>
+              
         </div>
     </form>
   )
