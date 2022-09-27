@@ -1,14 +1,15 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import LoginForm from '../game/loginForm/LoginForm';
 import { GenerateBoard } from '../game/createBoardSettings/GenerateBoard';
-import { getGames } from '../communication/Communication';
+import { getGames, getPlayers } from '../communication/Communication';
 
 
 
 
 export default function Gamelobby() {
+
     let navigate = useNavigate();
     function OpenRules() {
 
@@ -60,17 +61,43 @@ export default function Gamelobby() {
         for (const ind in allCurrentGames.games) {
             if (Object.hasOwnProperty.call(allCurrentGames.games, ind)) {
                 console.log(ind);
-                console.log(await allCurrentGames.games[ind].id);
-                console.log(await allCurrentGames.games[ind].players);
+                // console.log(await allCurrentGames.games[ind].id);
+                // console.log(await allCurrentGames.games[ind].players);
                 const child = document.createElement('li');
                 const baby = document.createElement('a');
-                baby.href = "/Game/?id="+allCurrentGames.games[ind].id;
+                baby.href = "/Game/?id=" + allCurrentGames.games[ind].id;
                 baby.innerText = "Spiel " + allCurrentGames.games[ind].id;
                 child.appendChild(baby);
                 parent.appendChild(child);
-                
+
             }
         }
+    }
+
+    const renderPlayerList = async () => {
+        const allCurrentPlayer = await getPlayers();
+        console.log(await allCurrentPlayer);
+
+        const parent = document.getElementById("sidebarright");
+        for (const ind in allCurrentPlayer.players) {
+            if (Object.hasOwnProperty.call(allCurrentPlayer.players, ind)) {
+                const child = document.createElement('li');
+                const baby = document.createElement('a');
+                console.log(allCurrentPlayer.players);
+                console.log(ind);
+                console.log(allCurrentPlayer.players[ind]);
+                baby.innerHTML = allCurrentPlayer.players[ind].name;
+                baby.id = allCurrentPlayer.players[ind].id;
+                child.appendChild(baby);
+                parent.appendChild(child);
+            }
+        }
+    }
+
+    const choseOpponent = (evt) => {
+        let userID = evt.target.id;
+        console.log(userID);
+        
     }
 
     return (
@@ -121,9 +148,9 @@ export default function Gamelobby() {
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button> */}
             </div>
-                    <div id="sidebarright" className="sidebarright visually-hidden">
-                        Choose your Opponent.
-                    </div>
+            <div id="sidebarright" className="sidebarright visually-hidden" onClick={choseOpponent}>
+                Choose your Opponent. <button onClick={renderPlayerList}>show Player List</button>
+            </div>
         </div>
 
     )
