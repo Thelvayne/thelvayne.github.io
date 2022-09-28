@@ -7,13 +7,16 @@ import { letter } from "../letter"
 import { PlaceAmazons } from "../RenderBoard";
 
 
-export function GenerateBoard() {
+export function GenerateBoard(u) {
+
+    // var [searchParams] = useSearchParams();
 
     var navigate = useNavigate();
 
     const xSize = useRef();
     const timeout = useRef();
-    const ids = useRef({ userId: undefined, pId: undefined, opId: undefined });
+    console.log(u);
+    const ids = useRef({ userId: Number(u.userId), pId: Number(u.pId), opId: Number(u.opId) });
     var gameID;
 
     const [settings, setSettings] = useState({ boardWidth: 10, timeoutTime: 60000 });
@@ -145,37 +148,47 @@ export function GenerateBoard() {
     useEffect(() => readIds);
 
     const readIds = () => {
-        var url = window.location.href;
+        // var url = window.location.href;
 
         // substring for userId
-        var indexUserId = url.indexOf("userId=");       
-        var s1 = indexUserId !== -1 ? url.substring(indexUserId+7) : "";
-        console.log("s1: " + s1);
-        var s1End = indexUserId !== -1 ? s1.indexOf("&") : -1;
-        console.log("Index s1: " + s1End);
-        s1 = s1End !== -1 ? s1.substring(0, s1End) : s1.substring(0)     
-        ids.current.userId = Number(s1);
-        console.log("userId: " + ids.current.userId);
+        // var indexUserId = url.indexOf("userId=");       
+        // var s1 = indexUserId !== -1 ? url.substring(indexUserId+7) : "";
+        // console.log("s1: " + s1);
+        // var s1End = indexUserId !== -1 ? s1.indexOf("&") : -1;
+        // console.log("Index s1: " + s1End);
+        // s1 = s1End !== -1 ? s1.substring(0, s1End) : s1.substring(0)     
+        // ids.current.userId = Number(s1);
+        // console.log("userId: " + ids.current.userId);
 
-        // substring for pId
-        var indexpId = url.indexOf("pId=");       
-        var s2 = indexpId !== -1 ? url.substring(indexpId+4) : "";
-        console.log("s2: " + s2);
-        var s2End = indexpId !== -1 ? s2.indexOf("&") : -1;
-        console.log("Index s2: " + s2End);
-        s2 = s2End !== -1 ? s2.substring(0, s2End) : s2.substring(0)     
-        ids.current.pId = Number(s2);
-        console.log("pId: " + ids.current.pId);
+        // // substring for pId
+        // var indexpId = url.indexOf("pId=");       
+        // var s2 = indexpId !== -1 ? url.substring(indexpId+4) : "";
+        // console.log("s2: " + s2);
+        // var s2End = indexpId !== -1 ? s2.indexOf("&") : -1;
+        // console.log("Index s2: " + s2End);
+        // s2 = s2End !== -1 ? s2.substring(0, s2End) : s2.substring(0)     
+        // ids.current.pId = Number(s2);
+        // console.log("pId: " + ids.current.pId);
 
-        // substring for opId
-        var indexopId = url.indexOf("opId=");       
-        var s3 = indexopId !== -1 ? url.substring(indexopId+5) : "";
-        console.log("s3: " + s3);
-        var s3End = indexopId !== -1 ? s3.indexOf("&") : -1;
-        console.log("Index s3: " + s3End);
-        s3 = s3End !== -1 ? s3.substring(0, s3End) : s3.substring(0)     
-        ids.current.opId = Number(s3);
-        console.log("opId: " + ids.current.opId);
+        // // substring for opId
+        // var indexopId = url.indexOf("opId=");       
+        // var s3 = indexopId !== -1 ? url.substring(indexopId+5) : "";
+        // console.log("s3: " + s3);
+        // var s3End = indexopId !== -1 ? s3.indexOf("&") : -1;
+        // console.log("Index s3: " + s3End);
+        // s3 = s3End !== -1 ? s3.substring(0, s3End) : s3.substring(0)     
+        // ids.current.opId = Number(s3);
+        // console.log("opId: " + ids.current.opId);
+
+        // ids.current.userId = searchParams.get("userId")
+        // ids.current.pId = searchParams.get("pId")
+        // ids.current.opId = searchParams.get("opId")
+
+        
+
+        console.log("GenerateBoard userId: " + ids.current.userId);
+        console.log("GenerateBoard pId: " + ids.current.pId);
+        console.log("GenerateBoard opId: " + ids.current.opId);
         
     }
 

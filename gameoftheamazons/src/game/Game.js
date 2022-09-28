@@ -13,7 +13,7 @@ import { BackgroundColor, PlaceAmazons } from './RenderBoard'
 
 export default function Game() {
 
-  var [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   // let gameId = searchParams.get("gameId");
   // if (gameId === undefined || gameId === null || Number.isNaN(gameId)) {
@@ -124,7 +124,7 @@ export default function Game() {
     * Bedingung: es gibt keinen Gewinner
     * -> führe den Algorithmus aus
     */
-    if (thereIsAWinner.current === false && currentPlayer.current === searchParams.get("userId")) {
+    if (thereIsAWinner.current === false/* && currentPlayer.current === searchParams.get("userId")*/) {
       /**
        * 1te Überprüfung: wurde noch keine Amazone gewählt -> merke Amazone und markiere mögliche Züge
        * 2te Überprüfung: es ist eine Amazone gewählt und erneut gleiche ausgewählt -> lösche alle Einträge aus 1.
@@ -241,7 +241,7 @@ export default function Game() {
   // Funktion um zu Hilfe zu navigieren
   async function Navigateback() {
     await deleteGame(searchParams.get("gameId"));
-    navigate("/?userId=" + searchParams.get("userId") + "&pId" + searchParams.get("userId"));
+    navigate("/?userId=" + searchParams.get("userId") + "&pId=" + searchParams.get("userId"));
   }
 
   // window.addEventListener("load", element);

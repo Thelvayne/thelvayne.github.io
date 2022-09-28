@@ -33,8 +33,6 @@ export default function Gamelobby() {
     const Login = async details => {
         console.log(details);
 
-
-
         console.log("Logged in");
         setUser({
             name: details.name
@@ -55,7 +53,7 @@ export default function Gamelobby() {
             );
         }
     }
-    const Logout = async () => {
+    const Logout = () => {
         setUser({
             name: ""
         })
@@ -63,7 +61,7 @@ export default function Gamelobby() {
         document.getElementById("sidebarright").classList.add("visually-hidden");
         console.log("Logout");
         console.log(searchParams.get("userId"));
-        await deletePlayer(Number(searchParams.get("userId")))
+        deletePlayer(Number(searchParams.get("userId")))
     }
 
     const renderGameList = async () => {
@@ -83,7 +81,7 @@ export default function Gamelobby() {
                 // console.log(await allCurrentGames.games[ind].players);
                 const child = document.createElement('li');
                 const baby = document.createElement('a');
-                baby.href = "/Game/?userId" + searchParams.get("userId") + "&gameId=" + allCurrentGames.games[ind].id;
+                baby.href = "/Game/?userId=" + searchParams.get("userId") + "&gameId=" + allCurrentGames.games[ind].id;
                 baby.innerText = "Spiel " + allCurrentGames.games[ind].id;
                 child.appendChild(baby);
                 parent.appendChild(child);
@@ -201,7 +199,7 @@ export default function Gamelobby() {
             <h1 className="CreateGame">Create Game</h1>
                 <p>Game Name</p>
                 <input id="gameName" type="text"></input>
-                < GenerateBoard />
+                < GenerateBoard userId={61} pId={61} opId={0}/>
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/}
             </div>
