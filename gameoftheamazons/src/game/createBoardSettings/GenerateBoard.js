@@ -54,7 +54,7 @@ export function GenerateBoard(u) {
             console.log(g.id);
             if (g.id !== undefined) {
                 console.log("bin trotzdem hier :P");
-                navigate("/Game/?userId=" + ids.current.userId + "gameId=" + gameID)
+                navigate("/Game/?userId=" + ids.current.userId + "&gameId=" + gameID)
             }
         }
     }

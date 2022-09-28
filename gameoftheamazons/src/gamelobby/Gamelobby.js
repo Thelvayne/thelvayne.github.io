@@ -221,7 +221,7 @@ export default function Gamelobby() {
                 <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
                 <h1 className="CreateGame">Create Game</h1>
 
-                < GenerateBoard userId={userIdToGenerateBoard.current} pId={pIdToGenerateBoard.current} opId={opIdToGenerateBoard.current.value} />
+                < GenerateBoard userId={userIdToGenerateBoard.current} pId={pIdToGenerateBoard.current} opId={opIdToGenerateBoard.current} />
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/}
             </div>
