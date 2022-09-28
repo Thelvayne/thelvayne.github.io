@@ -5,7 +5,7 @@ const urlMove = "https://gruppe12.toni-barth.com/move/"
 
 // CRUD-Operationen
 const FETCH = (requestOptions, url) => {
-    console.log("FETCH: " + requestOptions + ", " + url);
+    // console.log("FETCH: " + requestOptions + ", " + url);
     const fetched = fetch(url, requestOptions)
         .then((response) => {
            if(response.status === 400){
