@@ -9,7 +9,7 @@ import { PlaceAmazons } from "../RenderBoard";
 
 export function GenerateBoard() {
 
-    let navigate = useNavigate();
+    var navigate = useNavigate();
 
     const xSize = useRef();
     const timeout = useRef();
@@ -88,8 +88,8 @@ export function GenerateBoard() {
 
 
     const checkFigureValidity = () => {
-        let p1hasAFigure = false;
-        let p2hasAFigure = false;
+        var p1hasAFigure = false;
+        var p2hasAFigure = false;
 
         for (let i = 0; i < boardPrev.length; i++) {
             for (let j = 0; j < boardPrev[i].length; j++) {
@@ -145,24 +145,41 @@ export function GenerateBoard() {
             }
         }
     }
-    useEffect(() => readIds)
+    useEffect(() => readIds);
 
     const readIds = () => {
         var url = window.location.href;
-        var stringuserId, stringpId, stringopId;
-        stringuserId = url.indexOf("userId=");
-        stringpId = url.indexOf("pId=");
-        stringopId = url.indexOf("opId=");
-        var s1 = url.substring(stringuserId + 7, stringpId - 1);
-        var s2 = url.substring(stringpId + 4, stringopId - 1);
-        var s3 = url.substring(stringopId + 5);
-        console.log(s1 + ", " + s2 + ", " + s3);
+
+        // substring for userId
+        var indexUserId = url.indexOf("userId=");       
+        var s1 = indexUserId !== -1 ? url.substring(indexUserId+7) : "";
+        console.log("s1: " + s1);
+        var s1End = indexUserId !== -1 ? s1.indexOf("&") : -1;
+        console.log("Index s1: " + s1End);
+        s1 = s1End !== -1 ? s1.substring(0, s1End) : s1.substring(0)     
         ids.current.userId = Number(s1);
+        console.log("userId: " + ids.current.userId);
+
+        // substring for pId
+        var indexpId = url.indexOf("pId=");       
+        var s2 = indexpId !== -1 ? url.substring(indexpId+4) : "";
+        console.log("s2: " + s2);
+        var s2End = indexpId !== -1 ? s2.indexOf("&") : -1;
+        console.log("Index s2: " + s2End);
+        s2 = s2End !== -1 ? s2.substring(0, s2End) : s2.substring(0)     
         ids.current.pId = Number(s2);
+        console.log("pId: " + ids.current.pId);
+
+        // substring for opId
+        var indexopId = url.indexOf("opId=");       
+        var s3 = indexopId !== -1 ? url.substring(indexopId+5) : "";
+        console.log("s3: " + s3);
+        var s3End = indexopId !== -1 ? s3.indexOf("&") : -1;
+        console.log("Index s3: " + s3End);
+        s3 = s3End !== -1 ? s3.substring(0, s3End) : s3.substring(0)     
         ids.current.opId = Number(s3);
-        console.log(ids.current.userId);
-        console.log(ids.current.pId);
-        console.log(ids.current.opId);
+        console.log("opId: " + ids.current.opId);
+        
     }
 
     return (
