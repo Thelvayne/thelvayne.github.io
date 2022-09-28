@@ -258,10 +258,10 @@
 }
 .currentBoard {
   z-index: 2;
-  position:absolute;
+  position:fixed;
   left: 0;
-  height: 100%;
+  height: 50%;
   top: 0;
-  width: 25%;
+  
 }
   
