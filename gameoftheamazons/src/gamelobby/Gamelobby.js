@@ -167,10 +167,17 @@ export default function Gamelobby() {
     const pIdToGenerateBoard = useRef(searchParams.get("pId"));
     const opIdToGenerateBoard = useRef(searchParams.get("opId"));
 
-    console.log("userID: " + userIdToGenerateBoard.current);
-    console.log("pID: " + pIdToGenerateBoard.current);
-    console.log("opID: " + opIdToGenerateBoard.current);
+    if (userIdToGenerateBoard.current === null ) {userIdToGenerateBoard.current = '-1'}
+    if (pIdToGenerateBoard.current === null ) {pIdToGenerateBoard.current = '-1'}
+    if (opIdToGenerateBoard.current === null ) {opIdToGenerateBoard.current = '-1'}
 
+    const log2 = () => {
+        console.log("userID: " + userIdToGenerateBoard.current);
+        console.log("pID: " + pIdToGenerateBoard.current);
+        console.log("opID: " + opIdToGenerateBoard.current);
+    }
+
+    setInterval(log2, 5000)
     return (
         <div>
             <div className="sidenav">
@@ -211,10 +218,10 @@ export default function Gamelobby() {
 
             </div>
             <div id="CGame" className="visually-hidden CGame">
-            <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
-            <h1 className="CreateGame">Create Game</h1>
-           
-                < GenerateBoard userId={userIdToGenerateBoard.current} pId={pIdToGenerateBoard.current} opId={opIdToGenerateBoard.current}/>
+                <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
+                <h1 className="CreateGame">Create Game</h1>
+
+                < GenerateBoard userId={userIdToGenerateBoard.current} pId={pIdToGenerateBoard.current} opId={opIdToGenerateBoard.current.value} />
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/}
             </div>

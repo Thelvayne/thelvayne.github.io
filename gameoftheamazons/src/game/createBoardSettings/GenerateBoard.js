@@ -9,8 +9,6 @@ import { PlaceAmazons } from "../RenderBoard";
 
 export function GenerateBoard(u) {
 
-    // var [searchParams] = useSearchParams();
-
     var navigate = useNavigate();
 
     const xSize = useRef();
@@ -56,7 +54,7 @@ export function GenerateBoard(u) {
             console.log(g.id);
             if (g.id !== undefined) {
                 console.log("bin trotzdem hier :P");
-                navigate("/Game/?userId="+ids.current.userId+"gameId=" + gameID)
+                navigate("/Game/?userId=" + ids.current.userId + "gameId=" + gameID)
             }
         }
     }
@@ -64,9 +62,10 @@ export function GenerateBoard(u) {
     async function showField() {
         var bb = await createBoard(settings.boardWidth);
         setBoardPrev(bb);
-
+        const appendTo = document.getElementById("sw")
         const parent = document.getElementById("parent");
-        parent.style.width = 100 * settings.boardWidth + 'px';
+        parent.style.width = appendTo.offsetWidth * 0.5 + 'px'
+        parent.style.height = appendTo.offsetWidth * 0.5 + 'px'
         const board = bb;
 
 
@@ -86,9 +85,11 @@ export function GenerateBoard(u) {
         }
 
         var box = document.getElementsByClassName("box");
-        for (let i = 0; i < box.length; i++){
-            box[i].style.width =(1 / settings.boardWidth) * 100 + '%'
-            box[i].style.height = box[i].style.width
+        for (let i = 0; i < box.length; i++) {
+            box[i].style.width = (1 / settings.boardWidth) * 100 + '%'
+        }
+        for (let i = 0; i < box.length; i++) {
+            box[i].style.height = (parent.offsetHeight/settings.boardWidth) + 'px';     
         }
     }
 
@@ -153,21 +154,21 @@ export function GenerateBoard(u) {
     }
     useEffect(() => readIds);
 
-    const readIds = () => {        
+    const readIds = () => {
 
         console.log("GenerateBoard userId: " + ids.current.userId);
         console.log("GenerateBoard pId: " + ids.current.pId);
         console.log("GenerateBoard opId: " + ids.current.opId);
-        
+
     }
 
     return (
         <div className="settingswindow" id="sw">
 
             <div className="input">
-                <p>Gib die Breite des Spielfeldes an: </p>
+                <p>Gib die Größe des Spielfeldes an: </p>
                 <input id="inputBoardSize" type="number" ref={xSize} value={settings.boardWidth} min="5" onChange={submit} />
-                <p>Gib die timeout-Dauer an: </p>
+                <p>Dauer des Zuges (ms): </p>
                 <input id="inputTimeoutLength" type="number" ref={timeout} value={settings.timeoutTime} min="30000" onChange={submit} />
             </div>
             <div className="submitbutton">
@@ -175,19 +176,14 @@ export function GenerateBoard(u) {
                 <input type="button" className="showUserPlayfield" value={"showField"} onClick={showField} />
             </div>
             <div>
-                <p>Deine Aktuellen Einstellungen sind:</p>
-                <p>Höhe: {settings.boardWidth}</p>
-                <p>Timeout: {settings.timeoutTime}</p>
-                <p>Ab hier soll das Feld dargestellt werden: </p>
                 <input type="button" className="setAmazone" value="changePlayerAmazone" onClick={changeAmazone} />
                 <p>gewählte Amazone: {change}</p>
             </div>
-            <div className="currentBoard" id="parent" onClick={clicks}>
-
-            </div>
             <input type="button" id="createGame" className="createGame" value={"createGame"} onClick={startGame} />
             <input type="button" id="readIds" className="readIds" value={"readIds"} onClick={readIds} />
-            
+            <div className="currentBoard" id="parent" onClick={clicks}></div>
+
+
         </div>
     )
 }

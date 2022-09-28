@@ -200,6 +200,8 @@ export const newGame = (maxTurnTime, gameSizeRows, gameSizeColumns, board, playe
             }
         }
 
+        console.log(game);
+
         const res = POST(game, urlGame)
             .then((response) => {
                 return response
