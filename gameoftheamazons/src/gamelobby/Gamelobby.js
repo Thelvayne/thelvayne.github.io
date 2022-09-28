@@ -62,6 +62,9 @@ export default function Gamelobby() {
         console.log("Logout");
         console.log(searchParams.get("userId"));
         deletePlayer(Number(searchParams.get("userId")))
+        searchParams.delete("userId")
+        searchParams.delete("pId")
+        searchParams.delete("opId")
     }
 
     const renderGameList = async () => {

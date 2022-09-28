@@ -124,7 +124,7 @@ export default function Game() {
     * Bedingung: es gibt keinen Gewinner
     * -> führe den Algorithmus aus
     */
-    if (thereIsAWinner.current === false/* && currentPlayer.current === searchParams.get("userId")*/) {
+    if (thereIsAWinner.current === false && currentPlayer.current === searchParams.get("userId")) {
       /**
        * 1te Überprüfung: wurde noch keine Amazone gewählt -> merke Amazone und markiere mögliche Züge
        * 2te Überprüfung: es ist eine Amazone gewählt und erneut gleiche ausgewählt -> lösche alle Einträge aus 1.
