@@ -90,12 +90,19 @@
     text-align: center;
     font-weight: 70%;
     padding: 1%;
-    display: flex;
+    /*
     flex-direction: column;
+*/
 
   }
   .CGame input{
     background-color: #ccc;
+  }
+
+  .input{
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-items: center;
   }
 
   .CGame input[type="button"]{
@@ -103,10 +110,25 @@
     margin-bottom: 2%;
     background-color: #D45613;
     border-radius: 5px;
+    align-items: center;
   }
   .CGame input[type="button"]:hover{
     background-color: #7A2802;
   }
+  .submitbutton{
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .chooseAmazon{
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .create{
+    grid-column: 1 / span 2;
+    grid-row: 3;
+  }
+
+
 
   .createGame{
     
@@ -114,7 +136,6 @@
     border-radius: 5px;
     width: 60%;
     font-size: 300%;
-    
   }
   .createGame:hover{
     background-color: #7A2802;
@@ -261,10 +282,15 @@
   left: 0;
   height: 50%;
   /* top: 80%; */
+  grid-row: 3;
+  grid-column: 2;
   
 }
 
 .settingswindow {
   position: relative;
+  display: grid;
+  grid-template-columns: 45% 55%;
+
 }
   

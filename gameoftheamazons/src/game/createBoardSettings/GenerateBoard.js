@@ -175,15 +175,16 @@ export function GenerateBoard(u) {
 
                 <input type="button" className="showUserPlayfield" value={"showField"} onClick={showField} />
             </div>
-            <div>
+            <div className="chooseAmazon">
                 <input type="button" className="setAmazone" value="changePlayerAmazone" onClick={changeAmazone} />
                 <p>gewählte Amazone: {change}</p>
             </div>
+            <div className="create">
             <input type="button" id="createGame" className="createGame" value={"createGame"} onClick={startGame} />
             <input type="button" id="readIds" className="readIds" value={"readIds"} onClick={readIds} />
             <div className="currentBoard" id="parent" onClick={clicks}></div>
-
-
+            </div>
         </div>
     )
+
 }
