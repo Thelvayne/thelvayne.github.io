@@ -13,21 +13,21 @@ import { BackgroundColor, PlaceAmazons } from './RenderBoard'
 
 export default function Game() {
 
-  let [searchParams] = useSearchParams();
+  var [searchParams] = useSearchParams();
 
-  let gameId = searchParams.get("gameId");
-  if (gameId === undefined || gameId === null || Number.isNaN(gameId)) {
-    gameId = '-1'
-  }
+  // let gameId = searchParams.get("gameId");
+  // if (gameId === undefined || gameId === null || Number.isNaN(gameId)) {
+  //   gameId = '-1'
+  // }
 
-  let userId = searchParams.get("userId");
-  if (userId === undefined || userId === null || Number.isNaN(userId)) {
-    userId = '-1'
-  }
+  // let userId = searchParams.get("userId");
+  // if (userId === undefined || userId === null || Number.isNaN(userId)) {
+  //   userId = '-1'
+  // }
 
-  console.log("Das ist von der Game.js, um zu sehen ob es die ID von searchParams: " + gameId);
+  console.log("Das ist von der Game.js, um zu sehen ob es die ID von searchParams: " + searchParams.get("gameId"));
 
-  let navigate = useNavigate();
+  var navigate = useNavigate();
 
   // Spieler 1: blau, turnPlayer = 0 pieceblack
   // Spieler 2: rot, turnPlayer = 1 piecewhite
@@ -54,7 +54,7 @@ export default function Game() {
 
 
   const fetchGameData = () => {
-    const game = getGameByID(gameId).then((g) => {
+    const game = getGameByID(searchParams.get("gameId")).then((g) => {
       // console.log(g);
       gameboard.current.board = g.board;
       currentPlayer.current = g.turnPlayer;
@@ -124,7 +124,7 @@ export default function Game() {
     * Bedingung: es gibt keinen Gewinner
     * -> führe den Algorithmus aus
     */
-    if (thereIsAWinner.current === false && currentPlayer.current === userId) {
+    if (thereIsAWinner.current === false && currentPlayer.current === searchParams.get("userId")) {
       /**
        * 1te Überprüfung: wurde noch keine Amazone gewählt -> merke Amazone und markiere mögliche Züge
        * 2te Überprüfung: es ist eine Amazone gewählt und erneut gleiche ausgewählt -> lösche alle Einträge aus 1.
@@ -185,7 +185,7 @@ export default function Game() {
       else if (amazoneSelected.current === 2) {
         console.log("Stage 1.3");
         // console.log(idGame.current);
-        await shotArrow(row, column, gameId, currentPlayer.current, selectionProcess, amazoneSelected.current);
+        await shotArrow(row, column, searchParams.get("gameId"), currentPlayer.current, selectionProcess, amazoneSelected.current);
         // speicher letzte Auswahl
         selectedCoordinates.current.currentRow = row;
         selectedCoordinates.current.currentColumn = column;
@@ -195,7 +195,7 @@ export default function Game() {
         selectionProcess.current.shotrow = row;
         selectionProcess.current.shotcolumn = column;
         // aktuelles Spielbrett aktuallisieren
-        let newGameData = await fetchGameData();
+        var newGameData = await fetchGameData();
         console.log(await newGameData);
         gameboard.current.board = newGameData.board;
         currentPlayer.current = newGameData.turnPlayer;
@@ -235,13 +235,13 @@ export default function Game() {
 
 
   function Navigatehelp() {
-    navigate("/Help/?userId=" + userId + "&gameId=" + gameId)
+    navigate("/Help/?userId=" + searchParams.get("userId") + "&gameId=" + searchParams.get("gameId"))
   }
 
   // Funktion um zu Hilfe zu navigieren
   async function Navigateback() {
-    await deleteGame(gameId);
-    navigate("/")
+    await deleteGame(searchParams.get("gameId"));
+    navigate("/?userId=" + searchParams.get("userId") + "&pId" + searchParams.get("userId"));
   }
 
   // window.addEventListener("load", element);
