@@ -256,4 +256,12 @@
   top: -7%;
   z-index: 1;
 }
+.currentBoard {
+  z-index: 2;
+  position:absolute;
+  left: 0;
+  height: 100%;
+  top: 0;
+  width: 25%;
+}
   

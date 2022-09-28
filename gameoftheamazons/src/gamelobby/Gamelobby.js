@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import LoginForm from '../game/loginForm/LoginForm';
@@ -6,7 +6,7 @@ import { GenerateBoard } from '../game/createBoardSettings/GenerateBoard';
 import { createPlayer, deletePlayer, getGames, getPlayers } from '../communication/Communication';
 
 export default function Gamelobby() {
-    var [searchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
     const log = () => {
         console.log("UserId: " + searchParams.get("userId"))
@@ -162,6 +162,15 @@ export default function Gamelobby() {
         document.getElementById("CGame").classList.add("visually-hidden");
         //document.getElementById("sidebarright").classList.add("visually-hidden");
     }
+
+    const userIdToGenerateBoard = useRef(searchParams.get("userId"));
+    const pIdToGenerateBoard = useRef(searchParams.get("pId"));
+    const opIdToGenerateBoard = useRef(searchParams.get("opId"));
+
+    console.log("userID: " + userIdToGenerateBoard.current);
+    console.log("pID: " + pIdToGenerateBoard.current);
+    console.log("opID: " + opIdToGenerateBoard.current);
+
     return (
         <div>
             <div className="sidenav">
@@ -202,11 +211,10 @@ export default function Gamelobby() {
 
             </div>
             <div id="CGame" className="visually-hidden CGame">
-                <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
-                <h1 className="CreateGame">Create Game</h1>
-                <p>Game Name</p>
-                <input id="gameName" type="text"></input>
-                < GenerateBoard userId={61} pId={61} opId={0} />
+            <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
+            <h1 className="CreateGame">Create Game</h1>
+           
+                < GenerateBoard userId={userIdToGenerateBoard.current} pId={pIdToGenerateBoard.current} opId={opIdToGenerateBoard.current}/>
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/}
             </div>
