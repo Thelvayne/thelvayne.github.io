@@ -25,7 +25,7 @@ export default function Gamelobby() {
         document.getElementById("sidebarright").classList.remove("visually-hidden");
     }
 
-   
+
     const [user, setUser] = useState({ name: "" });
     const [error, setError] = useState("");
 
@@ -65,6 +65,8 @@ export default function Gamelobby() {
         searchParams.delete("userId")
         searchParams.delete("pId")
         searchParams.delete("opId")
+        var newURL = window.location.origin + window.location.pathname
+        window.history.pushState({}, null, newURL);
     }
 
     const renderGameList = async () => {
@@ -82,12 +84,14 @@ export default function Gamelobby() {
                 // console.log(ind);
                 // console.log(await allCurrentGames.games[ind].id);
                 // console.log(await allCurrentGames.games[ind].players);
-                const child = document.createElement('li');
-                const baby = document.createElement('a');
-                baby.href = "/Game/?userId=" + searchParams.get("userId") + "&gameId=" + allCurrentGames.games[ind].id;
-                baby.innerText = "Spiel " + allCurrentGames.games[ind].id;
-                child.appendChild(baby);
-                parent.appendChild(child);
+                if (allCurrentGames.games[ind].winningPlayer === undefined) {
+                    const child = document.createElement('li');
+                    const baby = document.createElement('a');
+                    baby.href = "/Game/?userId=" + searchParams.get("userId") + "&gameId=" + allCurrentGames.games[ind].id;
+                    baby.innerText = "Spiel " + allCurrentGames.games[ind].id;
+                    child.appendChild(baby);
+                    parent.appendChild(child);
+                }
             }
         }
     }
@@ -198,17 +202,17 @@ export default function Gamelobby() {
 
             </div>
             <div id="CGame" className="visually-hidden CGame">
-            <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
-            <h1 className="CreateGame">Create Game</h1>
+                <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
+                <h1 className="CreateGame">Create Game</h1>
                 <p>Game Name</p>
                 <input id="gameName" type="text"></input>
-                < GenerateBoard userId={61} pId={61} opId={0}/>
+                < GenerateBoard userId={61} pId={61} opId={0} />
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/}
             </div>
-            
+
             <div id="sidebarright" className="sidebarright visually-hidden" onClick={choseOpponent}>
-            Choose your Opponent
+                Choose your Opponent
             </div>
         </div>
 
