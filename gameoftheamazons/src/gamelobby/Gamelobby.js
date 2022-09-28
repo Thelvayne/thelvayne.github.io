@@ -200,8 +200,7 @@ export default function Gamelobby() {
             <div id="CGame" className="visually-hidden CGame">
             <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
             <h1 className="CreateGame">Create Game</h1>
-                <p>Game Name</p>
-                <input id="gameName" type="text"></input>
+           
                 < GenerateBoard userId={61} pId={61} opId={0}/>
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/}
