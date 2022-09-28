@@ -17,19 +17,15 @@ export default function Gamelobby() {
 
     var navigate = useNavigate();
     function OpenRules() {
-        searchParams.get("userId") !== '-1' ? searchParams.get("opId") !== '-1' ?
-            navigate("../Help/?userId=" + searchParams.get("userId") + "&pId=" + searchParams.get("pId") + "&opId=" + searchParams.get("opId")) :
-            navigate("../Help/?userId=" + searchParams.get("userId") + "&pId=" + searchParams.get("pId")) :
-            navigate("../Help/");
+
+        navigate("../HelpLobby")
     }
     function CreateGame() {
         document.getElementById("CGame").classList.remove("visually-hidden");
-        //document.getElementById("sidebarright").classList.remove("visually-hidden");
+        document.getElementById("sidebarright").classList.remove("visually-hidden");
     }
 
-    const adminUser = {
-        name: "admin",
-    }
+   
     const [user, setUser] = useState({ name: "" });
     const [error, setError] = useState("");
 
@@ -157,7 +153,10 @@ export default function Gamelobby() {
             }
         }
     }
-
+    function closeWindow() {
+        document.getElementById("CGame").classList.add("visually-hidden");
+        //document.getElementById("sidebarright").classList.add("visually-hidden");
+    }
     return (
         <div>
             <div className="sidenav">
@@ -181,7 +180,7 @@ export default function Gamelobby() {
                     <h1>Existing Games</h1>
                     <p>Click on game to Spectate</p>
                     {(user.name !== "") ? (
-                        <button onClick={CreateGame}>Create new Game</button>
+                        <button className="CreateGame" onClick={CreateGame}>Create new Game</button>
                     ) : (
                         <div>
                             <p>Login first to create a Game</p>
@@ -198,15 +197,17 @@ export default function Gamelobby() {
 
             </div>
             <div id="CGame" className="visually-hidden CGame">
-                <h1 className="CreateGame">Create Game</h1>
+            <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
+            <h1 className="CreateGame">Create Game</h1>
                 <p>Game Name</p>
                 <input id="gameName" type="text"></input>
                 < GenerateBoard />
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/}
             </div>
-            <div id="sidebarright" className="sidebarright" onClick={choseOpponent}>
-                Choose your Opponent.
+            
+            <div id="sidebarright" className="sidebarright visually-hidden" onClick={choseOpponent}>
+            Choose your Opponent
             </div>
         </div>
 

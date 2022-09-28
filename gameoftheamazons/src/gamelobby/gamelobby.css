@@ -88,8 +88,8 @@
     border-radius: 8px;
     font-size: 40%;
     text-align: center;
-    font-weight: 200;
-    padding: 10px;
+    font-weight: 70%;
+    padding: 1%;
 
   }
   .CGame input{
@@ -108,16 +108,17 @@
     
     background-color: #D45613;
     border-radius: 5px;
-    width: 80%;
+    width: 60%;
     height: 80%;
-    font-size: 80%;
+    font-size: 300%;
+    
   }
   .createGame:hover{
     background-color: #7A2802;
   }
   .CreateGame{
-    font-size: 120%;
-    
+    font-size: 140%;
+    color: white;
     background-color: #D45613;
     border-radius: 8px;
   }
@@ -180,18 +181,27 @@
     width: 90%;
     font-size: 80%;
   }
+.gamelist{
+  position:relative;
+  margin-left: 5%;
+  margin-right: 5%;
+  overflow: auto;
+  height: 60%;
+  margin-top: 2%;
+}
 .OpenGames{
   
+  position: fixed;
   margin-left: 30%;
-  margin-top: 10%;
+  margin-top: 5%;
   margin-bottom: 10%;
   width: 40%;
   background-image: linear-gradient(to right, #F7B116, #D45613);
-  background-position: 0%;
+  height: 100%;
   background-size: 100%;
   transition: 0.4s;
   color: #FFF;
-  font-weight: 700;
+  
   text-align: center;
   padding-bottom: 20%;
 
@@ -221,11 +231,29 @@
   height: 100%;
   right:0px;
   top: 0%;
-  position:absolute;
+  position:fixed;
   width: 20%;
   background-image: linear-gradient(to right,#D45613, #F7B116 );
+  background-size: 100%;
+  text-align: center;
+  padding-top: 2%;
+  font-size: 80%;
+  overflow: scroll;
   
   
     
+}
+
+.sidebarright li{
+  margin-left: 15%;
+  text-align: left;
+ 
+ 
+}
+.back{
+  position: absolute;
+  right: 0.5%;
+  top: -7%;
+  z-index: 1;
 }
   
