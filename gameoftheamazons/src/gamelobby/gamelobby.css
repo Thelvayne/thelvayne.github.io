@@ -108,16 +108,17 @@
     
     background-color: #D45613;
     border-radius: 5px;
-    width: 80%;
+    width: 60%;
     height: 80%;
-    font-size: 80%;
+    font-size: 300%;
+    
   }
   .createGame:hover{
     background-color: #7A2802;
   }
   .CreateGame{
-    font-size: 120%;
-    
+    font-size: 140%;
+    color: white;
     background-color: #D45613;
     border-radius: 8px;
   }
@@ -227,5 +228,11 @@
   
   
     
+}
+.back{
+  position: absolute;
+  right: 0.5%;
+  top: -7%;
+  z-index: 1;
 }
   

@@ -35,10 +35,7 @@ export function GenerateBoard() {
         }
     };
 
-    function closeWindow() {
-        document.getElementById("CGame").classList.add("visually-hidden");
-        //document.getElementById("sidebarright").classList.add("visually-hidden");
-    }
+
 
     async function startGame() {
 
@@ -186,7 +183,7 @@ export function GenerateBoard() {
             </div>
             <input type="button" id="createGame" className="createGame" value={"createGame"} onClick={startGame} />
             <input type="button" id="readIds" className="readIds" value={"readIds"} onClick={readIds} />
-            <input type="button" id="back" className="readIds" value={"closeWindow"} onClick={closeWindow} />
+            
         </div>
     )
 }

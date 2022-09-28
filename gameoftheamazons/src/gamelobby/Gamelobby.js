@@ -150,7 +150,10 @@ export default function Gamelobby() {
             }
         }
     }
-
+    function closeWindow() {
+        document.getElementById("CGame").classList.add("visually-hidden");
+        //document.getElementById("sidebarright").classList.add("visually-hidden");
+    }
     return (
         <div>
             <div className="sidenav">
@@ -191,7 +194,8 @@ export default function Gamelobby() {
 
             </div>
             <div id="CGame" className="visually-hidden CGame">
-                <h1 className="CreateGame">Create Game</h1>
+            <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
+            <h1 className="CreateGame">Create Game</h1>
                 <p>Game Name</p>
                 <input id="gameName" type="text"></input>
                 < GenerateBoard />
