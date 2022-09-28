@@ -4,11 +4,12 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-
+import Gamelobby from "./gamelobby/Gamelobby.js";
 import Game from "./game/Game.js";
 import Help from "./help/Help.js";
-import Gamelobby from "./gamelobby/Gamelobby.js";
-import Startscreen from './startscreen/Startscreen.js';
+import HelpLobby from "./help/HelpLobby.js";
+
+
 
 import { GenerateBoard } from "./game/createBoardSettings/GenerateBoard.js";
 
@@ -32,7 +33,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Gamelobby />} />
         <Route exact path="/GenerateBoard" element={<GenerateBoard/>} />
-        <Route exact path="/Startscreen" element={<Startscreen />}/>
+        <Route exact path="/HelpLobby" element={<HelpLobby />} />
         <Route exact path="/Game" element={<Game />} />
         <Route exact path="/Help" element={<Help />} />
       </Routes>

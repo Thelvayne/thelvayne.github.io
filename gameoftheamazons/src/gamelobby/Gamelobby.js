@@ -26,16 +26,14 @@ export default function Gamelobby() {
     let navigate = useNavigate();
     function OpenRules() {
 
-        navigate("../Help")
+        navigate("../HelpLobby")
     }
     function CreateGame() {
         document.getElementById("CGame").classList.remove("visually-hidden");
-        //document.getElementById("sidebarright").classList.remove("visually-hidden");
+        document.getElementById("sidebarright").classList.remove("visually-hidden");
     }
 
-    const adminUser = {
-        name: "admin",
-    }
+   
     const [user, setUser] = useState({ name: "" });
     const [error, setError] = useState("");
 
@@ -51,7 +49,7 @@ export default function Gamelobby() {
 
             });
             createPlayer(details.name).then((c)=>{pId = c.id});
-        
+            
     }
    const Logout = async() => {
         setUser({
@@ -177,7 +175,7 @@ export default function Gamelobby() {
                     <h1>Existing Games</h1>
                     <p>Click on game to Spectate</p>
                     {(user.name !== "") ? (
-                        <button onClick={CreateGame}>Create new Game</button>
+                        <button className="CreateGame" onClick={CreateGame}>Create new Game</button>
                     ) : (
                         <div>
                             <p>Login first to create a Game</p>
@@ -202,8 +200,9 @@ export default function Gamelobby() {
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/ }
             </div>
-            <div id="sidebarright" className="sidebarright" onClick={choseOpponent}>
-                Choose your Opponent.
+            
+            <div id="sidebarright" className="sidebarright visually-hidden" onClick={choseOpponent}>
+            Choose your Opponent
             </div>
         </div>
 

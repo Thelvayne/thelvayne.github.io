@@ -5,17 +5,16 @@ body {
 .board {
     /* width: 1000px;
     height: 1000px;  */
-    margin: 20px;
-    border: 25px solid #333;
+  
+    border: 10% solid #333;
     left: 25%;
     position: absolute;
 }
 
 .box {
-    width: 100px;
-    height: 100px;
+    
     float: left;
-    font-size: 80px;
+    
     text-align: center;
     vertical-align: middle;
 }
@@ -68,7 +67,7 @@ body {
 
 .message {
     position: absolute;
-    width: 200px;
+    width: 80%;
     left: calc(-142px + 50vw);
     top: calc(-10px + 50vh);
     text-align: center;
@@ -126,13 +125,14 @@ body {
 }
 
 .Ui {
-    width: 320px;
-    height: 800px;
-    background: #999;
+    position: fixed;
+    width: 20%;
+    height: 100%;
+    background-image: linear-gradient(to right,#D45613, #F7B116 );
     color: #fff;
      /* border: 3px solid red; */
-    left: 5%;
-    top:10%;
+    left: 0;
+    top:0;
    
     position: fixed; 
     /* transform: translate(-50%, -50%); */
@@ -157,18 +157,18 @@ body {
 
 .currentPlayerone {
     color: red;
-    font-size: 40px;
+    font-size: 80%;
 }
 
 .currentPlayerone {
     color: blue;
-    font-size: 40px;
+    font-size: 80%;
     font-weight: bold;
 }
 
 .CurrentPlayer {
     color: black;
-    font-size: 30px;
+    font-size: 70%;
     font-weight: bold;
 }
 
@@ -199,225 +199,8 @@ body {
 }
 
 
-@media (max-width: 1366px) {
-    .board {
-        width: 500px;
-        height: 500px;
-        margin: 20px;
-        border: 25px solid #333;
-        left: 25%;
-        position: absolute;
-    }
-
-    .box {
-        width: 50px;
-        height: 50px;
-        float: left;
-        font-size: 80px;
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .Ui {
-        width: 160px;
-        height: 400px;
-        background: #999;
-        color: #fff;
-        border: 3px solid red;
-        left: 10%;
-        top: 210px;
-        position: fixed;
-        transform: translate(-50%, -50%);
-        box-sizing: border-box;
-        padding: 70px 25px;
-    }
-
-    .currentPlayerone {
-        color: red;
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .currentPlayerone {
-        color: blue;
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .CurrentPlayer {
-        color: black;
-        font-size: 15px;
-        font-weight: bold;
-    }
-
-    .resetGame {
-        top: 60%;
-        position: relative;
-        border: none;
-        width: 100%;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #fff;
-        background: transparent;
-        outline: none;
-        height: 20px;
-        font-size: 8px;
-        border-radius: 20px;
-        background-color: black;
-        color: white;
-        text-align: center;
-    }
-        .resetGame.help {
-            top: 60%;
-        }
-}
-
-@media (max-width: 1024px) {
-    .board {
-        width: 300px;
-        height: 300px;
-        margin: 20px;
-        border: 25px solid #333;
-        left: 25%;
-        position: absolute;
-    }
-
-    .box {
-        width: 30px;
-        height: 30px;
-        float: left;
-        font-size: 80px;
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .Ui {
-        width: 100px;
-        height: 300px;
-        background: #999;
-        color: #fff;
-        border: 3px solid red;
-        left: 10%;
-        top: 150px;
-        position: fixed;
-        transform: translate(-50%, -50%);
-        box-sizing: border-box;
-        padding: 70px 6px;
-    }
-
-    .currentPlayerone {
-        color: red;
-        font-size: 10px;
-        font-weight: bold;
-    }
-
-    .currentPlayerone {
-        color: blue;
-        font-size: 10px;
-        font-weight: bold;
-    }
-
-    .CurrentPlayer {
-        color: black;
-        font-size: 9px;
-        font-weight: bold;
-    }
-
-    .resetGame {
-        top: 80%;
-        position: relative;
-        border: none;
-        width: 100%;
 
 
-        margin-bottom: 5px;
-        border-bottom: 1px solid #fff;
-        background: transparent;
-        outline: none;
-        height: 15px;
-        text-align: center;
-        font-size: 6px;
-        border-radius: 10px;
-        background-color: black;
-        color: white;
 
-    }
-        .resetGame.help {
-            top: 70%;
-        }
-}
+      
 
-@media (max-width: 320px) {
-    .board {
-        width: 50px;
-        height: 50px;
-        margin: 20px;
-        border: 5px solid #333;
-        left: 25%;
-        position: absolute;
-    }
-
-    .box {
-        width: 5px;
-        height: 5px;
-        float: left;
-        font-size: 80px;
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .Ui {
-        width: 40px;
-        height: 70px;
-        background: #999;
-        color: #fff;
-        border: 0.1px solid red;
-        left: 20%;
-        top:6%;
-        position: fixed;
-        transform: translate(-50%,0%);
-        box-sizing: border-box;
-        padding: 8px 1px;
-    }
-
-    .currentPlayerone {
-        color: red;
-        font-size: 6px;
-        font-weight: bold;
-    }
-
-    .currentPlayerone {
-        color: blue;
-        font-size: 6px;
-        font-weight: bold;
-    }
-
-    .CurrentPlayer {
-        color: black;
-        font-size: 6px;
-        font-weight: bold;
-    }
-
-    .resetGame {
-        top: -40%;
-        position: relative;
-        border: none;
-        width: 100%;
-
-
-        margin-bottom: 0px;
-        border-bottom: 1px solid #fff;
-        background: transparent;
-        outline: none;
-        height: 9px;
-        text-align: center;
-        font-size: 3px;
-        border-radius: 10px;
-        background-color: black;
-        color: white;
-
-    }
-        .resetGame.help {
-            top: -80%;
-        }
-
-}
