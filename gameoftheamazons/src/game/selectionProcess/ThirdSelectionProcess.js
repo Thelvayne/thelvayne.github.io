@@ -49,7 +49,6 @@ export const shotArrow = async (row, column, gameID, currentPlayer, selectionPro
                 })
 
             console.log(b1.turnPlayer)
-            console.log("Nicht fortsetzen")
             let listWhite = document.getElementsByClassName("piecewhiteselect")
             let listBlack = document.getElementsByClassName("pieceblackselect")
 

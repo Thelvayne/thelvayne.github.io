@@ -1,20 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { newGame } from "../../communication/Communication";
 import { createBoard } from "../createBoard/CreateNewBoard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { BackgroundColor } from "../RenderBoard"
 import { letter } from "../letter"
 import { PlaceAmazons } from "../RenderBoard";
 
 
 export function GenerateBoard(u) {
+    
+
+
 
     var navigate = useNavigate();
 
     const xSize = useRef();
     const timeout = useRef();
-    console.log(u);
-    const ids = useRef({ userId: Number(u.userId), pId: Number(u.pId), opId: Number(u.opId) });
+    function logGenerate() {
+        console.log(u)
+        console.log(u.u.userId);
+        console.log(u.u.pId);
+        console.log(u.u.opId);
+    }
+
     var gameID;
 
     const [settings, setSettings] = useState({ boardWidth: 10, timeoutTime: 60000 });
@@ -46,15 +54,15 @@ export function GenerateBoard(u) {
                 Number(settings.boardWidth),
                 Number(settings.boardWidth),
                 boardPrev,
-                ids.current.pId,
-                ids.current.opId
+                Number(u.u.pId),
+                Number(u.u.opId)
             )
             console.log(await g);
             gameID = await g.id;
             console.log(g.id);
             if (g.id !== undefined) {
                 console.log("bin trotzdem hier :P");
-                navigate("/Game/?userId=" + ids.current.userId + "&gameId=" + gameID)
+                navigate("/Game/?userId=" + u.u.userId + "&gameId=" + gameID)
             }
         }
     }
@@ -89,7 +97,7 @@ export function GenerateBoard(u) {
             box[i].style.width = (1 / settings.boardWidth) * 100 + '%'
         }
         for (let i = 0; i < box.length; i++) {
-            box[i].style.height = (parent.offsetHeight/settings.boardWidth) + 'px';     
+            box[i].style.height = (parent.offsetHeight / settings.boardWidth) + 'px';
         }
     }
 
@@ -152,15 +160,6 @@ export function GenerateBoard(u) {
             }
         }
     }
-    useEffect(() => readIds);
-
-    const readIds = () => {
-
-        console.log("GenerateBoard userId: " + ids.current.userId);
-        console.log("GenerateBoard pId: " + ids.current.pId);
-        console.log("GenerateBoard opId: " + ids.current.opId);
-
-    }
 
     return (
         <div className="settingswindow" id="sw">
@@ -180,11 +179,12 @@ export function GenerateBoard(u) {
                 <p>gewählte Amazone: {change}</p>
             </div>
             <div className="create">
-            <input type="button" id="createGame" className="createGame" value={"createGame"} onClick={startGame} />
-            <input type="button" id="readIds" className="readIds" value={"readIds"} onClick={readIds} />
-            <div className="currentBoard" id="parent" onClick={clicks}></div>
+                <input type="button" id="createGame" className="createGame" value={"createGame"} onClick={startGame} />
+                <input type="button" id="GenerateLog" className="GenerateLog" value={"GenerateLog"} onClick={logGenerate} />
+                <div className="currentBoard" id="parent" onClick={clicks}></div>
             </div>
         </div>
     )
 
 }
+

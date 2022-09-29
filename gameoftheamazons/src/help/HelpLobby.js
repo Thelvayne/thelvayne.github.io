@@ -4,17 +4,26 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 export default function Help() {
     let [searchParams] = useSearchParams();
 
-    let id = searchParams.get("id");
-    if (id === undefined || id === null || Number.isNaN(id)) {
-        id = '-1'
+    let userId = searchParams.get('userId');
+    if (userId === undefined || userId === null || Number.isNaN(userId)) {
+        userId = '-1'
     }
 
-    console.log("Das ist von der Help.js, um zu sehen ob es die ID von searchParams: " + id);
+    let pId = searchParams.get('pId');
+    if (pId === undefined || pId === null || Number.isNaN(pId)) {
+        pId = '-1'
+    }
+
+    console.log("Das ist von der Help.js, um zu sehen ob es die ID von searchParams: " + userId);
 
     let navigate = useNavigate();
 
     async function navigategame() {
-        navigate("../")
+        if (userId === -1 && pId === -1){
+            navigate("../")
+        } else {
+            navigate("../?userID=" + userId + "&pId=" + pId)
+        }
     }
 
     return (
