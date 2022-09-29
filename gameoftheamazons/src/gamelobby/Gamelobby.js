@@ -146,6 +146,7 @@ export default function Gamelobby() {
     setInterval(renderPlayerList, 5000);
 
     const choseOpponent = (evt) => {
+
         var opponentId = evt.target.id;
         var opponentIdStr = opponentId.toString()
 
@@ -228,6 +229,7 @@ export default function Gamelobby() {
 
             <div id="sidebarright" className="sidebarright visually-hidden" onClick={choseOpponent}>
                 Choose your Opponent
+
             </div>
         </div>
 

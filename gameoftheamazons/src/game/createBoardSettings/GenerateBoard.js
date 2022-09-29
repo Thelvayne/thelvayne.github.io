@@ -170,6 +170,8 @@ export function GenerateBoard(u) {
                 <input id="inputBoardSize" type="number" ref={xSize} value={settings.boardWidth} min="5" onChange={submit} />
                 <p>Dauer des Zuges (ms): </p>
                 <input id="inputTimeoutLength" type="number" ref={timeout} value={settings.timeoutTime} min="30000" onChange={submit} />
+                <p>Gegen AI spielen:
+                <input type="checkbox"class="playAgainstAI" value="Play against AI"></input></p>
             </div>
             <div className="submitbutton">
 
