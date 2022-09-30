@@ -59,6 +59,7 @@ export default function Gamelobby() {
     function CreateGame() {
         document.getElementById("CGame").classList.remove("visually-hidden");
         document.getElementById("sidebarright").classList.remove("visually-hidden");
+        document.getElementById("OpenGames").classList.add("visually-hidden");
     }
 
     const Login = () => {
@@ -211,6 +212,7 @@ export default function Gamelobby() {
     function closeWindow() {
         document.getElementById("CGame").classList.add("visually-hidden");
         //document.getElementById("sidebarright").classList.add("visually-hidden");
+        document.getElementById("OpenGames").classList.remove("visually-hidden");
     }
 
     const pullPlayerInGame = async () => {
@@ -244,7 +246,7 @@ export default function Gamelobby() {
                 {(global.userId !== -1) ? (
                     <div className='welcome'>
                         <h2>Welcome</h2>
-                        <button onClick={Logout}>Logout</button>
+                        {/*<button onClick={Logout}>Logout</button>*/}
                         <button onClick={CreateGame}>Create new Game</button>
                         <button onClick={OpenRules}>Rules</button>
                         <button onClick={() => console.log(searchParams.get('userId'))} >Log</button>
@@ -266,7 +268,7 @@ export default function Gamelobby() {
             </div>
             <div className="main">
 
-                <div className="OpenGames">
+                <div id="OpenGames" className="OpenGames">
                     <h1>Existing Games</h1>
                     <p>Click on game to Spectate</p>
                     {(global.userId !== -1) ? (
@@ -293,7 +295,7 @@ export default function Gamelobby() {
                 < GenerateBoard u={global} />
 
 
-                {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/}
+                
             </div>
 
             <div id="sidebarright" className="sidebarright visually-hidden" onClick={choseOpponent}>
