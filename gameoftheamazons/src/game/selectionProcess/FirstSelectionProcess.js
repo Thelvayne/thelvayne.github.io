@@ -1,30 +1,23 @@
 import { markMoveable } from '../markMoveable';
 import { letter } from '../letter';
 
-export const firstSelectionProcess = (rowGiven, columnGiven, g, figureAssigned) => {
+export const firstSelectionProcess = (rowGiven, columnGiven, g, currentPlayer, figureAssigned) => {
 
     let row = Number(rowGiven);
     let column = Number(columnGiven);
     let figure = figureAssigned
 
-    console.log("TURN PLAYER "+ g.turnPlayer);
-
-    console.log("FIGUR "+ figure.pOne);
-    console.log("FIGUR "+ figure.pTwo);
-
     let isInputCorrect = () => {
 
-        console.log("SQUARE "+ g.board.squares[row][column]);
-
-        if ((g.turnPlayer === figure.pOne && g.board.squares[row][column] === 0) ||
-            (g.turnPlayer === figure.pTwo && g.board.squares[row][column] === 1)) {
+        if ((currentPlayer === figure.pOne && g.board.squares[row][column] === 0) ||
+            (currentPlayer === figure.pTwo && g.board.squares[row][column] === 1)) {
             return true;
         } else {
             return false;
         }
     };
     isInputCorrect()
-    console.log("IS INPUT CORRECT? "+isInputCorrect());
+    console.log(isInputCorrect());
 
     if (isInputCorrect()) {
         document.getElementById(letter(column) + row).className += "select";

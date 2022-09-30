@@ -51,36 +51,29 @@ export default function Game() {
   })
   const figureAssigned = useRef({ pOne: undefined, pTwo: undefined });
 
+
+
   const fetchGameData = () => {
     const game = getGameByID(gameId).then((g) => {
       // console.log(g);
       gameboard.current.board = g.board;
-      if(g.turnPlayer === 0){
-        currentPlayer.current = g.players[0].id;
-        g.turnPlayer = currentPlayer.current
-      } else {
-        currentPlayer.current = g.players[1].id
-      }
-      //g.turnPlayer === 0 ? currentPlayer.current = g.players[0].id : currentPlayer.current = g.players[1].id;
-      g.turnPlayer = currentPlayer.current
-      
-      winningPlayer.current = undefined;
+      g.turnPlayer === 0 ? currentPlayer.current = g.players[0].id : currentPlayer.current = g.players[1].id;
+      winningPlayer.current = g.winningPlayer;
       figureAssigned.current.pOne = g.players[0].id;
       figureAssigned.current.pTwo = g.players[1].id;
-      console.log("FA1"+figureAssigned.current.pOne)
-      console.log("FA2"+figureAssigned.current.pTwo)
       return g;
     }).catch((error) => {
       console.log("setGame error. Message is: " + error.message);
       return { message: error.message };
     });
 
+
     return game;
   }
 
   async function firstRun() {
+    const g = await fetchGameData();
     if (firstRunFinished.current === false) {
-      const g = await fetchGameData();
       console.log(await g);
       figureAssigned.current.pOne = g.players[0].id;
       figureAssigned.current.pTwo = g.players[1].id;
@@ -133,15 +126,23 @@ export default function Game() {
     box.className += str;
   }
 
-  const loadPlayfield = () => {
-    var parent = document.getElementById("parent");
-    if (parent.childElementCount !== 0) {
-      while (parent.childElementCount > 0) {
-        parent.removeChild(parent.lastChild);
+  const loadPlayfield = async () => {
+    var g = await getGameByID(gameId);
+    console.log();
+    var turnId = g.turnPlayer
+    console.log(currentPlayer.current !== g.players[turnId].id);
+    if (currentPlayer.current !== g.players[turnId].id) {
+      var parent = document.getElementById("parent");
+      if (parent.childElementCount !== 0) {
+        while (parent.childElementCount > 0) {
+          parent.removeChild(parent.lastChild);
+        }
       }
+      element(true)
     }
-    element(true)
   }
+
+  const myInterval = setInterval(loadPlayfield, 1000)
 
   // Funktion für onClick Ereignis
   const select = async (row, column) => {
@@ -149,15 +150,13 @@ export default function Game() {
     getGameByID(gameId).then((res) => {
       console.log("Spieler 1 ID: " + res.players[0].id);
       console.log("Spieler 2 ID: " + res.players[1].id);
-      console.log("USER ID "+userId)
-      console.log("CURRENT "+currentPlayer.current)
-      console.log("There "+ thereIsAWinner.current)
     })
     console.log("Ergebnis durch searchParams.get: UserId: " + searchParams.get('userId') + ", gameId: " + searchParams.get('gameId'));
     /**
     * Bedingung: es gibt keinen Gewinner
     * -> führe den Algorithmus aus
     */
+    console.log(thereIsAWinner.current === false && currentPlayer.current === Number(userId));
     if (thereIsAWinner.current === false && currentPlayer.current === Number(userId)) {
       /**
        * 1te Überprüfung: wurde noch keine Amazone gewählt -> merke Amazone und markiere mögliche Züge
@@ -175,9 +174,10 @@ export default function Game() {
       // falls noch keine Amazone gewählt wurde
       if (amazoneSelected.current === 0) {
         // console.log("Stage 1.1");
-        console.log("BIN HIER"+ figureAssigned.current);
-
-        if (firstSelectionProcess(row, column, g, figureAssigned.current) === true) {
+        console.log(figureAssigned.current);
+        console.log(currentPlayer.current);
+        console.log(userId);
+        if (firstSelectionProcess(row, column, g, currentPlayer.current, figureAssigned.current) === true) {
           // speichere letztes gewähltes Feld
           selectedCoordinates.current.currentRow = row;
           selectedCoordinates.current.currentColumn = column
@@ -269,12 +269,18 @@ export default function Game() {
   }
 
 
+
+
   function Navigatehelp() {
     navigate("/Help/?userId=" + userId + "&gameId=" + gameId)
   }
 
   // Funktion um zu Hilfe zu navigieren
   async function Navigateback() {
+    clearInterval(myInterval);
+    var g = await getGameByID(gameId)
+    var controllable = g.players[1].controllable
+    if(controllable === false) await deletePlayer(figureAssigned.current.pTwo)
     await deleteGame(gameId);
     await deletePlayer(userId);
     navigate("/");
