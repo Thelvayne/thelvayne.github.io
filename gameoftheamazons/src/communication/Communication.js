@@ -5,20 +5,20 @@ const urlMove = "https://gruppe12.toni-barth.com/move/"
 
 // CRUD-Operationen
 const FETCH = (requestOptions, url) => {
-    // console.log("FETCH: " + requestOptions + ", " + url);
     const fetched = fetch(url, requestOptions)
         .then((response) => {
-           if(response.status === 400){
-            return {message: 400}   
-           }
+            console.log(response);
+            if (response.status === 400) {
+                return { message: 400 }
+            }
             return response.json()
         })
         .catch((error) => {
             console.log("FETCH error. Message is: " + error.message);
             return { message: error.message }
         })
-        // console.log("FETCH returned...")
-        // console.log(fetched)
+    // console.log("FETCH returned...")
+    // console.log(fetched)
     return fetched;
 }
 
@@ -40,8 +40,8 @@ export const GET = (url) => {
             console.log("GET error. Message is: " + error.message);
             return { message: error.message }
         })
-        // console.log("GET returned...")
-        // console.log(fetched)
+    // console.log("GET returned...")
+    // console.log(fetched)
     return fetched;
 }
 
@@ -61,8 +61,8 @@ export const PUT = (value, url) => {
             console.log("PUT error. Message is: " + error.message);
             return { message: error.message }
         });
-        // console.log("PUT returned...")
-        // console.log(fetched)
+    // console.log("PUT returned...")
+    // console.log(fetched)
     return fetched;
 }
 
@@ -81,8 +81,8 @@ export const DELETE = (url) => {
             console.log("DELETE error. Message is: " + error.message);
             return { message: error.message }
         });
-        // console.log("DELETE returned...")
-        // console.log(fetched)
+    // console.log("DELETE returned...")
+    // console.log(fetched)
     return fetched;
 }
 
@@ -109,12 +109,12 @@ export const POST = (value, url) => {
 
 // befiehlt Backend einen Spieler anzulegen
 export const createPlayer = (name) => {
+
     try {
         const user = {
             "name": name,
             "controllable": true,
         }
-
         const res = POST(user, urlPlayer)
             .then((response) => {
                 return response;
@@ -130,10 +130,10 @@ export const createPlayer = (name) => {
 }
 
 // befiehlt Backend eine KI anzulegen
-export const generateAI = (name) => {
+export const generateAI = () => {
     try {
         const user = {
-            "name": name,
+            "name": "KI",
             "controllable": false,
         }
 
@@ -187,8 +187,12 @@ export const deletePlayer = (id) => {
 // FIXME: muss noch angepasst werden an die neuen Vorraussetzungen
 export const newGame = (maxTurnTime, gameSizeRows, gameSizeColumns, board, playerOne, playerTwo) => {
     try {
+        console.log("playerOne");
+        console.log(playerOne);
+        console.log("playerTwo");
+        console.log(playerTwo);
         const game = {
-            "maxTurnTime": maxTurnTime, 
+            "maxTurnTime": maxTurnTime,
             "players": [
                 playerOne,
                 playerTwo
@@ -271,22 +275,22 @@ export const move = (playerID, gameID, startrow, startcolumn, endrow, endcolumn,
             "move": {
                 "start": {
                     "row": startrow, // Startzeile der Bewegung
-                    "column": startcolumn, // Startspalte der Bewegung
+                    "column": startcolumn // Startspalte der Bewegung
                 },
                 "end": {
                     "row": endrow, // Zielzeile der Bewegung
-                    "column": endcolumn, // Zielspalte der Bewegung
+                    "column": endcolumn // Zielspalte der Bewegung
                 }
             },
             "shot": {
                 "row": shotrow, // Zeile des Pfeilschusses
-                "column": shotcolumn, // Spalte des Pfeilschusses
+                "column": shotcolumn // Spalte des Pfeilschusses
             }
         }
 
-        
         const res = POST(move, urlMove + playerID + "/" + gameID)
-        .then((response) => {
+            .then((response) => {
+                console.log(response);
                 return response
             }).catch((error) => {
                 console.log("POST error. Message is: " + error.message)

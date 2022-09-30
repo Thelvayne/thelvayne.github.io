@@ -7,87 +7,132 @@ import { createPlayer, deletePlayer, getGames, getPlayers } from '../communicati
 
 export default function Gamelobby() {
     const [searchParams] = useSearchParams();
+    // const [userId, setUserId] = useState({current: undefined});
+    // const [pId, setPId] = useState({current: undefined});
+    // const [opId, setOpId] = useState({current: undefined});
+    const [global, setGlobal] = useState({ userId: -1, pId: -1, opId: -1 });
+    const userName = useRef();
+
+
+    let userId = searchParams.get('userId')
+    if (userId === undefined || userId === null || isNaN(userId)) {
+        console.log("userId in update: " + searchParams.get('userId'));
+        userId = '-1'
+        // setUserId({current: uId})
+    }
+
+    let pId = searchParams.get('pId')
+    if (pId === undefined || pId === null || isNaN(pId)) {
+        // console.log("pId in update: " + searchParams.get('pId'));
+        pId = '-1'
+        // setPId({current: p})
+    }
+
+    let opId = searchParams.get('opId')
+    if (opId === undefined || opId === null || isNaN(opId)) {
+        // console.log("opId in update: " + searchParams.get('opId'));
+        opId = '-1'
+        // setOpId({current: op})
+    }
+
 
     const log = () => {
-        console.log("UserId: " + searchParams.get("userId"))
-        console.log("pId: " + searchParams.get("pId"))
-        console.log("opId: " + searchParams.get("opId"))
+        // userId = searchParams.get('userId')
+        // pId = searchParams.get('pId')
+        // opId = searchParams.get('opId')
+
+        console.log("UserId: " + userId)
+        console.log("pId: " + pId)
+        console.log("opId: " + opId)
+        // console.log("called by: " + log.caller());
     }
-    setInterval(log, 15000);
+    
+
 
     var navigate = useNavigate();
+
     function OpenRules() {
 
         navigate("../HelpLobby")
     }
+
     function CreateGame() {
         document.getElementById("CGame").classList.remove("visually-hidden");
         document.getElementById("sidebarright").classList.remove("visually-hidden");
     }
 
-
-    const [user, setUser] = useState({ name: "" });
-    const [error, setError] = useState("");
-
-
-    const Login = async details => {
-        console.log(details);
-
+    const Login = () => {
         console.log("Logged in");
-        setUser({
-            name: details.name
-        });
-        var p = await createPlayer(details.name);
-        var playerId = p.id;
-        var userId = playerId.toString();
-        if ('URLSearchParams' in window) {
-            searchParams.set("userId", userId);
-            searchParams.set("pId", userId);
-            console.log(searchParams.get("userId") + ", " + searchParams.get("pId"));
-            var newURL = window.location.pathname + '?' + searchParams.toString();
-            window.history.pushState({}, null, newURL);
-            console.log("Das ist von der Gamelobby.js, um zu sehen ob es die ID von searchParams: " +
-                searchParams.get("userId") + ", " +
-                searchParams.get("pId") + ", " +
-                searchParams.get("opId")
-            );
-        }
-    }
-    const Logout = () => {
-        setUser({
-            name: ""
+
+        // console.log("vor p");
+        createPlayer(userName.current.value).then((p) => {
+            console.log(p);
+            // console.log("nach p, vor URLSearchParams");
+            var playerId = p.id;
+            setGlobal({ userId: playerId, pId: playerId, opId: global.opId })
+            var uId = playerId.toString();
+            if ('URLSearchParams' in window) {
+                // console.log("In URLSearchParams")
+                searchParams.set('userId', uId);
+                searchParams.set('pId', uId);
+                // console.log("userId und pId durch Login: " + userId + ", " + pId);
+                var newURL = window.location.pathname + '?' + searchParams.toString();
+                window.history.pushState({}, null, newURL);
+                userId = searchParams.get('userId');
+                pId = searchParams.get('pId');
+                console.log("searchParams nach Login: " +
+                    userId + ", " +
+                    pId + ", " +
+                    opId
+                );
+            }
         })
+        clear();
+        
+    }
+
+    const Logout = () => {
         document.getElementById("CGame").classList.add("visually-hidden");
         document.getElementById("sidebarright").classList.add("visually-hidden");
         console.log("Logout");
-        console.log(searchParams.get("userId"));
-        deletePlayer(Number(searchParams.get("userId")))
+        userId = searchParams.get('userId');
+        console.log("userId vor Logout: " + userId);
+        deletePlayer(Number(userId))
         searchParams.delete("userId")
         searchParams.delete("pId")
         searchParams.delete("opId")
         var newURL = window.location.origin + window.location.pathname
         window.history.pushState({}, null, newURL);
+        clear();
+    }
+
+    function clear() {
+        clearInterval(logInterval);
+        clearInterval(gameListInterval);
+        clearInterval(playerListInterval);
+        clearInterval(pullPlayerInterval);
     }
 
     const renderGameList = async () => {
-        const allCurrentGames = await getGames();
+        const allCurrentGames = await getGames(); // Liste aller Spiele
         // console.log(await allCurrentGames);
 
         const parent = document.getElementById("listOfGames");
-        if (parent.childElementCount !== 0) {
+        if (parent.childElementCount !== 0) { // Lösche alte Einträge
             while (parent.childElementCount > 0) {
                 parent.removeChild(parent.lastChild);
             }
         }
-        for (const ind in allCurrentGames.games) {
+        for (const ind in allCurrentGames.games) { // schreibe neue Einträge
             if (Object.hasOwnProperty.call(allCurrentGames.games, ind)) {
                 // console.log(ind);
                 // console.log(await allCurrentGames.games[ind].id);
                 // console.log(await allCurrentGames.games[ind].players);
-                if (allCurrentGames.games[ind].winningPlayer === undefined) {
+                if (allCurrentGames.games[ind].winningPlayer === undefined) { // schreibe nur dann, wenn das Spiel noch keine Gewinner hat
                     const child = document.createElement('li');
                     const baby = document.createElement('a');
-                    baby.href = "/Game/?userId=" + searchParams.get("userId") + "&gameId=" + allCurrentGames.games[ind].id;
+                    console.log("gameId durch Spielerstellung: " + allCurrentGames.games[ind].id);
+                    baby.href = "/Game/?userId=" + userId + "&gameId=" + allCurrentGames.games[ind].id;
                     baby.innerText = "Spiel " + allCurrentGames.games[ind].id;
                     child.appendChild(baby);
                     parent.appendChild(child);
@@ -95,21 +140,20 @@ export default function Gamelobby() {
             }
         }
     }
-
-    setInterval(renderGameList, 5000);
+    
 
     const renderPlayerList = async () => {
-        const allCurrentPlayer = await getPlayers();
-        const list = await getAllPlayersInGames()
+        const allCurrentPlayer = await getPlayers(); // Liste alle registrierter Spiele auf dem Server (API)
+        const list = await getAllPlayersInGames() // Liste aller Spieler, die in aktuellen Spielen sind
         // console.log(await allCurrentPlayer + "||" + list);
 
         const parent = document.getElementById("sidebarright");
-        if (parent.childElementCount !== 0) {
+        if (parent.childElementCount !== 0) { // lösche alle alten Einträge
             while (parent.childElementCount > 0) {
                 parent.removeChild(parent.lastChild);
             }
         }
-        for (const ind in allCurrentPlayer.players) {
+        for (const ind in allCurrentPlayer.players) { // schreibe alle neuen Einträge
             if (Object.hasOwnProperty.call(allCurrentPlayer.players, ind)) {
                 if (!list.includes(allCurrentPlayer.players[ind].id)) {
                     const child = document.createElement('li');
@@ -142,56 +186,81 @@ export default function Gamelobby() {
         }
         return list;
     }
+    
 
-    setInterval(renderPlayerList, 5000);
 
     const choseOpponent = (evt) => {
-
+        console.log(global);
         var opponentId = evt.target.id;
         var opponentIdStr = opponentId.toString()
 
         if (evt.target.className.includes("clickable")) {
             if ('URLSearchParams' in window) {
-                searchParams.set("opId", opponentIdStr);
+                setGlobal({ userId: global.userId, pId: global.pId, opId: Number(opponentId) })
+                searchParams.set('userId', global.userId.toString());
+                searchParams.set('pId', global.pId.toString());
+                searchParams.set('opId', opponentIdStr);
                 var newURL = window.location.pathname + '?' + searchParams.toString();
                 window.history.pushState({}, null, newURL);
-                console.log("Das ist von der Gamelobby.js, um zu sehen ob es die ID von searchParams: " + searchParams.get("pId") + ", " + searchParams.get("opId"));
+                opId = searchParams.get('opId')
+                console.log("Werte, die nach Wahl des Gegners für die Spielerstellung gültig sind: " + pId + ", " + opId);
             }
         }
     }
+
     function closeWindow() {
         document.getElementById("CGame").classList.add("visually-hidden");
         //document.getElementById("sidebarright").classList.add("visually-hidden");
     }
 
-    const userIdToGenerateBoard = useRef(searchParams.get("userId"));
-    const pIdToGenerateBoard = useRef(searchParams.get("pId"));
-    const opIdToGenerateBoard = useRef(searchParams.get("opId"));
-
-    if (userIdToGenerateBoard.current === null ) {userIdToGenerateBoard.current = '-1'}
-    if (pIdToGenerateBoard.current === null ) {pIdToGenerateBoard.current = '-1'}
-    if (opIdToGenerateBoard.current === null ) {opIdToGenerateBoard.current = '-1'}
-
-    const log2 = () => {
-        console.log("userID: " + userIdToGenerateBoard.current);
-        console.log("pID: " + pIdToGenerateBoard.current);
-        console.log("opID: " + opIdToGenerateBoard.current);
+    const pullPlayerInGame = async () => {
+        var currentGames = await getGames();
+        var gId, playerTwoId;
+        // console.log(currentGames);
+        currentGames.games.forEach(async (game) => {
+            console.log(game);
+            if (game.winningPlayer === undefined) {
+                playerTwoId = game.players[1].id;
+                console.log("playerTwoId: " + playerTwoId);
+                console.log("userId: " + userId);
+                console.log(playerTwoId === Number(userId));
+                if (playerTwoId === Number(userId)) {
+                    gId = game.id;
+                    await clear();
+                    navigate("../Game?userId=" + playerTwoId + "&gameId=" + gId);
+                }
+            }
+        });
     }
+    const logInterval = setInterval(log, 5000, [userId, pId, opId]);
+    const gameListInterval = setInterval(renderGameList, 5000);
+    const playerListInterval = setInterval(renderPlayerList, 5000);
+    const pullPlayerInterval = setInterval(pullPlayerInGame, 5000);
 
-    setInterval(log2, 5000)
     return (
         <div>
             <div className="sidenav">
                 <h1>Game of the Amazons</h1>
-                {(user.name !== "") ? (
+                {(global.userId !== -1) ? (
                     <div className='welcome'>
-                        <h2>Welcome, <span>{user.name}</span></h2>
+                        <h2>Welcome</h2>
                         <button onClick={Logout}>Logout</button>
                         <button onClick={CreateGame}>Create new Game</button>
                         <button onClick={OpenRules}>Rules</button>
+                        <button onClick={() => console.log(searchParams.get('userId'))} >Log</button>
                     </div>
                 ) : (
-                    <LoginForm Login={Login} error={error} />
+                    <form >
+                        <div className='form-inner'>
+                            <h2>Login</h2>
+                            <div className='form-group'>
+                                <label htmlFor='name'>Name:</label>
+                                <input type='text' placeholder="Enter Name" ref={userName}></input>
+                            </div>
+                            <input type='button' className='submit' value="login" onClick={Login}></input>
+
+                        </div>
+                    </form>
                 )}
 
 
@@ -201,7 +270,7 @@ export default function Gamelobby() {
                 <div className="OpenGames">
                     <h1>Existing Games</h1>
                     <p>Click on game to Spectate</p>
-                    {(user.name !== "") ? (
+                    {(global.userId !== -1) ? (
                         <button className="CreateGame" onClick={CreateGame}>Create new Game</button>
                     ) : (
                         <div>
@@ -222,7 +291,8 @@ export default function Gamelobby() {
                 <input type="button" id="back" className="back" value={"X"} onClick={closeWindow} />
                 <h1 className="CreateGame">Create Game</h1>
 
-                < GenerateBoard userId={userIdToGenerateBoard.current} pId={pIdToGenerateBoard.current} opId={opIdToGenerateBoard.current} />
+                < GenerateBoard u={global} />
+
 
                 {/* <button id="createGame" className="createGame" onClick={CreateGame}>Create Game</button>*/}
             </div>

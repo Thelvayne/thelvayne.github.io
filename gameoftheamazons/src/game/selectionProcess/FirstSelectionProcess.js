@@ -8,6 +8,7 @@ export const firstSelectionProcess = (rowGiven, columnGiven, g, figureAssigned) 
     let figure = figureAssigned
 
     let isInputCorrect = () => {
+
         if ((g.turnPlayer === figure.pOne && g.board.squares[row][column] === 0) ||
             (g.turnPlayer === figure.pTwo && g.board.squares[row][column] === 1)) {
             return true;

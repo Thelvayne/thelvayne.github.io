@@ -8,6 +8,7 @@ import Gamelobby from "./gamelobby/Gamelobby.js";
 import Game from "./game/Game.js";
 import Help from "./help/Help.js";
 import HelpLobby from "./help/HelpLobby.js";
+import ResetAll from "./reset/Reset.js";
 
 
 
@@ -36,6 +37,7 @@ function App() {
         <Route exact path="/HelpLobby" element={<HelpLobby />} />
         <Route exact path="/Game" element={<Game />} />
         <Route exact path="/Help" element={<Help />} />
+        <Route exact path="/ResetAll" element={<ResetAll/>} />
       </Routes>
     </Router>
   )
