@@ -75,7 +75,7 @@ body {
     left: calc(-142px + 50vw);
     top: calc(-10px + 50vh);
     text-align: center;
-    padding: 10px 50px;
+    padding: 10% 50%;
 }
 
 .message.white-wins {
@@ -180,14 +180,14 @@ body {
     top: 70%;
     position: relative;
     border: none;
-    width: 100%;
-    margin-bottom: 20px;
+    width: 80%;
+    margin-bottom: 20%;
     border-bottom: 1px solid #fff;
     background: transparent;
     outline: none;
-    height: 40px;
-    font-size: 16px;
-    border-radius: 20px;
+    height: 320%;
+    font-size: 80%;
+    border-radius: 10%;
     background-color: black;
     color: white;
 }
