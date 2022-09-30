@@ -7,7 +7,14 @@ export const firstSelectionProcess = (rowGiven, columnGiven, g, figureAssigned) 
     let column = Number(columnGiven);
     let figure = figureAssigned
 
+    console.log("TURN PLAYER "+ g.turnPlayer);
+
+    console.log("FIGUR "+ figure.pOne);
+    console.log("FIGUR "+ figure.pTwo);
+
     let isInputCorrect = () => {
+
+        console.log("SQUARE "+ g.board.squares[row][column]);
 
         if ((g.turnPlayer === figure.pOne && g.board.squares[row][column] === 0) ||
             (g.turnPlayer === figure.pTwo && g.board.squares[row][column] === 1)) {
@@ -17,7 +24,7 @@ export const firstSelectionProcess = (rowGiven, columnGiven, g, figureAssigned) 
         }
     };
     isInputCorrect()
-    console.log(isInputCorrect());
+    console.log("IS INPUT CORRECT? "+isInputCorrect());
 
     if (isInputCorrect()) {
         document.getElementById(letter(column) + row).className += "select";

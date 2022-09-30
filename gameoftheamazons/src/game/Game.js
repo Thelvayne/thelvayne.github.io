@@ -51,22 +51,29 @@ export default function Game() {
   })
   const figureAssigned = useRef({ pOne: undefined, pTwo: undefined });
 
-
-
   const fetchGameData = () => {
     const game = getGameByID(gameId).then((g) => {
       // console.log(g);
       gameboard.current.board = g.board;
-      g.turnPlayer === 0 ? currentPlayer.current = g.players[0].id : currentPlayer.current = g.players[1].id;
-      winningPlayer.current = g.winningPlayer;
+      if(g.turnPlayer === 0){
+        currentPlayer.current = g.players[0].id;
+        g.turnPlayer = currentPlayer.current
+      } else {
+        currentPlayer.current = g.players[1].id
+      }
+      //g.turnPlayer === 0 ? currentPlayer.current = g.players[0].id : currentPlayer.current = g.players[1].id;
+      g.turnPlayer = currentPlayer.current
+      
+      winningPlayer.current = undefined;
       figureAssigned.current.pOne = g.players[0].id;
       figureAssigned.current.pTwo = g.players[1].id;
+      console.log("FA1"+figureAssigned.current.pOne)
+      console.log("FA2"+figureAssigned.current.pTwo)
       return g;
     }).catch((error) => {
       console.log("setGame error. Message is: " + error.message);
       return { message: error.message };
     });
-
 
     return game;
   }
@@ -142,6 +149,9 @@ export default function Game() {
     getGameByID(gameId).then((res) => {
       console.log("Spieler 1 ID: " + res.players[0].id);
       console.log("Spieler 2 ID: " + res.players[1].id);
+      console.log("USER ID "+userId)
+      console.log("CURRENT "+currentPlayer.current)
+      console.log("There "+ thereIsAWinner.current)
     })
     console.log("Ergebnis durch searchParams.get: UserId: " + searchParams.get('userId') + ", gameId: " + searchParams.get('gameId'));
     /**
@@ -165,6 +175,8 @@ export default function Game() {
       // falls noch keine Amazone gewählt wurde
       if (amazoneSelected.current === 0) {
         // console.log("Stage 1.1");
+        console.log("BIN HIER"+ figureAssigned.current);
+
         if (firstSelectionProcess(row, column, g, figureAssigned.current) === true) {
           // speichere letztes gewähltes Feld
           selectedCoordinates.current.currentRow = row;

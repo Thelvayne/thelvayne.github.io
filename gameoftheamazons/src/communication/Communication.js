@@ -287,7 +287,6 @@ export const move = (playerID, gameID, startrow, startcolumn, endrow, endcolumn,
                 "column": shotcolumn // Spalte des Pfeilschusses
             }
         }
-
         const res = POST(move, urlMove + playerID + "/" + gameID)
             .then((response) => {
                 console.log(response);
@@ -296,6 +295,7 @@ export const move = (playerID, gameID, startrow, startcolumn, endrow, endcolumn,
                 console.log("POST error. Message is: " + error.message)
                 return { message: error.message }
             })
+            console.log("HIER"+res);
         return res
     } catch (error) {
         console.log(error)

@@ -258,7 +258,6 @@ export default function Gamelobby() {
                                 <input type='text' placeholder="Enter Name" ref={userName}></input>
                             </div>
                             <input type='button' className='submit' value="login" onClick={Login}></input>
-
                         </div>
                     </form>
                 )}
