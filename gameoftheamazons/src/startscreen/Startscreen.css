@@ -1,13 +1,4 @@
-body{
-    margin: 0;
-    padding: 0;
-    background:url(../pictures/amazonessvillage-tf05-jp-vg.png);
-    background-size: cover;
-    background-position-y:-500px;
-    background-repeat: no-repeat;
-    font-family: sans-serif; 
-    background-color: #000;
-}
+
 
 .loginbox {
     width: 320px;
@@ -30,13 +21,7 @@ body{
     top: -50px;
     left: calc(50% - 50px);
 }
-h1{
-    margin: 0;
-    padding: 0 0 20px;
-    text-align: center;
-    font-size: 22px;
 
-}
 
 .loginbox p{
     margin: 0;
@@ -104,76 +89,4 @@ h1{
 .ai {
     color: blue;
     background-color: #000;
-}
-@media (max-width: 320px){
-    body{
-        margin: 0;
-        padding: 0;
-        background:url(../pictures/amazonessvillage-tf05-jp-vg.png);
-        background-size: cover;
-        background-position-y:-30px;
-        
-        font-family: sans-serif;
-        background-color: #000;
-    }
-    .loginbox {
-        width: 200px;
-        height: 210px;
-        background: #000;
-        color: #fff;
-        top: 30%;
-        left: 50%;
-        position: absolute;
-        transform: translate(-50%,-50%);
-        box-sizing: border-box;
-        padding: 60px 30px;
-    }
-    .avatar{
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        position: absolute;
-        top: -20px;
-        left: calc(50% - 25px);
-    }
-    h1{
-        margin: 0;
-        padding: 0 0 20px;
-        text-align: center;
-        font-size: 11px;
-    
-    }
-    .loginbox input[type="button"]{
-        border:none;
-        outline: none;
-        height: 20px;
-        color: #fff;
-        font-size: 9px;
-        border-radius: 10px;
-    }
-}
-@media (max-width: 1024px){
-    body{
-        margin: 0;
-        padding: 0;
-        background:url(../pictures/amazonessvillage-tf05-jp-vg.png);
-        background-size: cover;
-        background-position-y:-100px;
-        background-repeat: no-repeat;
-        font-family: sans-serif;
-        background-color: #000;
-    }
-}
-@media (max-width: 1366px){
-    body{
-        margin: 0;
-        padding: 0;
-        background:url(../pictures/amazonessvillage-tf05-jp-vg.png);
-       
-        background-size: cover;
-        background-position-y:-400px;
-        background-repeat: no-repeat;
-        font-family: sans-serif;
-        background-color: #000;
-    }
 }

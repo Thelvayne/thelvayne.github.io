@@ -1,3 +1,16 @@
+body{
+  margin: 0;
+  padding: 0;
+  background:url(../pictures/amazonessvillage-tf05-jp-vg.png);
+  
+  background-size: cover;
+
+  background-position: 0;
+  font-family: sans-serif; 
+  background-color: #000;
+}
+
+
 .sidenav {
     height: 100%;
     width: 20%;
@@ -11,8 +24,8 @@
   }
   .sidenav h1 {
     padding: 10% 5% 10% 5%;
-    font-size: 80%;
-    color: black;
+    font-size: 90%;
+    color: #000(124, 91, 91);
   }
   .sidenav h2 {
     text-align: center;
@@ -78,7 +91,7 @@
     white-space: nowrap;
   }
   .CGame {
-    position: relative;
+  
     text-align: left;
     border: 3px solid #7A2802;
     margin-left: 25%;
@@ -90,6 +103,7 @@
     text-align: center;
     font-weight: 70%;
     padding: 1%;
+    
     /*
     flex-direction: column;
 */
@@ -270,11 +284,11 @@
  
  
 }
-.back{
+.CGame .back{
   position: absolute;
-  right: 0.5%;
-  top: -7%;
-  z-index: 1;
+  right: 25%;
+  top: -1%;
+  z-index: 2;
 }
 .currentBoard {
   z-index: 2;
@@ -292,5 +306,16 @@
   display: grid;
   grid-template-columns: 45% 55%;
 
+}
+.submit {
+  display: flex;
+  box-sizing: border-box;
+  
+  position: relative;
+  margin: 10% 10%;
+  background-color: #D45613;
+  height: 30%;
+  width: 90%;
+  font-size: 80%;
 }
   
