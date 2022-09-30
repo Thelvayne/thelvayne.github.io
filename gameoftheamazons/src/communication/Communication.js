@@ -7,6 +7,7 @@ const urlMove = "https://gruppe12.toni-barth.com/move/"
 const FETCH = (requestOptions, url) => {
     const fetched = fetch(url, requestOptions)
         .then((response) => {
+            console.log(response);
             if (response.status === 400) {
                 return { message: 400 }
             }
@@ -94,7 +95,6 @@ export const POST = (value, url) => {
         },
         body: JSON.stringify(value)
     };
-
     const fetched = FETCH(requestOptions, url)
         .then((response) => {
             return response;
@@ -290,6 +290,7 @@ export const move = (playerID, gameID, startrow, startcolumn, endrow, endcolumn,
 
         const res = POST(move, urlMove + playerID + "/" + gameID)
             .then((response) => {
+                console.log(response);
                 return response
             }).catch((error) => {
                 console.log("POST error. Message is: " + error.message)

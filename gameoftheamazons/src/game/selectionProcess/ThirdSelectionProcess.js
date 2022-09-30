@@ -6,8 +6,8 @@ export const shotArrow = async (row, column, gameID, currentPlayer, selectionPro
     // falls ein Feld gewählt wurde, welches gültig ist
     if (document.getElementById(letter(column) + row).classList.contains("arrowselected")) {
         // merkt sich die Position, an die der Pfeil verschossen wurde
-        selectionProcess.current.shotrow = row;
-        selectionProcess.current.shotcolumn = column;
+        selectionProcess.shotrow = row;
+        selectionProcess.shotcolumn = column;
 
         let list = document.getElementsByClassName("arrowselected")
 
@@ -21,22 +21,18 @@ export const shotArrow = async (row, column, gameID, currentPlayer, selectionPro
             ind++
         }
 
+        var u = currentPlayer
+        var g = gameID
+        var sr = selectionProcess.startrow
+        var sc = selectionProcess.startcolumn
+        var er = selectionProcess.endrow
+        var ec = selectionProcess.endcolumn
+        var tr = selectionProcess.shotrow
+        var tc = selectionProcess.shotcolumn
+        console.log(typeof u, typeof g, typeof sr, typeof sc, typeof er, typeof ec, typeof tr, typeof tc);
         // Zug an Server senden
-        console.log(selectionProcess.current);
-        let m = await move(currentPlayer,
-            gameID,
-            selectionProcess.current.startrow,
-            selectionProcess.current.startcolumn,
-            selectionProcess.current.endrow,
-            selectionProcess.current.endcolumn,
-            selectionProcess.current.shotrow,
-            selectionProcess.current.shotcolumn)
-            .then((res) => {
-                return res
-            }).catch((error) => {
-                console.log('GetGameByID error. Message is: ' + error.message)
-                return { message: error.message }
-            })
+        console.log(selectionProcess);
+        let m = await move(u, g, sr, sc, er, ec, tr, tc)
 
         // falls 400 bad request zurückkommt, brich den Zug ab und setze den Zug zurück
         if (m.message === 400) {
@@ -67,20 +63,20 @@ export const shotArrow = async (row, column, gameID, currentPlayer, selectionPro
         }
 
         // Figuren setzen
-        let str = document.getElementById(letter(selectionProcess.current.startcolumn) + selectionProcess.current.startrow).className
-        if (document.getElementById(letter(selectionProcess.current.startcolumn) + selectionProcess.current.startrow).classList.contains("pieceblackselect")) {
+        let str = document.getElementById(letter(selectionProcess.startcolumn) + selectionProcess.startrow).className
+        if (document.getElementById(letter(selectionProcess.startcolumn) + selectionProcess.startrow).classList.contains("pieceblackselect")) {
             str = str.replace(" pieceblackselect", "")
-            document.getElementById(letter(selectionProcess.current.startcolumn) + selectionProcess.current.startrow).className = str
-            document.getElementById(letter(selectionProcess.current.endcolumn) + selectionProcess.current.endrow).className += " pieceblack"
+            document.getElementById(letter(selectionProcess.startcolumn) + selectionProcess.startrow).className = str
+            document.getElementById(letter(selectionProcess.endcolumn) + selectionProcess.endrow).className += " pieceblack"
         }
         else {
             str = str.replace(" piecewhiteselect", "")
-            document.getElementById(letter(selectionProcess.current.startcolumn) + selectionProcess.current.startrow).className = str
-            document.getElementById(letter(selectionProcess.current.endcolumn) + selectionProcess.current.endrow).className += " piecewhite"
+            document.getElementById(letter(selectionProcess.startcolumn) + selectionProcess.startrow).className = str
+            document.getElementById(letter(selectionProcess.endcolumn) + selectionProcess.endrow).className += " piecewhite"
         }
 
         // Pfeil setzen
-        document.getElementById(letter(selectionProcess.current.shotcolumn) + selectionProcess.current.shotrow).className += " arrow"
+        document.getElementById(letter(selectionProcess.shotcolumn) + selectionProcess.shotrow).className += " arrow"
     }
     // wenn ein falsches Feld gewählt wird, bring das Spielfeld zum Anfang des Zugs zurück
     else {

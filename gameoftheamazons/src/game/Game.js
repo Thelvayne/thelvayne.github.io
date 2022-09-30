@@ -86,7 +86,7 @@ export default function Game() {
     if (elementLoaded.current === true && boolean !== true) return; // abbruchbedingung, da nur einmal ausgeführt werden soll, außer es wird spezifisch aufgerufen
     const parent = document.getElementById("parent");
     parent.style.width = 50 + '%'
-    parent.style.height = 50 + '%'
+    parent.style.height = 80 + '%'
     const board = gameboard.current.board.squares;
     // Felder samt inhalt wird erstellt
     board.forEach((row, indexr) => {
@@ -94,7 +94,6 @@ export default function Game() {
         const child = document.createElement("div");
         child.id = letter(indexc) + indexr;
         child.className = BackgroundColor(indexr, indexc);
-        child.style.width = 100;
         parent.appendChild(child);
         loadAmazone(column, indexc, indexr);
       })
@@ -211,7 +210,7 @@ export default function Game() {
       else if (amazoneSelected.current === 2) {
         // console.log("Stage 1.3");
         // console.log(idGame.current);
-        await shotArrow(row, column, Number(gameId), currentPlayer.current, selectionProcess, amazoneSelected.current);
+        await shotArrow(row, column, Number(gameId), currentPlayer.current, selectionProcess.current, amazoneSelected.current);
         // speicher letzte Auswahl
         selectedCoordinates.current.currentRow = row;
         selectedCoordinates.current.currentColumn = column;
